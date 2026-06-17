@@ -76,8 +76,15 @@ export default function AdminSkillsPage() {
                   <tr key={skill.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 flex items-center justify-center text-slate-700 bg-slate-100 rounded-lg">
-                          {getSkillIcon(skill.category, skill.name)}
+                        <div className="text-slate-600 flex items-center justify-center [&>svg]:w-5 [&>svg]:h-5">
+                          {skill.icon_svg ? (
+                            <div
+                              dangerouslySetInnerHTML={{ __html: skill.icon_svg }}
+                              className="flex items-center justify-center"
+                            />
+                          ) : (
+                            getSkillIcon(skill.category, skill.name)
+                          )}
                         </div>
                         <span className="font-semibold text-slate-800">{skill.name}</span>
                       </div>

@@ -95,6 +95,21 @@ export default function CreateSkillPage() {
               />
             </div>
           </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">Icon SVG (Optional)</label>
+            <p className="text-xs text-slate-500 mb-1">
+              Paste raw SVG code here. Leave blank to use default icon based on name/category.
+            </p>
+            <textarea
+              name="icon_svg"
+              value={formData.icon_svg}
+              onChange={handleChange}
+              rows={4}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-mono text-sm"
+              placeholder="<svg>...</svg>"
+            />
+          </div>
         </div>
 
         <div className="p-6 bg-slate-50 border-t border-slate-200 flex justify-end">

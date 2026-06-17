@@ -95,10 +95,17 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
             skills.map((skill) => (
               <div
                 key={skill.id}
-                className="stagger-item group flex flex-col sm:flex-row items-center gap-2 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 comic-panel hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all duration-200 cursor-default text-center sm:text-left min-w-[100px] sm:min-w-0"
+                className="stagger-item group flex flex-col sm:flex-row items-center gap-2 sm:gap-4 px-4 sm:px-5 py-3 sm:py-4 comic-panel hover:-translate-y-1 hover:translate-x-1 transition-all duration-200 cursor-default text-center sm:text-left min-w-[100px] sm:min-w-0"
               >
-                <div className="text-black group-hover:text-primary transition-colors scale-110 sm:scale-125">
-                  {getSkillIcon(skill.category, skill.name)}
+                <div className="text-black flex items-center justify-center [&>svg]:w-6 [&>svg]:h-6 sm:[&>svg]:w-7 sm:[&>svg]:h-7">
+                  {skill.icon_svg ? (
+                    <div
+                      dangerouslySetInnerHTML={{ __html: skill.icon_svg }}
+                      className="flex items-center justify-center"
+                    />
+                  ) : (
+                    getSkillIcon(skill.category, skill.name)
+                  )}
                 </div>
                 <div>
                   <h3 className="text-lg sm:text-xl comic-heading text-black leading-none mt-1 sm:mt-0">
