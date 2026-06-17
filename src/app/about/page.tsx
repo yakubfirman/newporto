@@ -273,7 +273,7 @@ export default async function AboutPage() {
                     Lokasi
                   </span>
                   <span className="block font-bold text-black uppercase text-sm sm:text-base tracking-wide">
-                    Surakarta, Jawa Tengah
+                    {settings.about_fact_location || 'Surakarta, Jawa Tengah'}
                   </span>
                 </li>
                 <li className="bg-white border-[3px] border-black p-3 sm:p-4 comic-shadow -rotate-2 hover:rotate-1 transition-transform">
@@ -281,7 +281,7 @@ export default async function AboutPage() {
                     Ketersediaan
                   </span>
                   <span className="block font-bold text-primary uppercase text-sm sm:text-base tracking-wide">
-                    Terbuka untuk bekerja
+                    {settings.about_fact_availability || 'Terbuka untuk bekerja'}
                   </span>
                 </li>
                 <li className="bg-white border-[3px] border-black p-3 sm:p-4 comic-shadow rotate-1 hover:-rotate-1 transition-transform">
@@ -289,7 +289,7 @@ export default async function AboutPage() {
                     Fokus
                   </span>
                   <span className="block font-bold text-black uppercase text-sm sm:text-base tracking-wide">
-                    Full-stack & SEO
+                    {settings.about_fact_focus || 'Full-stack & SEO'}
                   </span>
                 </li>
               </ul>
