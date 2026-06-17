@@ -85,6 +85,7 @@ export default function Footer({
                 aria-label="Profil GitHub Yakub Firman"
                 className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-black hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
               >
+                <span className="sr-only">GitHub</span>
                 <GithubIcon size={20} />
               </a>
               <a
@@ -94,6 +95,7 @@ export default function Footer({
                 aria-label="Profil LinkedIn Yakub Firman"
                 className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-[#0077b5] hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
               >
+                <span className="sr-only">LinkedIn</span>
                 <LinkedinIcon size={20} />
               </a>
               <a
@@ -101,7 +103,8 @@ export default function Footer({
                 aria-label="Kirim Email ke Yakub Firman"
                 className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-primary hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
               >
-                <Mail size={20} strokeWidth={3} />
+                <span className="sr-only">Email</span>
+                <Mail size={20} strokeWidth={3} aria-hidden="true" />
               </a>
             </div>
           </div>
