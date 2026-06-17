@@ -29,34 +29,46 @@ const getSkillIcon = (category: string | undefined, name: string) => {
   const nm = name.toLowerCase();
 
   // Brand Icons
-  if (nm.includes('javascript')) return <SiJavascript size={24} className="text-current" />;
-  if (nm.includes('typescript')) return <SiTypescript size={24} className="text-current" />;
-  if (nm.includes('react')) return <SiReact size={24} className="text-current" />;
+  if (nm.includes('javascript'))
+    return <SiJavascript size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('typescript'))
+    return <SiTypescript size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('react'))
+    return <SiReact size={24} className="text-current" aria-hidden="true" />;
   if (nm.includes('nextjs') || nm.includes('next.js'))
-    return <SiNextdotjs size={24} className="text-current" />;
-  if (nm.includes('php')) return <SiPhp size={24} className="text-current" />;
-  if (nm.includes('python')) return <SiPython size={24} className="text-current" />;
-  if (nm.includes('laravel')) return <SiLaravel size={24} className="text-current" />;
-  if (nm.includes('codeigniter')) return <SiCodeigniter size={24} className="text-current" />;
-  if (nm.includes('flask')) return <SiFlask size={24} className="text-current" />;
-  if (nm.includes('mysql')) return <SiMysql size={24} className="text-current" />;
-  if (nm.includes('postgres')) return <SiPostgresql size={24} className="text-current" />;
+    return <SiNextdotjs size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('php')) return <SiPhp size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('python'))
+    return <SiPython size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('laravel'))
+    return <SiLaravel size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('codeigniter'))
+    return <SiCodeigniter size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('flask'))
+    return <SiFlask size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('mysql'))
+    return <SiMysql size={24} className="text-current" aria-hidden="true" />;
+  if (nm.includes('postgres'))
+    return <SiPostgresql size={24} className="text-current" aria-hidden="true" />;
 
   // Fallback Category Icons
   const cat = (category || '').toLowerCase();
   if (nm.includes('seo') || nm.includes('marketing'))
-    return <BarChart size={24} className="text-current" />;
+    return <BarChart size={24} className="text-current" aria-hidden="true" />;
   if (nm.includes('design') || cat.includes('design'))
-    return <PenTool size={24} className="text-current" />;
+    return <PenTool size={24} className="text-current" aria-hidden="true" />;
   if (nm.includes('database') || cat.includes('database'))
-    return <Database size={24} className="text-current" />;
-  if (cat.includes('backend')) return <Server size={24} className="text-current" />;
-  if (cat.includes('frontend')) return <Monitor size={24} className="text-current" />;
-  if (cat.includes('mobile')) return <Smartphone size={24} className="text-current" />;
+    return <Database size={24} className="text-current" aria-hidden="true" />;
+  if (cat.includes('backend'))
+    return <Server size={24} className="text-current" aria-hidden="true" />;
+  if (cat.includes('frontend'))
+    return <Monitor size={24} className="text-current" aria-hidden="true" />;
+  if (cat.includes('mobile'))
+    return <Smartphone size={24} className="text-current" aria-hidden="true" />;
   if (cat.includes('tools') || cat.includes('devops'))
-    return <Settings size={24} className="text-current" />;
+    return <Settings size={24} className="text-current" aria-hidden="true" />;
 
-  return <Globe size={24} className="text-current" />;
+  return <Globe size={24} className="text-current" aria-hidden="true" />;
 };
 
 interface SkillsSectionProps {
