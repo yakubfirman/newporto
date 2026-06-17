@@ -66,7 +66,7 @@ export default function AdminHeader({ isSidebarOpen, setIsSidebarOpen }: AdminHe
     // Fetch testimonials and comments for notifications
     Promise.all([
       fetchAdminAPI<Testimonial[]>('/testimonials').catch(() => []),
-      fetchAdminAPI<Comment[]>('/comments').catch(() => []),
+      fetchAdminAPI<Comment[]>('/admin/comments').catch(() => []),
     ]).then(([testimonials, comments]) => {
       const notifs: Array<{
         id: string;
