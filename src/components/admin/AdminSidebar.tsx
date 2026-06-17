@@ -93,7 +93,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
 
       <div className="p-3 border-t border-slate-200">
         <div className="text-xs text-center text-slate-400">
-          {isSidebarOpen ? 'Admin v1.0' : 'v1.0'}
+          {isSidebarOpen ? 'yakubfirman.id v1.0' : 'v1.0'}
         </div>
       </div>
     </aside>
