@@ -10,14 +10,10 @@ export default function AdminTestimonialsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchTestimonials();
-  }, []);
-
   const fetchTestimonials = async () => {
     try {
       setLoading(true);
-      const data = await fetchAdminAPI<Testimonial[]>('/testimonials');
+      const data = await fetchAdminAPI<Testimonial[]>('/admin/testimonials');
       setTestimonials(data);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch testimonials');
@@ -26,10 +22,14 @@ export default function AdminTestimonialsPage() {
     }
   };
 
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
+
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this testimonial?')) return;
     try {
-      await fetchAdminAPI(`/testimonials/${id}`, { method: 'DELETE' });
+      await fetchAdminAPI(`/admin/testimonials/${id}`, { method: 'DELETE' });
       fetchTestimonials();
     } catch (err: any) {
       alert(err.message || 'Failed to delete testimonial');
@@ -38,7 +38,7 @@ export default function AdminTestimonialsPage() {
 
   const handleTogglePublish = async (id: number) => {
     try {
-      await fetchAdminAPI(`/testimonials/${id}/toggle`, { method: 'PATCH' });
+      await fetchAdminAPI(`/admin/testimonials/${id}/toggle`, { method: 'PATCH' });
       fetchTestimonials(); // refresh
     } catch (err: any) {
       alert(err.message || 'Failed to update status');
