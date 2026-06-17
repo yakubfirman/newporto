@@ -1,14 +1,17 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  LayoutDashboard,
-  Briefcase,
-  FileText,
-  User,
-  GraduationCap,
-  Settings,
-  MessageSquare,
-} from 'lucide-react';
+  MdDashboard,
+  MdWork,
+  MdArticle,
+  MdComment,
+  MdPerson,
+  MdSchool,
+  MdBuild,
+  MdMail,
+  MdRateReview,
+  MdSettings,
+} from 'react-icons/md';
 import { API_URL } from '@/lib/api';
 
 interface AdminSidebarProps {
@@ -20,16 +23,16 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
   const router = useRouter();
 
   const navItems = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
-    { name: 'Projects', href: '/admin/projects', icon: <Briefcase size={20} /> },
-    { name: 'Blog Posts', href: '/admin/posts', icon: <FileText size={20} /> },
-    { name: 'Comments', href: '/admin/comments', icon: <MessageSquare size={20} /> },
-    { name: 'Experience', href: '/admin/experiences', icon: <User size={20} /> },
-    { name: 'Education', href: '/admin/educations', icon: <GraduationCap size={20} /> },
-    { name: 'Skills', href: '/admin/skills', icon: <Settings size={20} /> },
-    { name: 'Messages', href: '/admin/messages', icon: <MessageSquare size={20} /> },
-    { name: 'Testimonials', href: '/admin/testimonials', icon: <MessageSquare size={20} /> },
-    { name: 'Settings', href: '/admin/settings', icon: <Settings size={20} /> },
+    { name: 'Dashboard', href: '/admin/dashboard', icon: <MdDashboard size={20} /> },
+    { name: 'Projects', href: '/admin/projects', icon: <MdWork size={20} /> },
+    { name: 'Blog Posts', href: '/admin/posts', icon: <MdArticle size={20} /> },
+    { name: 'Comments', href: '/admin/comments', icon: <MdComment size={20} /> },
+    { name: 'Experience', href: '/admin/experiences', icon: <MdPerson size={20} /> },
+    { name: 'Education', href: '/admin/educations', icon: <MdSchool size={20} /> },
+    { name: 'Skills', href: '/admin/skills', icon: <MdBuild size={20} /> },
+    { name: 'Messages', href: '/admin/messages', icon: <MdMail size={20} /> },
+    { name: 'Testimonials', href: '/admin/testimonials', icon: <MdRateReview size={20} /> },
+    { name: 'Settings', href: '/admin/settings', icon: <MdSettings size={20} /> },
   ];
 
   return (
