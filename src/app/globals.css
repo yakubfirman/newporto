@@ -1,26 +1,137 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-primary: #ef4444; /* comic red */
+  --color-primary-hover: #dc2626;
+  --color-brand: #ef4444;
+  --color-brand-50: #fef2f2;
+  --color-brand-100: #fee2e2;
+  --color-brand-200: #fecaca;
+  --color-brand-300: #fca5a5;
+  --color-brand-400: #f87171;
+  --color-brand-500: #ef4444;
+  --color-brand-600: #dc2626;
+  --color-secondary: #525252; /* neutral-500 */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-grotesk, sans-serif);
+  --font-heading: var(--font-bangers, cursive);
+}
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --foreground: #000000;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff; /* keep it white for comic theme */
+    --foreground: #000000;
   }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+/* Comic Book Halftone Dots */
+.bg-halftone {
+  background-image: radial-gradient(#00000020 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+.bg-halftone-red {
+  background-image: radial-gradient(#ef444430 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Comic Book Panels and Shadows */
+.comic-shadow {
+  box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+}
+.comic-shadow-red {
+  box-shadow: 6px 6px 0px 0px rgba(239, 68, 68, 1);
+}
+.comic-panel {
+  background-color: white;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+}
+.comic-panel-red {
+  border: 4px solid #000;
+  background-color: #ef4444;
+  color: white;
+  box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+}
+
+.comic-text {
+  text-shadow:
+    3px 3px 0px #ef4444,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  letter-spacing: 0.05em;
+}
+.comic-text-white {
+  text-shadow:
+    3px 3px 0px #000000,
+    -1px -1px 0 #ef4444,
+    1px -1px 0 #ef4444,
+    -1px 1px 0 #ef4444,
+    1px 1px 0 #ef4444;
+  letter-spacing: 0.05em;
+}
+.comic-heading {
+  font-family: var(--font-heading);
+}
+.comic-body {
+  font-family: var(--font-sans);
+}
+
+/* Diagonal Stripes */
+.bg-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    #00000010 10px,
+    #00000010 20px
+  );
+}
+
+/* Comic Speech Bubble Tail */
+.comic-tail {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #000;
+  bottom: -20px;
+  right: 40px;
+}
+.comic-tail::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 14px solid #fff;
+  bottom: 6px;
+  right: -14px;
 }

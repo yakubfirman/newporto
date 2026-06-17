@@ -1,0 +1,119 @@
+'use client';
+
+import type { Testimonial } from '@/lib/api';
+import Link from 'next/link';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRef } from 'react';
+
+interface TestimonySectionProps {
+  testimonials: Testimonial[];
+}
+
+export default function TestimonySection({ testimonials }: TestimonySectionProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section className="w-full relative py-16 md:py-24 border-t-[6px] border-black bg-primary/10 comic-body">
+      <div className="absolute inset-0 bg-halftone opacity-40 pointer-events-none"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="section-header mb-8 sm:mb-12 relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div className="text-left">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl comic-heading text-white leading-none mb-2 comic-text bg-white border-[3px] border-black p-2 sm:p-4 inline-block comic-shadow rotate-1">
+              Client Quotes!
+            </h2>
+          </div>
+          <Link
+            href="/testimonials"
+            className="inline-flex items-center gap-2 bg-primary text-white border-[3px] border-black px-6 py-3 comic-heading text-lg hover:bg-black hover:text-white transition-colors comic-shadow-sm whitespace-nowrap"
+          >
+            LEAVE A REVIEW
+            <ArrowRight size={20} strokeWidth={3} />
+          </Link>
+        </div>
+
+        <div className="relative z-10 pb-8 group">
+          {testimonials.length > 0 ? (
+            <>
+              {/* Slider Controls */}
+              {testimonials.length > 3 && (
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 z-20 flex justify-between pointer-events-none -mx-4 sm:-mx-6 lg:-mx-8 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex">
+                  <button
+                    onClick={() => scroll('left')}
+                    className="pointer-events-auto bg-white border-[3px] border-black w-12 h-12 flex items-center justify-center comic-shadow-sm hover:bg-primary hover:text-white transition-colors text-black"
+                    aria-label="Previous testimonials"
+                  >
+                    <ChevronLeft size={24} strokeWidth={3} />
+                  </button>
+                  <button
+                    onClick={() => scroll('right')}
+                    className="pointer-events-auto bg-white border-[3px] border-black w-12 h-12 flex items-center justify-center comic-shadow-sm hover:bg-primary hover:text-white transition-colors text-black"
+                    aria-label="Next testimonials"
+                  >
+                    <ChevronRight size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              )}
+
+              {/* Slider Container */}
+              <div
+                ref={scrollRef}
+                className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 lg:gap-8 pb-12 pt-4 px-2 -mx-2 hide-scrollbar scroll-smooth"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {testimonials.map((t, i) => (
+                  <div
+                    key={t.id}
+                    className={`stagger-item flex-shrink-0 w-[85vw] sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1.33rem)] snap-center sm:snap-start flex flex-col p-6 comic-panel relative bg-white ${i % 2 === 0 ? '-rotate-1' : 'rotate-1'}`}
+                  >
+                    <div className="comic-tail"></div>
+                    <p className="text-black font-bold tracking-wide leading-relaxed mb-6 text-base flex-1 relative z-10">
+                      &quot;{t.content}&quot;
+                    </p>
+                    <div className="flex items-center gap-4 pt-4 border-t-[3px] border-black mt-3 border-dashed">
+                      <div className="w-12 h-12 bg-primary border-[3px] border-black text-white flex items-center justify-center comic-heading text-2xl comic-shadow shrink-0">
+                        {t.name.charAt(0)}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="comic-heading text-black text-xl leading-none mb-1 truncate">
+                          {t.name}
+                        </p>
+                        {t.role && (
+                          <p className="text-xs comic-heading text-white bg-black px-2 py-0.5 inline-block tracking-widest truncate max-w-full">
+                            {t.role}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="bg-white border-[3px] border-black border-dashed p-8 text-center comic-shadow relative z-10 max-w-2xl mx-auto">
+              <span className="comic-heading text-xl text-slate-400">
+                NO TESTIMONIALS YET... BE THE FIRST!
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `,
+        }}
+      />
+    </section>
+  );
+}
