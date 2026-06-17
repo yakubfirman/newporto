@@ -63,7 +63,7 @@ export default async function ProjectDetailPage(props: Props) {
               '@type': 'WebPage',
               '@id': `https://yakubfirman.id/project/${project.slug}`,
             },
-            keywords: project.tech_stack?.join(', '),
+            keywords: project.categories?.join(', '),
           }),
         }}
       />
@@ -84,12 +84,12 @@ export default async function ProjectDetailPage(props: Props) {
             {/* Title side */}
             <div className="comic-panel-red p-6 sm:p-8 -rotate-1 relative z-10">
               <div className="flex flex-wrap gap-2 mb-4">
-                {project.tech_stack?.map((tech) => (
+                {project.categories?.map((cat) => (
                   <span
-                    key={tech}
+                    key={cat}
                     className="px-2 py-1 text-[10px] sm:text-xs font-bold text-white bg-black uppercase tracking-widest border-2 border-black"
                   >
-                    {tech}
+                    {cat}
                   </span>
                 ))}
               </div>

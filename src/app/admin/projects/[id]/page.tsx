@@ -21,6 +21,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
     content: '',
     image: '',
     tech_stack: '',
+    categories: [] as string[],
     url: '',
     github_url: '',
     is_highlighted: false,
@@ -37,6 +38,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
           content: data.content,
           image: data.image || '',
           tech_stack: data.tech_stack?.join(', ') || '',
+          categories: data.categories || [],
           url: data.url || '',
           github_url: data.github_url || '',
           is_highlighted: data.is_highlighted,
@@ -59,6 +61,19 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
     const { name, checked } = e.target;
     setFormData((prev) => ({ ...prev, [name]: checked }));
   };
+
+  const handleCategoryToggle = (category: string) => {
+    setFormData((prev) => {
+      const isSelected = prev.categories.includes(category);
+      if (isSelected) {
+        return { ...prev, categories: prev.categories.filter((c) => c !== category) };
+      } else {
+        return { ...prev, categories: [...prev.categories, category] };
+      }
+    });
+  };
+
+  const AVAILABLE_CATEGORIES = ['Full Stack', 'Frontend', 'Backend', 'SEO & AIO', 'System Analist'];
 
   const handleTitleBlur = () => {
     if (!formData.slug && formData.title) {
@@ -198,6 +213,25 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                 />
                 <span className="text-sm text-slate-700">Highlight on Homepage</span>
               </label>
+            </div>
+
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+              <h3 className="font-semibold text-slate-800 border-b border-slate-200 pb-2 text-sm">
+                Categories
+              </h3>
+              <div className="space-y-2">
+                {AVAILABLE_CATEGORIES.map((cat) => (
+                  <label key={cat} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.categories.includes(cat)}
+                      onChange={() => handleCategoryToggle(cat)}
+                      className="w-4 h-4 text-primary rounded border-slate-300 focus:ring-primary"
+                    />
+                    <span className="text-sm text-slate-700">{cat}</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-2">

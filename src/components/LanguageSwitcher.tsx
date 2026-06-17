@@ -72,7 +72,7 @@ export default function LanguageSwitcher() {
 
       <Script
         src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
 
       <button

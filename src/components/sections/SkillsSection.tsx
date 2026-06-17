@@ -99,10 +99,18 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
               >
                 <div className="text-black flex items-center justify-center [&>svg]:w-6 [&>svg]:h-6 sm:[&>svg]:w-7 sm:[&>svg]:h-7">
                   {skill.icon_svg ? (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: skill.icon_svg }}
-                      className="flex items-center justify-center"
-                    />
+                    skill.icon_svg.startsWith('http') ? (
+                      <img
+                        src={skill.icon_svg}
+                        alt={skill.name}
+                        className="w-6 h-6 sm:w-7 sm:h-7 object-contain"
+                      />
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{ __html: skill.icon_svg }}
+                        className="flex items-center justify-center"
+                      />
+                    )
                   ) : (
                     getSkillIcon(skill.category, skill.name)
                   )}

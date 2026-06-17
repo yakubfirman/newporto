@@ -112,10 +112,10 @@ export default function TestimonialForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-white border-[3px] border-black px-6 py-3 comic-heading text-lg hover:bg-black transition-colors flex items-center justify-center gap-2 mt-4 comic-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'MENGIRIM...' : 'KIRIM TESTIMONI'}
-            {!loading && <Send size={20} strokeWidth={3} />}
+            {loading ? 'Mengirim...' : 'Kirim Testimoni'}
+            <Send size={18} />
           </button>
         </form>
       </div>

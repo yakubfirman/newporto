@@ -22,11 +22,8 @@ export default function BlogSection({ posts }: BlogSectionProps) {
               Pemikiran, tutorial, dan wawasan seputar pengembangan perangkat lunak dan teknologi.
             </p>
           </div>
-          <Link
-            href="/blog"
-            className="group inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl text-white bg-black px-5 sm:px-6 py-3 hover:bg-primary transition-colors border-[3px] border-black comic-shadow shrink-0 -rotate-1 w-full md:w-auto"
-          >
-            Baca semua artikel
+          <Link href="/blog" className="btn-primary w-full md:w-auto">
+            Baca Blog Lainnya
             <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={3} />
           </Link>
         </div>

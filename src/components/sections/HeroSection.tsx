@@ -2,9 +2,14 @@
 
 import { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(TextPlugin);
+}
 
 export default function HeroSection() {
   const heroRef = useRef(null);
@@ -47,33 +52,24 @@ export default function HeroSection() {
               '-=0.4'
             );
 
-          const roleTextEl = document.querySelector('.role-text');
-          if (roleTextEl) {
-            const rolesList = ['Web Developer', 'SEO Specialist', 'System Analyst'];
+          const roleTextContainer = document.querySelector('.roles-container');
+          if (roleTextContainer) {
             const roleTl = gsap.timeline({ repeat: -1 });
+            const totalRoles = 3;
+            const duration = 1.5;
+            const pause = 2;
 
-            rolesList.forEach((role) => {
-              roleTl
-                .to('.role-text', {
-                  text: { value: role, delimiter: '' },
-                  duration: 1,
-                  ease: 'none',
-                  delay: 0.5,
-                })
-                .to('.role-text', { duration: 2 })
-                .to('.role-text', {
-                  text: { value: '', delimiter: '' },
-                  duration: 0.5,
-                  ease: 'none',
-                });
-            });
-
-            gsap.to('.role-cursor', {
-              opacity: 0,
-              ease: 'steps(1)',
-              repeat: -1,
-              duration: 0.5,
-            });
+            // We have 4 items (3 real + 1 clone of first). We translate Y to show each one.
+            for (let i = 0; i < totalRoles; i++) {
+              roleTl.to('.roles-container', {
+                y: `-${(i + 1) * 100}%`,
+                duration: duration,
+                ease: 'power4.inOut',
+                delay: pause,
+              });
+            }
+            // Seamless loop back to the top
+            roleTl.set('.roles-container', { y: '0%' });
           }
         });
       };
@@ -126,17 +122,27 @@ export default function HeroSection() {
                 SAYA SEORANG
               </span>
             </div>
-            <div className="hero-word opacity-0 inline-flex items-center justify-center w-[150px] sm:w-[220px] lg:w-[350px] xl:w-[420px] gap-2 px-6 sm:px-8 py-2.5 sm:py-3 border-[3px] border-black bg-white text-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 tracking-wide ml-1 sm:ml-2 h-full overflow-hidden">
-              <span
-                className="role-text comic-heading text-primary uppercase whitespace-nowrap text-center"
-                style={{
-                  textShadow:
-                    '3px 3px 0px white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
-                }}
-              >
-                Web Developer
-              </span>
-              <span className="role-cursor text-primary font-bold ml-1">|</span>
+            <div className="hero-word opacity-0 inline-flex items-center justify-center w-[150px] sm:w-[220px] lg:w-[350px] xl:w-[420px] px-6 sm:px-8 py-2.5 sm:py-3 border-[3px] border-black bg-white text-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 ml-1 sm:ml-2 h-[48px] sm:h-[64px] lg:h-[80px] xl:h-[96px] overflow-hidden relative">
+              <div className="roles-container absolute top-0 left-0 w-full h-full flex flex-col">
+                {['Web Developer', 'SEO Specialist', 'System Analyst', 'Web Developer'].map(
+                  (role, idx) => (
+                    <div
+                      key={idx}
+                      className="flex-none w-full h-full flex items-center justify-center"
+                    >
+                      <span
+                        className="comic-heading text-primary uppercase whitespace-nowrap text-center text-sm sm:text-2xl lg:text-4xl xl:text-5xl tracking-wide"
+                        style={{
+                          textShadow:
+                            '3px 3px 0px white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
+                        }}
+                      >
+                        {role}
+                      </span>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
         </h1>
@@ -155,18 +161,12 @@ export default function HeroSection() {
 
         <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-6 sm:gap-8 w-full mt-4 sm:mt-6 px-4">
           <div className="hero-btn opacity-0 w-full sm:w-auto">
-            <Link
-              href="#proyek"
-              className="inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white border-[3px] border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all rotate-2 tracking-wide w-full sm:w-auto"
-            >
+            <Link href="#proyek" className="btn-primary w-full sm:w-auto">
               Lihat Proyek <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={3} />
             </Link>
           </div>
           <div className="hero-btn opacity-0 w-full sm:w-auto">
-            <Link
-              href="/about"
-              className="inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black border-[3px] border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 tracking-wide w-full sm:w-auto"
-            >
+            <Link href="/about" className="btn-secondary w-full sm:w-auto">
               Baca Profil
             </Link>
           </div>

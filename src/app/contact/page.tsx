@@ -162,7 +162,7 @@ export default function ContactPage() {
               <button
                 disabled={isSubmitting}
                 type="submit"
-                className="w-full comic-heading text-xl text-white bg-primary border-[3px] border-black py-4 hover:bg-black transition-colors flex items-center justify-center gap-2 disabled:opacity-70 comic-shadow mt-4 uppercase"
+                className="btn-primary w-full disabled:opacity-70"
               >
                 {isSubmitting ? (
                   'Mengirim...'

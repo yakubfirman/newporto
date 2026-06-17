@@ -79,10 +79,18 @@ export default function AdminSkillsPage() {
                       <div className="flex items-center gap-3">
                         <div className="text-slate-600 flex items-center justify-center [&>svg]:w-5 [&>svg]:h-5">
                           {skill.icon_svg ? (
-                            <div
-                              dangerouslySetInnerHTML={{ __html: skill.icon_svg }}
-                              className="flex items-center justify-center"
-                            />
+                            skill.icon_svg.startsWith('http') ? (
+                              <img
+                                src={skill.icon_svg}
+                                alt={skill.name}
+                                className="w-6 h-6 object-contain"
+                              />
+                            ) : (
+                              <div
+                                dangerouslySetInnerHTML={{ __html: skill.icon_svg }}
+                                className="flex items-center justify-center"
+                              />
+                            )
                           ) : (
                             getSkillIcon(skill.category, skill.name)
                           )}

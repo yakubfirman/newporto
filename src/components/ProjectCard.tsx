@@ -10,7 +10,7 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, className = '', idx = 0 }: ProjectCardProps) {
-  const techs: string[] = project.tech_stack ?? (project as any).technologies ?? [];
+  const categories: string[] = project.categories || [];
   const description = project.description || (project as any).content || '';
 
   return (
@@ -45,19 +45,19 @@ export default function ProjectCard({ project, className = '', idx = 0 }: Projec
             {project.title}
           </h3>
 
-          {techs && techs.length > 0 && (
+          {categories && categories.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-3 sm:mb-4">
-              {techs.slice(0, 3).map((tech, index) => (
+              {categories.slice(0, 3).map((cat, index) => (
                 <span
                   key={index}
                   className="text-[8px] sm:text-[9px] comic-heading text-white bg-black px-2 py-1 border border-black tracking-widest uppercase leading-none"
                 >
-                  {tech}
+                  {cat}
                 </span>
               ))}
-              {techs.length > 3 && (
+              {categories.length > 3 && (
                 <span className="text-[8px] sm:text-[9px] comic-heading text-black bg-white px-2 py-1 border border-black tracking-widest uppercase leading-none">
-                  +{techs.length - 3}
+                  +{categories.length - 3}
                 </span>
               )}
             </div>

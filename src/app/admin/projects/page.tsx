@@ -69,6 +69,7 @@ export default function AdminProjectsPage() {
                 <th className="px-6 py-4 font-semibold">Project Title</th>
                 <th className="px-6 py-4 font-semibold">Status</th>
                 <th className="px-6 py-4 font-semibold">Tech Stack</th>
+                <th className="px-6 py-4 font-semibold">Categories</th>
                 <th className="px-6 py-4 font-semibold">Links</th>
                 <th className="px-6 py-4 font-semibold text-right">Actions</th>
               </tr>
@@ -126,6 +127,23 @@ export default function AdminProjectsPage() {
                         {project.tech_stack?.length > 3 && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-50 text-slate-500 border border-slate-200">
                             +{project.tech_stack.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1">
+                        {project.categories?.slice(0, 2).map((cat, i) => (
+                          <span
+                            key={i}
+                            className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200"
+                          >
+                            {cat}
+                          </span>
+                        ))}
+                        {project.categories && project.categories.length > 2 && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-50 text-slate-500 border border-slate-200">
+                            +{project.categories.length - 2}
                           </span>
                         )}
                       </div>

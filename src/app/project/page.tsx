@@ -28,17 +28,16 @@ export default async function ProjectPage(props: {
     console.error('Error fetching projects:', error);
   }
 
-  // Categories extraction
-  const categories = [
-    'All',
-    ...Array.from(new Set(projects.flatMap((p) => p.tech_stack || []).slice(0, 5))),
-  ];
+  // Categories definition
+  const AVAILABLE_CATEGORIES = ['Full Stack', 'Frontend', 'Backend', 'SEO & AIO', 'System Analist'];
+
+  const categories = ['All', ...AVAILABLE_CATEGORIES];
 
   // Filtering
   const filteredProjects =
     categoryParam === 'All'
       ? projects
-      : projects.filter((p) => p.tech_stack?.includes(categoryParam));
+      : projects.filter((p) => p.categories?.includes(categoryParam));
 
   const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
   const paginatedProjects = filteredProjects.slice(

@@ -67,10 +67,7 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
             </div>
 
             <div className="hidden md:flex items-center shrink-0">
-              <Link
-                href="/contact"
-                className="px-5 py-1.5 bg-primary text-white border-2 border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all comic-heading text-lg uppercase tracking-widest rotate-1"
-              >
+              <Link href="/contact" className="btn-primary">
                 Hubungi Saya
               </Link>
             </div>

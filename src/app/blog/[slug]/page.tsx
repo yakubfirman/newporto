@@ -4,10 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, Search } from 'lucide-react';
 import { fetchAPI, Post } from '@/lib/api';
-import ReactMarkdown from 'react-markdown';
-import rehypeHighlight from 'rehype-highlight';
-import PostComments from '@/components/PostComments';
 import 'highlight.js/styles/github-dark.css';
+import DOMPurify from 'isomorphic-dompurify';
+import PostComments from '@/components/PostComments';
 
 export const revalidate = 0;
 
@@ -81,7 +80,7 @@ export default async function BlogPostPage(props: Props) {
             datePublished: post.published_at,
             author: {
               '@type': 'Person',
-              name: 'Yakub Firman Mustofa',
+              name: post.author || 'Yakub Firman Mustofa',
               url: 'https://yakubfirman.id',
             },
             mainEntityOfPage: {
@@ -117,6 +116,9 @@ export default async function BlogPostPage(props: Props) {
                         day: 'numeric',
                       })
                     : 'Draft'}
+                </span>
+                <span className="px-2 py-1 text-[10px] sm:text-xs font-bold text-black bg-white uppercase tracking-widest border-2 border-black inline-flex items-center gap-1">
+                  By {post.author || 'Yakub Firman Mustofa'}
                 </span>
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl comic-heading text-white leading-none mb-4 comic-text-white uppercase">
@@ -159,9 +161,10 @@ export default async function BlogPostPage(props: Props) {
             {/* Markdown Content & Comments */}
             <div>
               <div className="comic-panel bg-white p-6 sm:p-10 md:p-14 rotate-0 comic-shadow-sm">
-                <div className="prose prose-slate prose-lg md:prose-xl max-w-none prose-headings:font-black prose-headings:tracking-tight prose-headings:text-black prose-a:text-primary prose-a:font-bold hover:prose-a:underline prose-pre:bg-black prose-pre:border-[3px] prose-pre:border-black prose-pre:comic-shadow prose-img:border-[4px] prose-img:border-black prose-img:comic-shadow prose-p:leading-relaxed prose-p:text-slate-800 prose-li:text-slate-800 prose-li:leading-relaxed">
-                  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{post.content}</ReactMarkdown>
-                </div>
+                <div
+                  className="prose prose-slate prose-lg md:prose-xl max-w-none prose-headings:font-black prose-headings:tracking-tight prose-headings:text-black prose-a:text-primary prose-a:font-bold hover:prose-a:underline prose-pre:bg-black prose-pre:border-[3px] prose-pre:border-black prose-pre:comic-shadow prose-img:border-[4px] prose-img:border-black prose-img:comic-shadow prose-p:leading-relaxed prose-p:text-slate-800 prose-li:text-slate-800 prose-li:leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+                />
               </div>
 
               {/* Comments Section */}

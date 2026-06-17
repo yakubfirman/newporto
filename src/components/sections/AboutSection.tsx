@@ -79,10 +79,7 @@ export default function AboutSection({ settings, projectsCount = 0 }: AboutSecti
               ))}
             </div>
 
-            <Link
-              href="/about"
-              className="group inline-flex justify-center items-center gap-2 sm:gap-3 comic-heading text-xl sm:text-2xl text-white bg-black px-5 sm:px-6 py-3 sm:py-4 hover:bg-primary transition-colors border-4 border-black comic-shadow-red -rotate-1 w-full sm:w-auto text-center"
-            >
+            <Link href="/about" className="btn-primary">
               Selengkapnya tentang latar belakang saya
               <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={4} />
             </Link>

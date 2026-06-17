@@ -3,9 +3,10 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Image as ImageIcon, Search, Globe } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon, Search, Globe, User } from 'lucide-react';
 import Image from 'next/image';
 import { fetchAdminAPI, Post } from '@/lib/api';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     title: '',
     slug: '',
     excerpt: '',
+    author: '',
     content: '',
     cover_image: '',
     is_published: false,
@@ -33,6 +35,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
           title: data.title,
           slug: data.slug,
           excerpt: data.excerpt || '',
+          author: data.author || 'Yakub Firman Mustofa',
           content: data.content || '',
           cover_image: data.cover_image || '',
           is_published: data.is_published || false,
@@ -151,6 +154,24 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
               </div>
             </div>
 
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-700">Author</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User size={16} className="text-slate-400" />
+                </div>
+                <input
+                  required
+                  type="text"
+                  name="author"
+                  value={formData.author}
+                  onChange={handleChange}
+                  className="w-full pl-10 px-4 py-2 border border-slate-300 rounded-r-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
+                  placeholder="Author Name"
+                />
+              </div>
+            </div>
+
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden p-6 md:p-8 space-y-6">
               <h3 className="font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
                 <Search size={18} className="text-primary" /> SEO & Meta Data
@@ -200,19 +221,10 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 flex justify-between">
-                <span>Content (Markdown/HTML)</span>
-                <span className="text-xs font-normal text-slate-400">
-                  Supports Markdown formatting
-                </span>
-              </label>
-              <textarea
-                required
-                name="content"
+              <label className="text-sm font-semibold text-slate-700">Content</label>
+              <RichTextEditor
                 value={formData.content}
-                onChange={handleChange}
-                rows={20}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-mono text-sm leading-relaxed"
+                onChange={(value) => setFormData((prev) => ({ ...prev, content: value }))}
               />
             </div>
           </div>

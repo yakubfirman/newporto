@@ -31,10 +31,7 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
               Kutipan Klien!
             </h2>
           </div>
-          <Link
-            href="/testimonials"
-            className="inline-flex items-center gap-2 bg-primary text-white border-[3px] border-black px-6 py-3 comic-heading text-lg hover:bg-black hover:text-white transition-colors comic-shadow-sm whitespace-nowrap"
-          >
+          <Link href="/testimonials" className="btn-primary">
             TINGGALKAN ULASAN
             <ArrowRight size={20} strokeWidth={3} />
           </Link>

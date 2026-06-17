@@ -25,10 +25,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
               Lihat beberapa proyek dan kreasi terbaru saya.
             </p>
           </div>
-          <Link
-            href="/project"
-            className="group inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl text-white bg-black px-5 sm:px-6 py-3 hover:bg-primary transition-colors border-[3px] border-black comic-shadow rotate-1 w-full md:w-auto"
-          >
+          <Link href="/project" className="btn-primary w-full md:w-auto">
             Lihat semua proyek
             <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={3} />
           </Link>

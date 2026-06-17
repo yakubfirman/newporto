@@ -35,17 +35,11 @@ export default function CTASection() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full sm:w-auto mt-2 sm:mt-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 sm:gap-3 comic-heading text-xl sm:text-2xl px-6 sm:px-10 py-3 sm:py-4 bg-black text-white border-4 border-black hover:bg-primary hover:text-white transition-colors w-full sm:w-auto comic-shadow-red rotate-3 hover:translate-y-2 hover:translate-x-2 hover:shadow-none hover:rotate-0"
-            >
+            <Link href="/contact" className="btn-primary w-full sm:w-auto">
               Hubungi Saya <ArrowRight size={24} className="sm:w-6 sm:h-6" strokeWidth={4} />
             </Link>
-            <Link
-              href="mailto:hello@yakubfirman.id"
-              className="inline-flex items-center justify-center gap-2 sm:gap-3 comic-heading text-lg sm:text-xl px-5 sm:px-8 py-3 sm:py-4 border-[3px] border-black text-black bg-white hover:bg-black hover:text-white transition-colors w-full sm:w-auto comic-shadow -rotate-2 hover:translate-y-2 hover:translate-x-2 hover:shadow-none hover:rotate-0 truncate max-w-full"
-            >
-              hello@yakubfirman.id
+            <Link href="mailto:hello@yakubfirman.id" className="btn-secondary w-full sm:w-auto">
+              Email Saya
             </Link>
           </div>
         </div>

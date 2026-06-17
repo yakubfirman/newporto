@@ -13,6 +13,7 @@ export interface Project {
   content: string;
   image: string | null;
   tech_stack: string[];
+  categories?: string[];
   url: string | null;
   github_url: string | null;
   is_highlighted: boolean;
@@ -57,6 +58,7 @@ export interface Post {
   title: string;
   slug: string;
   excerpt: string;
+  author: string;
   content: string;
   cover_image: string | null;
   is_published: boolean;
