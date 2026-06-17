@@ -36,7 +36,7 @@ export default async function AboutPage() {
               Tentang Saya
             </h1>
             <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
-              Merancang Produk Digital Sejak 2022.
+              Merancang Produk Digital Sejak 2024.
             </p>
           </div>
         </div>

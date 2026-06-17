@@ -112,7 +112,7 @@ export default function HeroSection() {
           <div className="flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-1 notranslate">
             {'Yakub Firman Mustofa'.split(' ').map((word, i) => (
               <div key={i} className="overflow-hidden px-2 pt-2 pb-4 -mx-2 -mt-2 -mb-4">
-                <span className="hero-word inline-block">{word}</span>
+                <span className="hero-word inline-block opacity-0">{word}</span>
               </div>
             ))}
           </div>
@@ -122,18 +122,20 @@ export default function HeroSection() {
             style={{ textShadow: 'none' }}
           >
             <div className="overflow-hidden px-2 pt-2 pb-4 -mx-2 -mt-2 -mb-4">
-              <span className="hero-word inline-block bg-primary text-white px-2 sm:px-4 py-0.5 sm:py-1 -rotate-3 border-[2px] sm:border-[3px] border-black comic-shadow">
+              <span className="hero-word inline-block opacity-0 bg-primary text-white px-2 sm:px-4 py-0.5 sm:py-1 -rotate-3 border-[2px] sm:border-[3px] border-black comic-shadow">
                 SAYA SEORANG
               </span>
             </div>
-            <div className="hero-word inline-flex items-center justify-center w-[150px] sm:w-[220px] lg:w-[350px] xl:w-[420px] gap-2 px-6 sm:px-8 py-2.5 sm:py-3 border-[3px] border-black bg-white text-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 tracking-wide ml-1 sm:ml-2 h-full">
+            <div className="hero-word opacity-0 inline-flex items-center justify-center w-[150px] sm:w-[220px] lg:w-[350px] xl:w-[420px] gap-2 px-6 sm:px-8 py-2.5 sm:py-3 border-[3px] border-black bg-white text-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 tracking-wide ml-1 sm:ml-2 h-full overflow-hidden">
               <span
                 className="role-text comic-heading text-primary uppercase whitespace-nowrap text-center"
                 style={{
                   textShadow:
                     '3px 3px 0px white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white',
                 }}
-              ></span>
+              >
+                Web Developer
+              </span>
               <span className="role-cursor text-primary font-bold ml-1">|</span>
             </div>
           </div>
@@ -152,7 +154,7 @@ export default function HeroSection() {
         </div> */}
 
         <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-6 sm:gap-8 w-full mt-4 sm:mt-6 px-4">
-          <div className="hero-btn w-full sm:w-auto">
+          <div className="hero-btn opacity-0 w-full sm:w-auto">
             <Link
               href="#proyek"
               className="inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white border-[3px] border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all rotate-2 tracking-wide w-full sm:w-auto"
@@ -160,7 +162,7 @@ export default function HeroSection() {
               Lihat Proyek <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={3} />
             </Link>
           </div>
-          <div className="hero-btn w-full sm:w-auto">
+          <div className="hero-btn opacity-0 w-full sm:w-auto">
             <Link
               href="/about"
               className="inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black border-[3px] border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 tracking-wide w-full sm:w-auto"

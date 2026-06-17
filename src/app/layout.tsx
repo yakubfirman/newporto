@@ -1,19 +1,17 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, Bangers } from 'next/font/google';
+import { Inter, Bangers } from 'next/font/google';
 import './globals.css';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { getSettings } from '@/lib/api';
 
-const sans = Space_Grotesk({
-  variable: '--font-grotesk',
-  subsets: ['latin'],
-});
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'block' });
 
 const bangers = Bangers({
   weight: ['400'],
   variable: '--font-bangers',
   subsets: ['latin'],
+  display: 'block',
 });
 
 export async function generateMetadata(): Promise<Metadata> {
