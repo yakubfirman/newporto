@@ -78,7 +78,7 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
                     <div className="text-black font-bold tracking-wide leading-relaxed mb-6 text-base flex-1 relative z-10">
                       <p>
                         &quot;
-                        {t.content.length > 30 ? t.content.substring(0, 30) + '...' : t.content}
+                        {t.content.length > 100 ? t.content.substring(0, 30) + '...' : t.content}
                         &quot;
                       </p>
                       {t.content.length > 30 && (
