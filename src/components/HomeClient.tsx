@@ -35,7 +35,7 @@ export default function HomeClient({
   return (
     <div ref={sectionsRef} className="relative z-10 flex flex-col">
       <HeroSection />
-      <AboutSection settings={settings} />
+      <AboutSection settings={settings} projectsCount={projects.length} />
       <ProjectsSection projects={projects} />
       <HowIWorkSection />
       <SkillsSection skills={skills} />

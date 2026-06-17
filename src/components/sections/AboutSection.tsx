@@ -6,9 +6,13 @@ import { ArrowRight } from 'lucide-react';
 
 interface AboutSectionProps {
   settings?: Record<string, string>;
+  projectsCount?: number;
 }
 
-export default function AboutSection({ settings }: AboutSectionProps) {
+export default function AboutSection({ settings, projectsCount = 0 }: AboutSectionProps) {
+  const currentYear = new Date().getFullYear();
+  let yearsOfExperience = currentYear - 2024;
+  if (yearsOfExperience <= 0) yearsOfExperience = 1;
   return (
     <section className="w-full relative overflow-hidden py-16 md:py-24 border-t-[6px] border-black bg-white comic-body">
       <div className="absolute inset-0 bg-halftone opacity-20 pointer-events-none"></div>
@@ -54,10 +58,9 @@ export default function AboutSection({ settings }: AboutSectionProps) {
             {/* Comic Stats */}
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-6 mb-6 sm:mb-8 border-y-4 border-black py-4 sm:py-6 bg-halftone-red -mx-5 sm:-mx-8 px-5 sm:px-8">
               {[
-                { value: '3+', label: 'Tahun Pengalaman' },
-                { value: '20+', label: 'Proyek' },
-                { value: '15+', label: 'Klien' },
-                { value: '5+', label: 'Acara' },
+                { value: `${yearsOfExperience}+`, label: 'Tahun Pengalaman' },
+                { value: `${projectsCount}+`, label: 'Proyek' },
+                { value: settings?.stats_clients || '15+', label: 'Klien' },
               ].map((stat, i) => (
                 <div
                   key={i}
