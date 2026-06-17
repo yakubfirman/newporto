@@ -2,16 +2,16 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-primary: #ef4444; /* comic red */
-  --color-primary-hover: #dc2626;
-  --color-brand: #ef4444;
+  --color-primary: #cc0000; /* WCAG AA compliant red */
+  --color-primary-hover: #a30000;
+  --color-brand: #cc0000;
   --color-brand-50: #fef2f2;
   --color-brand-100: #fee2e2;
   --color-brand-200: #fecaca;
   --color-brand-300: #fca5a5;
   --color-brand-400: #f87171;
-  --color-brand-500: #ef4444;
-  --color-brand-600: #dc2626;
+  --color-brand-500: #cc0000;
+  --color-brand-600: #a30000;
   --color-secondary: #525252; /* neutral-500 */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -54,7 +54,7 @@ h6 {
   background-size: 8px 8px;
 }
 .bg-halftone-red {
-  background-image: radial-gradient(#ef444430 1px, transparent 1px);
+  background-image: radial-gradient(#cc000030 1px, transparent 1px);
   background-size: 8px 8px;
 }
 
@@ -63,7 +63,7 @@ h6 {
   box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
 }
 .comic-shadow-red {
-  box-shadow: 6px 6px 0px 0px rgba(239, 68, 68, 1);
+  box-shadow: 6px 6px 0px 0px rgba(204, 0, 0, 1);
 }
 .comic-panel {
   background-color: white;
@@ -72,14 +72,14 @@ h6 {
 }
 .comic-panel-red {
   border: 4px solid #000;
-  background-color: #ef4444;
+  background-color: #cc0000;
   color: white;
   box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
 }
 
 .comic-text {
   text-shadow:
-    3px 3px 0px #ef4444,
+    3px 3px 0px #cc0000,
     -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
@@ -89,10 +89,10 @@ h6 {
 .comic-text-white {
   text-shadow:
     3px 3px 0px #000000,
-    -1px -1px 0 #ef4444,
-    1px -1px 0 #ef4444,
-    -1px 1px 0 #ef4444,
-    1px 1px 0 #ef4444;
+    -1px -1px 0 #cc0000,
+    1px -1px 0 #cc0000,
+    -1px 1px 0 #cc0000,
+    1px 1px 0 #cc0000;
   letter-spacing: 0.05em;
 }
 .comic-heading {
