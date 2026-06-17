@@ -113,7 +113,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${sans.variable} ${bangers.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${bangers.variable} h-full antialiased`}>
       <head>
         <script
           type="application/ld+json"
