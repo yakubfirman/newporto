@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import type { Skill } from '@/lib/api';
 
-const getSkillIcon = (category: string | undefined, name: string) => {
+export const getSkillIcon = (category: string | undefined, name: string) => {
   const nm = name.toLowerCase();
 
   // Brand Icons

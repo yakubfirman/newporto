@@ -117,32 +117,6 @@ export default function EditSkillPage({ params }: { params: Promise<{ id: string
               />
             </div>
           </div>
-
-          <div className="space-y-2 p-4 bg-slate-50 border border-slate-200 rounded-lg">
-            <div className="flex justify-between">
-              <label className="text-sm font-semibold text-slate-700">Proficiency (%)</label>
-              <span className="text-sm font-bold text-primary">{formData.proficiency}%</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={formData.proficiency}
-              onChange={handleProficiency}
-              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">Icon SVG Code (Optional)</label>
-            <textarea
-              name="icon_svg"
-              value={formData.icon_svg}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none font-mono text-sm transition-all"
-            />
-          </div>
         </div>
 
         <div className="p-6 bg-slate-50 border-t border-slate-200 flex justify-end">

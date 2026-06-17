@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Star } from 'lucide-react';
 import { fetchAdminAPI, Skill } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
-import AdminTableActions from '@/components/admin/AdminTableActions';
+import { getSkillIcon } from '@/components/sections/SkillsSection';
 
 export default function AdminSkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -61,14 +61,13 @@ export default function AdminSkillsPage() {
               <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-sm">
                 <th className="px-6 py-4 font-semibold">Skill Name</th>
                 <th className="px-6 py-4 font-semibold">Category</th>
-                <th className="px-6 py-4 font-semibold">Proficiency</th>
                 <th className="px-6 py-4 font-semibold text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {skills.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={3} className="px-6 py-12 text-center text-slate-500">
                     No skills found.
                   </td>
                 </tr>
@@ -77,12 +76,9 @@ export default function AdminSkillsPage() {
                   <tr key={skill.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        {skill.icon_svg && (
-                          <div
-                            className="w-8 h-8 flex items-center justify-center text-slate-700 bg-slate-100 rounded-lg"
-                            dangerouslySetInnerHTML={{ __html: skill.icon_svg }}
-                          />
-                        )}
+                        <div className="w-8 h-8 flex items-center justify-center text-slate-700 bg-slate-100 rounded-lg">
+                          {getSkillIcon(skill.category, skill.name)}
+                        </div>
                         <span className="font-semibold text-slate-800">{skill.name}</span>
                       </div>
                     </td>
@@ -90,19 +86,6 @@ export default function AdminSkillsPage() {
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
                         {skill.category || 'Uncategorized'}
                       </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3 max-w-[200px]">
-                        <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-primary rounded-full"
-                            style={{ width: `${skill.proficiency}%` }}
-                          />
-                        </div>
-                        <span className="text-xs font-medium text-slate-600">
-                          {skill.proficiency}%
-                        </span>
-                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <AdminTableActions
