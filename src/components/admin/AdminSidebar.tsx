@@ -8,7 +8,6 @@ import {
   GraduationCap,
   Settings,
   MessageSquare,
-  LogOut,
 } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 
@@ -19,24 +18,6 @@ interface AdminSidebarProps {
 export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      const token = localStorage.getItem('admin_token');
-      await fetch(`${API_URL}/admin/logout`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      localStorage.removeItem('admin_token');
-      router.push('/admin/login');
-    }
-  };
 
   const navItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
@@ -108,14 +89,9 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
       </div>
 
       <div className="p-3 border-t border-slate-200">
-        <button
-          onClick={handleLogout}
-          title={!isSidebarOpen ? 'Sign Out' : undefined}
-          className={`flex w-full items-center ${isSidebarOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-colors font-medium text-sm text-red-600 hover:bg-red-50`}
-        >
-          <LogOut size={20} className="text-red-500 shrink-0" />
-          {isSidebarOpen && <span className="whitespace-nowrap">Sign Out</span>}
-        </button>
+        <div className="text-xs text-center text-slate-400">
+          {isSidebarOpen ? 'Admin v1.0' : 'v1.0'}
+        </div>
       </div>
     </aside>
   );
