@@ -49,7 +49,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
           </div>
           {isSidebarOpen && (
             <span className="font-bold text-lg tracking-tight font-heading whitespace-nowrap">
-              Admin Panel
+              Content Setting
             </span>
           )}
         </Link>
