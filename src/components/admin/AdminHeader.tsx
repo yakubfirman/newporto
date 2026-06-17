@@ -23,7 +23,7 @@ export default function AdminHeader({ isSidebarOpen, setIsSidebarOpen }: AdminHe
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifMenu, setShowNotifMenu] = useState(false);
 
-  const [currentLang, setCurrentLang] = useState('id');
+  const [currentLang, setCurrentLang] = useState('en');
 
   const profileRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -34,7 +34,9 @@ export default function AdminHeader({ isSidebarOpen, setIsSidebarOpen }: AdminHe
     if (match && match[1]) {
       const lang = match[1].split('/')[2];
       if (lang) {
-        setCurrentLang(lang);
+        setCurrentLang(lang === 'en' ? 'id' : 'en'); // Since googtrans format is /source/target. If it translates to ID, current is ID. Wait, if it's /en/id, target is 'id'.
+        // Better yet:
+        setCurrentLang(lang === 'id' ? 'id' : 'en');
       }
     }
 
@@ -43,8 +45,8 @@ export default function AdminHeader({ isSidebarOpen, setIsSidebarOpen }: AdminHe
       if ((window as any).google && (window as any).google.translate) {
         new (window as any).google.translate.TranslateElement(
           {
-            pageLanguage: 'id',
-            includedLanguages: 'en,id',
+            pageLanguage: 'en',
+            includedLanguages: 'id,en',
             autoDisplay: false,
           },
           'google_translate_element_admin'
@@ -137,18 +139,18 @@ export default function AdminHeader({ isSidebarOpen, setIsSidebarOpen }: AdminHe
   };
 
   const switchLanguage = (lang: string) => {
-    if (lang === 'id') {
+    if (lang === 'en') {
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
     } else {
-      document.cookie = `googtrans=/id/en; path=/;`;
-      document.cookie = `googtrans=/id/en; path=/; domain=${window.location.hostname}`;
+      document.cookie = `googtrans=/en/id; path=/;`;
+      document.cookie = `googtrans=/en/id; path=/; domain=${window.location.hostname}`;
     }
     window.location.reload();
   };
 
   const toggleLanguage = () => {
-    switchLanguage(currentLang === 'id' ? 'en' : 'id');
+    switchLanguage(currentLang === 'en' ? 'id' : 'en');
   };
 
   return (
