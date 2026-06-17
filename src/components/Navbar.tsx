@@ -76,6 +76,7 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
             </div>
 
             <button
+              aria-label={isMobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
               className="md:hidden shrink-0 w-10 h-10 flex items-center justify-center text-black bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:translate-x-0.5 active:shadow-none transition-all z-50 relative"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >

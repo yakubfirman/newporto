@@ -39,7 +39,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
           </div>
         ) : (
           <div className="w-full bg-slate-50 border-4 border-black border-dashed p-8 sm:p-12 text-center -rotate-1 comic-shadow relative z-10">
-            <span className="comic-heading text-xl sm:text-3xl text-slate-400">
+            <span className="comic-heading text-xl sm:text-3xl text-slate-600">
               BELUM ADA ARTIKEL...
             </span>
           </div>
