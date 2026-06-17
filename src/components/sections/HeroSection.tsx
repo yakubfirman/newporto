@@ -94,7 +94,7 @@ export default function HeroSection() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
       <div className="absolute top-24 left-6 hidden lg:flex flex-col gap-1 text-xs font-black text-white bg-black border-[3px] border-black px-3 py-1.5 comic-shadow -rotate-3 z-20 uppercase tracking-widest comic-heading text-xl">
         <span>EDISI #1</span>
-        <span className="text-primary">VOL. 2026</span>
+        <span className="text-[#ff4444]">VOL. 2026</span>
       </div>
       <div
         ref={heroRef}
