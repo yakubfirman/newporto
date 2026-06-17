@@ -10,10 +10,12 @@ export default function ClientLayoutWrapper({
   children,
   headerImageUrl = '/profile.jpg',
   contactEmail = 'hello@yakubfirman.id',
+  footerText = 'Seorang Pengembang Web Full-stack & Spesialis SEO yang penuh semangat, berdedikasi untuk membangun pengalaman digital berkinerja tinggi.',
 }: {
   children: React.ReactNode;
   headerImageUrl?: string;
   contactEmail?: string;
+  footerText?: string;
 }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
@@ -26,7 +28,11 @@ export default function ClientLayoutWrapper({
       {!isAdmin && (
         <>
           {pathname !== '/contact' && <CTASection />}
-          <Footer headerImageUrl={headerImageUrl} contactEmail={contactEmail} />
+          <Footer
+            headerImageUrl={headerImageUrl}
+            contactEmail={contactEmail}
+            footerText={footerText}
+          />
         </>
       )}
     </>

@@ -89,6 +89,9 @@ export default async function RootLayout({
   const profileImageUrl = settings.profile_image_url || '/about.jpg';
   const headerImageUrl = settings.header_image_url || '/profile.jpg';
   const contactEmail = settings.contact_email || settings.email || 'hello@yakubfirman.id';
+  const footerText =
+    settings.footer_text ||
+    'Seorang Pengembang Web Full-stack & Spesialis SEO yang penuh semangat, berdedikasi untuk membangun pengalaman digital berkinerja tinggi.';
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -120,7 +123,11 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans selection:bg-primary/20">
-        <ClientLayoutWrapper headerImageUrl={headerImageUrl} contactEmail={contactEmail}>
+        <ClientLayoutWrapper
+          headerImageUrl={headerImageUrl}
+          contactEmail={contactEmail}
+          footerText={footerText}
+        >
           {children}
         </ClientLayoutWrapper>
         <LanguageSwitcher />

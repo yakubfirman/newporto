@@ -41,9 +41,11 @@ const LinkedinIcon = ({ size = 18 }: { size?: number }) => (
 export default function Footer({
   headerImageUrl = '/profile.jpg',
   contactEmail = 'hello@yakubfirman.id',
+  footerText = 'Seorang Pengembang Web Full-stack & Spesialis SEO yang penuh semangat, berdedikasi untuk membangun pengalaman digital berkinerja tinggi.',
 }: {
   headerImageUrl?: string;
   contactEmail?: string;
+  footerText?: string;
 }) {
   const pathname = usePathname();
   if (pathname.startsWith('/admin')) return null;
@@ -73,8 +75,7 @@ export default function Footer({
               </span>
             </Link>
             <p className="text-black font-bold uppercase leading-relaxed max-w-sm mb-8 bg-white border-2 border-black p-3 rotate-1">
-              Seorang Pengembang Web Full-stack & Spesialis SEO yang penuh semangat, berdedikasi
-              untuk membangun pengalaman digital berkinerja tinggi.
+              {footerText}
             </p>
             <div className="flex items-center gap-4">
               <a
