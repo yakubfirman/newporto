@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Star } from 'lucide-react';
 import { fetchAdminAPI, Skill } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import AdminTableActions from '@/components/admin/AdminTableActions';
 import { getSkillIcon } from '@/components/sections/SkillsSection';
 
 export default function AdminSkillsPage() {
