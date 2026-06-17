@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Learn more about Yakub Firman Mustofa, a Web Developer and SEO Specialist.',
 };
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function AboutPage() {
   let experiences: Experience[] = [];

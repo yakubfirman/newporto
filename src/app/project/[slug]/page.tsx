@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 interface Props {
   params: Promise<{ slug: string }>;

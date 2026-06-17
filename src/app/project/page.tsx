@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'Explore the latest web development and design projects by Yakub Firman Mustofa.',
 };
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function ProjectPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

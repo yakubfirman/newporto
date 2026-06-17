@@ -1,7 +1,7 @@
 import { fetchAPI, getSettings, Project, Skill, Post, Testimonial } from '@/lib/api';
 import HomeClient from '@/components/HomeClient';
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function Home() {
   let projects: Project[] = [];

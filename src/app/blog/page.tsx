@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Read the latest articles about web development, SEO, and technology.',
 };
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function BlogPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
