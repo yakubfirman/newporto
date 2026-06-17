@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Languages } from 'lucide-react';
 import Script from 'next/script';
 
 export default function LanguageSwitcher() {
   const [currentLang, setCurrentLang] = useState('id');
+  const pathname = usePathname();
 
   useEffect(() => {
     // Check current language from cookie
@@ -46,6 +48,10 @@ export default function LanguageSwitcher() {
   const toggleLanguage = () => {
     switchLanguage(currentLang === 'id' ? 'en' : 'id');
   };
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <>
