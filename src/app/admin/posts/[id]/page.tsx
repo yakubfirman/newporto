@@ -7,6 +7,7 @@ import { ArrowLeft, Save, Image as ImageIcon, Search, Globe, User } from 'lucide
 import Image from 'next/image';
 import { fetchAdminAPI, Post } from '@/lib/api';
 import RichTextEditor from '@/components/RichTextEditor';
+import ImageCropper from '@/components/admin/ImageCropper';
 
 export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showImageCropper, setShowImageCropper] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -264,33 +266,49 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             <h3 className="font-bold text-slate-800 border-b border-slate-100 pb-2">Media</h3>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700">Cover Image URL</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <ImageIcon size={16} className="text-slate-400" />
+              <label className="text-sm font-semibold text-slate-700">Cover Image</label>
+              {formData.cover_image ? (
+                <div className="relative w-full aspect-video rounded-lg border-2 border-slate-200 overflow-hidden bg-slate-50 group mt-2">
+                  <Image
+                    src={formData.cover_image}
+                    alt="Cover preview"
+                    fill
+                    className="object-cover"
+                    unoptimized={formData.cover_image.includes('localhost')}
+                  />
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      type="button"
+                      onClick={() => setShowImageCropper(true)}
+                      className="px-4 py-2 bg-white text-slate-800 font-medium rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
+                    >
+                      Change Cover
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, cover_image: '' })}
+                      className="ml-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg shadow-sm hover:bg-red-600 transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
-                <input
-                  type="url"
-                  name="cover_image"
-                  value={formData.cover_image}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                  className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
-                />
-              </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowImageCropper(true)}
+                  className="w-full aspect-video border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-500 hover:bg-slate-50 hover:border-primary hover:text-primary transition-colors mt-2"
+                >
+                  <span className="mb-2">
+                    <ImageIcon size={32} />
+                  </span>
+                  <span className="font-medium text-sm">Upload Cover Image</span>
+                  <span className="text-xs mt-1 text-slate-400">
+                    16:9 ratio, will be compressed to WebP
+                  </span>
+                </button>
+              )}
             </div>
-
-            {formData.cover_image && (
-              <div className="rounded-xl border-[3px] border-black overflow-hidden relative aspect-video comic-shadow">
-                <Image
-                  src={formData.cover_image}
-                  alt="Cover preview"
-                  fill
-                  className="object-cover"
-                  unoptimized={formData.cover_image.includes('localhost')}
-                />
-              </div>
-            )}
           </div>
 
           <button
@@ -303,6 +321,17 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
           </button>
         </div>
       </form>
+
+      {showImageCropper && (
+        <ImageCropper
+          aspectRatio={16 / 9}
+          onCropComplete={(url) => {
+            setFormData({ ...formData, cover_image: url });
+            setShowImageCropper(false);
+          }}
+          onCancel={() => setShowImageCropper(false)}
+        />
+      )}
     </div>
   );
 }

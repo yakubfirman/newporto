@@ -1,11 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Star } from 'lucide-react';
 import { fetchAdminAPI, Skill } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import AdminTableActions from '@/components/admin/AdminTableActions';
 import { getSkillIcon } from '@/components/sections/SkillsSection';
+import TableSearch from '@/components/admin/TableSearch';
+import TablePagination from '@/components/admin/TablePagination';
+import { useTablePagination } from '@/hooks/useTablePagination';
 
 export default function AdminSkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -40,6 +43,23 @@ export default function AdminSkillsPage() {
     }
   };
 
+  const searchFn = useCallback((skill: Skill, term: string) => {
+    return Boolean(
+      skill.name.toLowerCase().includes(term) ||
+      (skill.category && skill.category.toLowerCase().includes(term))
+    );
+  }, []);
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems: paginatedSkills,
+    filteredItemsCount,
+  } = useTablePagination(skills, searchFn, 10);
+
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-64 text-slate-500">Loading skills...</div>
@@ -56,6 +76,11 @@ export default function AdminSkillsPage() {
       />
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <TableSearch
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search skills by name or category..."
+        />
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -66,14 +91,14 @@ export default function AdminSkillsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {skills.length === 0 ? (
+              {paginatedSkills.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="px-6 py-12 text-center text-slate-500">
-                    No skills found.
+                    {searchTerm ? 'No skills match your search.' : 'No skills found.'}
                   </td>
                 </tr>
               ) : (
-                skills.map((skill) => (
+                paginatedSkills.map((skill) => (
                   <tr key={skill.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -115,6 +140,13 @@ export default function AdminSkillsPage() {
             </tbody>
           </table>
         </div>
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+          totalItems={filteredItemsCount}
+          itemsPerPage={10}
+        />
       </div>
     </div>
   );

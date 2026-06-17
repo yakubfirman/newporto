@@ -1,11 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Plus, ExternalLink, GitBranch, Briefcase } from 'lucide-react';
 import { fetchAdminAPI, Project } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import AdminTableActions from '@/components/admin/AdminTableActions';
+import TableSearch from '@/components/admin/TableSearch';
+import TablePagination from '@/components/admin/TablePagination';
+import { useTablePagination } from '@/hooks/useTablePagination';
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -40,6 +43,25 @@ export default function AdminProjectsPage() {
     }
   };
 
+  const searchFn = useCallback((project: Project, search: string) => {
+    return Boolean(
+      project.title.toLowerCase().includes(search) ||
+      project.slug.toLowerCase().includes(search) ||
+      (project.tech_stack && project.tech_stack.some((t) => t.toLowerCase().includes(search))) ||
+      (project.categories && project.categories.some((c) => c.toLowerCase().includes(search)))
+    );
+  }, []);
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems: paginatedProjects,
+    filteredItemsCount,
+  } = useTablePagination(projects, searchFn, 10);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64 text-slate-500">
@@ -62,6 +84,12 @@ export default function AdminProjectsPage() {
       />
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <TableSearch
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search projects by title, tech stack, or category..."
+        />
+
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -75,29 +103,32 @@ export default function AdminProjectsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {projects.length === 0 ? (
+              {paginatedProjects.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-16 text-center text-slate-500">
+                  <td colSpan={6} className="px-6 py-16 text-center text-slate-500">
                     <div className="flex flex-col items-center justify-center space-y-3">
                       <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-2">
                         <Briefcase size={28} className="text-slate-300" />
                       </div>
                       <p className="text-slate-600 font-medium">No projects found</p>
                       <p className="text-slate-400 text-sm max-w-sm">
-                        You haven't added any projects yet. Click the "Add Project" button to create
-                        your first portfolio item.
+                        {searchTerm
+                          ? 'No projects match your search.'
+                          : 'You haven\'t added any projects yet. Click the "Add Project" button to create your first portfolio item.'}
                       </p>
-                      <Link
-                        href="/admin/projects/create"
-                        className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg font-medium hover:bg-primary/20 transition-colors text-sm"
-                      >
-                        <Plus size={16} /> Add Project
-                      </Link>
+                      {!searchTerm && (
+                        <Link
+                          href="/admin/projects/create"
+                          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg font-medium hover:bg-primary/20 transition-colors text-sm"
+                        >
+                          <Plus size={16} /> Add Project
+                        </Link>
+                      )}
                     </div>
                   </td>
                 </tr>
               ) : (
-                projects.map((project) => (
+                paginatedProjects.map((project) => (
                   <tr key={project.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-semibold text-slate-800">{project.title}</div>
@@ -194,6 +225,14 @@ export default function AdminProjectsPage() {
             </tbody>
           </table>
         </div>
+
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+          totalItems={filteredItemsCount}
+          itemsPerPage={10}
+        />
       </div>
     </div>
   );

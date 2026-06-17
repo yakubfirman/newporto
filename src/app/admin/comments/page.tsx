@@ -61,10 +61,6 @@ export default function AdminCommentsPage() {
     }
   };
 
-  if (loading) {
-    return <div className="p-8 text-center text-slate-500">Loading comments...</div>;
-  }
-
   const searchFn = useCallback((comment: AdminComment, term: string) => {
     return Boolean(
       comment.name.toLowerCase().includes(term) ||
@@ -82,6 +78,10 @@ export default function AdminCommentsPage() {
     paginatedItems: paginatedComments,
     filteredItemsCount,
   } = useTablePagination(comments, searchFn, 10);
+
+  if (loading) {
+    return <div className="p-8 text-center text-slate-500">Loading comments...</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -179,7 +179,7 @@ export default function AdminCommentsPage() {
         <TablePagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          setCurrentPage={setCurrentPage}
           totalItems={filteredItemsCount}
           itemsPerPage={10}
         />

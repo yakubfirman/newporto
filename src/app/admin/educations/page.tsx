@@ -1,10 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { GraduationCap } from 'lucide-react';
 import { fetchAdminAPI, Education } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import AdminTableActions from '@/components/admin/AdminTableActions';
+import TableSearch from '@/components/admin/TableSearch';
+import TablePagination from '@/components/admin/TablePagination';
+import { useTablePagination } from '@/hooks/useTablePagination';
 
 export default function AdminEducationsPage() {
   const [educations, setEducations] = useState<Education[]>([]);
@@ -39,6 +42,23 @@ export default function AdminEducationsPage() {
     }
   };
 
+  const searchFn = useCallback((education: Education, term: string) => {
+    return Boolean(
+      education.degree.toLowerCase().includes(term) ||
+      education.institution.toLowerCase().includes(term)
+    );
+  }, []);
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems: paginatedEducations,
+    filteredItemsCount,
+  } = useTablePagination(educations, searchFn, 10);
+
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-64 text-slate-500">
@@ -57,6 +77,11 @@ export default function AdminEducationsPage() {
       />
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <TableSearch
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search by degree or institution..."
+        />
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -68,14 +93,16 @@ export default function AdminEducationsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {educations.length === 0 ? (
+              {paginatedEducations.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="px-6 py-12 text-center text-slate-500">
-                    No education records found.
+                    {searchTerm
+                      ? 'No education records match your search.'
+                      : 'No education records found.'}
                   </td>
                 </tr>
               ) : (
-                educations.map((edu) => (
+                paginatedEducations.map((edu) => (
                   <tr key={edu.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-semibold text-slate-800">{edu.degree}</div>
@@ -121,6 +148,13 @@ export default function AdminEducationsPage() {
             </tbody>
           </table>
         </div>
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+          totalItems={filteredItemsCount}
+          itemsPerPage={10}
+        />
       </div>
     </div>
   );

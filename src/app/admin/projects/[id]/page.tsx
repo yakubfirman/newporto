@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI, Project } from '@/lib/api';
+import ImageCropper from '@/components/admin/ImageCropper';
 
 export default function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showImageCropper, setShowImageCropper] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -248,14 +250,59 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700">Image URL</label>
-              <input
-                type="url"
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
-              />
+              <label className="text-sm font-semibold text-slate-700">Project Image</label>
+              {formData.image ? (
+                <div className="relative w-full aspect-video rounded-lg border-2 border-slate-200 overflow-hidden bg-slate-50 group">
+                  <img
+                    src={formData.image}
+                    alt="Project Cover"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      type="button"
+                      onClick={() => setShowImageCropper(true)}
+                      className="px-4 py-2 bg-white text-slate-800 font-medium rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
+                    >
+                      Change Image
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, image: '' })}
+                      className="ml-2 px-4 py-2 bg-red-500 text-white font-medium rounded-lg shadow-sm hover:bg-red-600 transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowImageCropper(true)}
+                  className="w-full aspect-video border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-500 hover:bg-slate-50 hover:border-primary hover:text-primary transition-colors"
+                >
+                  <span className="mb-2">
+                    <svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                  </span>
+                  <span className="font-medium text-sm">Upload Project Image</span>
+                  <span className="text-xs mt-1 text-slate-400">
+                    16:9 ratio, will be compressed to WebP
+                  </span>
+                </button>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -293,6 +340,17 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
           </button>
         </div>
       </form>
+
+      {showImageCropper && (
+        <ImageCropper
+          aspectRatio={16 / 9}
+          onCropComplete={(url) => {
+            setFormData({ ...formData, image: url });
+            setShowImageCropper(false);
+          }}
+          onCancel={() => setShowImageCropper(false)}
+        />
+      )}
     </div>
   );
 }

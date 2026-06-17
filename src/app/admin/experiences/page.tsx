@@ -43,14 +43,6 @@ export default function AdminExperiencesPage() {
     }
   };
 
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center h-64 text-slate-500">
-        Loading experiences...
-      </div>
-    );
-  if (error) return <div className="bg-red-50 text-red-600 p-4 rounded-lg">Error: {error}</div>;
-
   const searchFn = useCallback((experience: Experience, term: string) => {
     return Boolean(
       experience.title.toLowerCase().includes(term) ||
@@ -68,6 +60,14 @@ export default function AdminExperiencesPage() {
     paginatedItems: paginatedExperiences,
     filteredItemsCount,
   } = useTablePagination(experiences, searchFn, 10);
+
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-64 text-slate-500">
+        Loading experiences...
+      </div>
+    );
+  if (error) return <div className="bg-red-50 text-red-600 p-4 rounded-lg">Error: {error}</div>;
 
   return (
     <div className="space-y-6">
@@ -179,7 +179,7 @@ export default function AdminExperiencesPage() {
         <TablePagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          setCurrentPage={setCurrentPage}
           totalItems={filteredItemsCount}
           itemsPerPage={10}
         />

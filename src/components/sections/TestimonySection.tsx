@@ -88,9 +88,15 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
                       )}
                     </div>
                     <div className="flex items-center gap-4 pt-4 border-t-[3px] border-black mt-3 border-dashed">
-                      <div className="w-12 h-12 bg-primary border-[3px] border-black text-white flex items-center justify-center comic-heading text-2xl comic-shadow shrink-0">
-                        {t.name.charAt(0)}
-                      </div>
+                      {t.image ? (
+                        <div className="w-12 h-12 rounded-full border-[3px] border-black overflow-hidden comic-shadow shrink-0">
+                          <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 bg-primary border-[3px] border-black text-white flex items-center justify-center comic-heading text-2xl comic-shadow shrink-0">
+                          {t.name.charAt(0)}
+                        </div>
+                      )}
                       <div className="min-w-0">
                         <p className="comic-heading text-black text-xl leading-none mb-1 truncate notranslate">
                           {t.name}
@@ -134,9 +140,19 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
               &quot;{selectedTestimonial.content}&quot;
             </p>
             <div className="flex items-center gap-4 pt-4 border-t-[3px] border-black mt-3">
-              <div className="w-12 h-12 bg-primary border-[3px] border-black text-white flex items-center justify-center comic-heading text-2xl comic-shadow shrink-0">
-                {selectedTestimonial.name.charAt(0)}
-              </div>
+              {selectedTestimonial.image ? (
+                <div className="w-12 h-12 rounded-full border-[3px] border-black overflow-hidden comic-shadow shrink-0">
+                  <img
+                    src={selectedTestimonial.image}
+                    alt={selectedTestimonial.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="w-12 h-12 bg-primary border-[3px] border-black text-white flex items-center justify-center comic-heading text-2xl comic-shadow shrink-0">
+                  {selectedTestimonial.name.charAt(0)}
+                </div>
+              )}
               <div className="min-w-0">
                 <p className="comic-heading text-black text-xl leading-none mb-1 truncate notranslate">
                   {selectedTestimonial.name}

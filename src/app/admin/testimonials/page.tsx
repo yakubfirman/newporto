@@ -48,10 +48,6 @@ export default function AdminTestimonialsPage() {
     }
   };
 
-  if (loading) {
-    return <div className="p-8 text-center text-slate-500">Loading testimonials...</div>;
-  }
-
   const searchFn = useCallback((testimonial: Testimonial, term: string) => {
     return Boolean(
       testimonial.name.toLowerCase().includes(term) ||
@@ -69,6 +65,10 @@ export default function AdminTestimonialsPage() {
     paginatedItems: paginatedTestimonials,
     filteredItemsCount,
   } = useTablePagination(testimonials, searchFn, 10);
+
+  if (loading) {
+    return <div className="p-8 text-center text-slate-500">Loading testimonials...</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -166,7 +166,7 @@ export default function AdminTestimonialsPage() {
         <TablePagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          setCurrentPage={setCurrentPage}
           totalItems={filteredItemsCount}
           itemsPerPage={10}
         />

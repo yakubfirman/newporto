@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, Image as ImageIcon } from 'lucide-react';
 import { API_URL } from '@/lib/api';
+import ImageCropper from '@/components/admin/ImageCropper';
 
 export default function TestimonialForm() {
-  const [formData, setFormData] = useState({ name: '', role: '', content: '' });
+  const [formData, setFormData] = useState({ name: '', role: '', content: '', image: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [showImageCropper, setShowImageCropper] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ export default function TestimonialForm() {
       if (!res.ok) throw new Error('Failed to submit testimonial.');
 
       setSuccess(true);
-      setFormData({ name: '', role: '', content: '' });
+      setFormData({ name: '', role: '', content: '', image: '' });
     } catch (err: any) {
       setError(err.message || 'Something went wrong.');
     } finally {
@@ -98,6 +100,46 @@ export default function TestimonialForm() {
             />
           </div>
           <div>
+            <label className="comic-heading text-sm text-black block mb-1">
+              Foto Profil (Opsional)
+            </label>
+            {formData.image ? (
+              <div className="relative w-24 h-24 rounded-full border-[3px] border-black overflow-hidden group mb-2">
+                <img
+                  src={formData.image}
+                  alt="Profile preview"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    type="button"
+                    onClick={() => setShowImageCropper(true)}
+                    className="text-white text-xs font-bold hover:underline"
+                  >
+                    Ubah
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, image: '' })}
+                    className="text-red-300 text-xs font-bold hover:underline mt-1"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowImageCropper(true)}
+                className="w-full py-3 border-[3px] border-dashed border-black bg-slate-50 hover:bg-primary/10 transition-colors flex items-center justify-center gap-2 font-medium text-slate-600 mb-2"
+              >
+                <ImageIcon size={18} />
+                Upload Foto (1:1)
+              </button>
+            )}
+          </div>
+
+          <div>
             <label className="comic-heading text-sm text-black block mb-1">Testimoni Anda *</label>
             <textarea
               required
@@ -119,6 +161,17 @@ export default function TestimonialForm() {
           </button>
         </form>
       </div>
+
+      {showImageCropper && (
+        <ImageCropper
+          aspectRatio={1 / 1}
+          onCropComplete={(url) => {
+            setFormData({ ...formData, image: url });
+            setShowImageCropper(false);
+          }}
+          onCancel={() => setShowImageCropper(false)}
+        />
+      )}
     </div>
   );
 }
