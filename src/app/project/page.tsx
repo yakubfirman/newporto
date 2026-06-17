@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 import { fetchAPI, Project } from '@/lib/api';
 import ProjectCard from '@/components/ProjectCard';
+import ComicSearchForm from '@/components/ComicSearchForm';
 
 export const metadata: Metadata = {
   title: 'Projects | Yakub Firman Mustofa',
@@ -17,6 +18,8 @@ export default async function ProjectPage(props: {
   const searchParams = await props.searchParams;
   const pageParam = typeof searchParams.page === 'string' ? searchParams.page : '1';
   const categoryParam = typeof searchParams.category === 'string' ? searchParams.category : 'All';
+  const searchQuery =
+    typeof searchParams.search === 'string' ? searchParams.search.toLowerCase() : '';
   const currentPage = parseInt(pageParam, 10) || 1;
   const ITEMS_PER_PAGE = 8;
 
@@ -34,10 +37,17 @@ export default async function ProjectPage(props: {
   const categories = ['All', ...AVAILABLE_CATEGORIES];
 
   // Filtering
-  const filteredProjects =
-    categoryParam === 'All'
-      ? projects
-      : projects.filter((p) => p.categories?.includes(categoryParam));
+  const filteredProjects = projects.filter((p) => {
+    const matchCategory = categoryParam === 'All' || p.categories?.includes(categoryParam);
+    const matchSearch =
+      !searchQuery ||
+      p.title.toLowerCase().includes(searchQuery) ||
+      (p.tech_stack && p.tech_stack.some((t) => t.toLowerCase().includes(searchQuery))) ||
+      (p.categories && p.categories.some((c) => c.toLowerCase().includes(searchQuery))) ||
+      (p.description && p.description.toLowerCase().includes(searchQuery));
+
+    return matchCategory && matchSearch;
+  });
 
   const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
   const paginatedProjects = filteredProjects.slice(
@@ -51,7 +61,7 @@ export default async function ProjectPage(props: {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         {/* Header */}
-        <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5 mb-8 sm:mb-12">
+        <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-5 mb-8 sm:mb-12">
           <div className="comic-panel-red p-4 sm:p-6 -rotate-1 max-w-xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
               Karya Terpilih
@@ -60,7 +70,27 @@ export default async function ProjectPage(props: {
               Proyek & Studi Kasus.
             </p>
           </div>
+          <div className="flex flex-col gap-4 items-start md:items-end">
+            <div className="rotate-1 w-full flex justify-start md:justify-end">
+              <ComicSearchForm basePath="/project" placeholder="Cari proyek (React, SEO...)" />
+            </div>
+          </div>
         </div>
+
+        {searchQuery && (
+          <div className="mb-8 comic-panel bg-yellow-100 p-4 inline-flex items-center gap-4 rotate-1 comic-shadow">
+            <span className="comic-heading text-lg sm:text-xl text-black uppercase">
+              Hasil Pencarian: <span className="text-primary">"{searchQuery}"</span>
+            </span>
+            <Link
+              href={`/project${categoryParam !== 'All' ? `?category=${categoryParam}` : ''}`}
+              className="bg-white border-2 border-black p-1 hover:bg-primary hover:text-white transition-colors"
+              title="Hapus pencarian"
+            >
+              <X size={20} strokeWidth={3} />
+            </Link>
+          </div>
+        )}
 
         {/* Filter Categories */}
         {categories.length > 1 && (

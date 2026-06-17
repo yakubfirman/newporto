@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, ArrowRight, BookOpen, Calendar, Clock } from 'lucide-react';
+import { ChevronRight, ArrowRight, BookOpen, Calendar, Clock, X } from 'lucide-react';
 import { fetchAPI, Post } from '@/lib/api';
 import PostCard from '@/components/PostCard';
+import ComicSearchForm from '@/components/ComicSearchForm';
 
 export const metadata: Metadata = {
   title: 'Blog | Yakub Firman Mustofa',
@@ -51,7 +52,7 @@ export default async function BlogPage(props: {
       <div className="absolute inset-0 bg-halftone opacity-20 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5 mb-10 sm:mb-16">
+        <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-16">
           <div className="comic-panel-red p-4 sm:p-6 rotate-1 max-w-xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
               Blog & Wawasan
@@ -60,23 +61,29 @@ export default async function BlogPage(props: {
               Pemikiran tentang Lanskap Digital.
             </p>
           </div>
-          <div className="comic-panel bg-white p-3 sm:p-4 -rotate-1 hidden md:block max-w-xs">
-            <p className="font-bold text-black text-sm uppercase tracking-wide leading-snug">
-              TUTORIAL, OPINI, DAN TIPS PENGEMBANGAN WEB.
-            </p>
+          <div className="flex flex-col gap-4 items-start md:items-end rotate-1 md:rotate-0">
+            <div className="comic-panel bg-white p-3 sm:p-4 hidden md:block max-w-xs rotate-2">
+              <p className="font-bold text-black text-sm uppercase tracking-wide leading-snug">
+                TUTORIAL, OPINI, DAN TIPS PENGEMBANGAN WEB.
+              </p>
+            </div>
+            <div className="-rotate-1 w-full flex justify-start md:justify-end">
+              <ComicSearchForm basePath="/blog" placeholder="Cari artikel..." />
+            </div>
           </div>
         </div>
 
         {searchQuery && (
-          <div className="mb-8 comic-panel bg-yellow-100 p-4 inline-block -rotate-1">
-            <span className="comic-heading text-xl text-black uppercase">
-              Hasil Pencarian untuk: <span className="text-primary">"{searchQuery}"</span>
+          <div className="mb-8 comic-panel bg-yellow-100 p-4 inline-flex items-center gap-4 -rotate-1 comic-shadow">
+            <span className="comic-heading text-lg sm:text-xl text-black uppercase">
+              Hasil Pencarian: <span className="text-primary">"{searchQuery}"</span>
             </span>
             <Link
               href="/blog"
-              className="ml-4 font-bold text-slate-500 hover:text-black underline text-sm uppercase"
+              className="bg-white border-2 border-black p-1 hover:bg-primary hover:text-white transition-colors"
+              title="Hapus pencarian"
             >
-              Hapus Pencarian
+              <X size={20} strokeWidth={3} />
             </Link>
           </div>
         )}
