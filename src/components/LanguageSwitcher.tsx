@@ -6,18 +6,29 @@ import { Languages } from 'lucide-react';
 import Script from 'next/script';
 
 export default function LanguageSwitcher() {
-  const [currentLang, setCurrentLang] = useState('id');
+  const [currentLang, setCurrentLang] = useState('en');
   const pathname = usePathname();
 
   useEffect(() => {
     // Check current language from cookie
     const match = document.cookie.match(/(?:^|; )googtrans=([^;]*)/);
+    let lang = 'en';
     if (match && match[1]) {
-      const lang = match[1].split('/')[2];
-      if (lang) {
-        setCurrentLang(lang);
+      const matchLang = match[1].split('/')[2];
+      if (matchLang) lang = matchLang;
+    } else {
+      // If no cookie exists, check if user has explicitly chosen ID
+      const hasChosenId = localStorage.getItem('lang_preference') === 'id';
+      if (!hasChosenId) {
+        // Set default cookie to English if no cookie exists and no preference
+        document.cookie = `googtrans=/id/en; path=/;`;
+        document.cookie = `googtrans=/id/en; path=/; domain=${window.location.hostname}`;
+      } else {
+        lang = 'id';
       }
     }
+
+    setCurrentLang(lang === 'id' ? 'id' : 'en');
 
     // Define global initialization function for Google Translate
     (window as any).googleTranslateElementInit = () => {
@@ -34,10 +45,12 @@ export default function LanguageSwitcher() {
 
   const switchLanguage = (lang: string) => {
     if (lang === 'id') {
+      localStorage.setItem('lang_preference', 'id');
       // Clear cookies to revert to original language (ID)
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
     } else {
+      localStorage.setItem('lang_preference', 'en');
       // Set cookie to translate from ID to EN
       document.cookie = `googtrans=/id/en; path=/;`;
       document.cookie = `googtrans=/id/en; path=/; domain=${window.location.hostname}`;
