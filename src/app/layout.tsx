@@ -119,6 +119,16 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (!document.cookie.includes('googtrans=') && localStorage.getItem('lang_preference') !== 'id') {
+                document.cookie = 'googtrans=/id/en; path=/;';
+                document.cookie = 'googtrans=/id/en; path=/; domain=' + window.location.hostname;
+              }
+            `,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col font-sans selection:bg-primary/20">
         <ClientLayoutWrapper

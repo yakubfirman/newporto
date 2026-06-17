@@ -86,7 +86,10 @@ export default function LanguageSwitcher() {
           strokeWidth={3}
           className="group-hover:rotate-12 transition-transform"
         />
-        <span className="comic-heading text-xl font-bold tracking-wider">
+        <span
+          className="font-heading text-xl font-bold tracking-wider"
+          style={{ fontFamily: 'var(--font-bangers)' }}
+        >
           {currentLang === 'id' ? 'ID' : 'EN'}
         </span>
       </button>
