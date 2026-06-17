@@ -70,10 +70,10 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
         <div className="section-header mb-6 sm:mb-8 flex flex-col">
           <div className="comic-panel-red p-3 sm:p-5 inline-block self-start -rotate-2">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl comic-heading text-white leading-none mb-1.5 sm:mb-2 comic-text-white">
-              Technical Arsenal
+              Gudang Senjata Teknis
             </h2>
             <p className="text-black comic-heading tracking-widest text-lg sm:text-xl md:text-2xl bg-white px-3 sm:px-4 py-1.5 inline-block border-[3px] border-black rotate-2 comic-shadow">
-              The tools & frameworks I use!
+              Alat & framework yang saya gunakan!
             </p>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
                     {skill.name}
                   </h3>
                   <span className="text-[9px] sm:text-[10px] comic-heading tracking-widest text-white bg-black px-1.5 py-0.5 mt-1 sm:mt-1 inline-block border border-black">
-                    {skill.category || 'Tech'}
+                    {skill.category || 'Teknologi'}
                   </span>
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
           ) : (
             <div className="w-full py-16 text-center comic-panel-red">
               <span className="comic-heading text-4xl tracking-widest">
-                No skills data available.
+                Data keahlian tidak tersedia.
               </span>
             </div>
           )}

@@ -16,17 +16,17 @@ export default function BlogSection({ posts }: BlogSectionProps) {
         <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5 mb-6 sm:mb-8 relative z-10">
           <div className="comic-panel-red p-4 sm:p-5 rotate-1 max-w-xl">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl comic-heading text-white leading-none mb-2 comic-text-white">
-              Latest Notes
+              Catatan Terbaru
             </h2>
             <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide">
-              Thoughts, tutorials, and insights on software development and technology.
+              Pemikiran, tutorial, dan wawasan seputar pengembangan perangkat lunak dan teknologi.
             </p>
           </div>
           <Link
             href="/blog"
             className="group inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl text-white bg-black px-5 sm:px-6 py-3 hover:bg-primary transition-colors border-[3px] border-black comic-shadow shrink-0 -rotate-1 w-full md:w-auto"
           >
-            Read all articles
+            Baca semua artikel
             <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={3} />
           </Link>
         </div>
@@ -40,7 +40,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
         ) : (
           <div className="w-full bg-slate-50 border-4 border-black border-dashed p-8 sm:p-12 text-center -rotate-1 comic-shadow relative z-10">
             <span className="comic-heading text-xl sm:text-3xl text-slate-400">
-              NO ARTICLES YET...
+              BELUM ADA ARTIKEL...
             </span>
           </div>
         )}

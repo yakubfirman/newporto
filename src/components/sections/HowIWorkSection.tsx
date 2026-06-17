@@ -5,23 +5,23 @@ import { Lightbulb, Palette, Code, Rocket } from 'lucide-react';
 const workSteps = [
   {
     icon: <Lightbulb size={28} />,
-    title: 'Discovery',
-    desc: 'Understanding your vision, goals, and target audience through in-depth discussion.',
+    title: 'Eksplorasi',
+    desc: 'Memahami visi, tujuan, dan target audiens Anda melalui diskusi mendalam.',
   },
   {
     icon: <Palette size={28} />,
-    title: 'Design',
-    desc: 'Crafting wireframes and UI prototypes that align with your brand identity.',
+    title: 'Desain',
+    desc: 'Merancang wireframe dan prototipe UI yang sejalan dengan identitas merek Anda.',
   },
   {
     icon: <Code size={28} />,
-    title: 'Development',
-    desc: 'Building your product with clean, scalable, and high-performance code.',
+    title: 'Pengembangan',
+    desc: 'Membangun produk Anda dengan kode yang bersih, terukur, dan berkinerja tinggi.',
   },
   {
     icon: <Rocket size={28} />,
-    title: 'Launch',
-    desc: 'Deploying, testing, and continuously optimizing for SEO and user experience.',
+    title: 'Peluncuran',
+    desc: 'Menerapkan, menguji, dan terus mengoptimalkan SEO serta pengalaman pengguna.',
   },
 ];
 
@@ -33,10 +33,10 @@ export default function HowIWorkSection() {
         <div className="section-header mb-6 sm:mb-8 relative z-10 flex flex-col items-center text-center">
           <div className="comic-panel p-4 sm:p-5 rotate-1 inline-block max-w-xl">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl comic-heading text-white leading-none mb-2 sm:mb-3 comic-text">
-              Process & Workflow
+              Proses & Alur Kerja
             </h2>
             <p className="text-black font-bold text-sm sm:text-base md:text-lg tracking-wide">
-              A structured, predictable approach to turning requirements into shipped products!
+              Pendekatan terstruktur dan terukur untuk mengubah kebutuhan menjadi produk jadi!
             </p>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function HowIWorkSection() {
                   0{i + 1}
                 </span>
                 <span className="comic-heading text-xs sm:text-sm text-white bg-black px-2 sm:px-2.5 py-1 tracking-widest border-2 border-black rotate-2">
-                  Phase
+                  Fase
                 </span>
               </div>
               <div className="text-black mb-3 sm:mb-4 group-hover:text-primary transition-colors group-hover:scale-110 origin-left w-8 sm:w-10 h-8 sm:h-10 flex items-center justify-center bg-white border-2 border-black rotate-2 comic-shadow">

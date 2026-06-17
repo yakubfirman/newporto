@@ -28,14 +28,14 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
         <div className="section-header mb-8 sm:mb-12 relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div className="text-left">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl comic-heading text-white leading-none mb-2 comic-text bg-white border-[3px] border-black p-2 sm:p-4 inline-block comic-shadow rotate-1">
-              Client Quotes!
+              Kutipan Klien!
             </h2>
           </div>
           <Link
             href="/testimonials"
             className="inline-flex items-center gap-2 bg-primary text-white border-[3px] border-black px-6 py-3 comic-heading text-lg hover:bg-black hover:text-white transition-colors comic-shadow-sm whitespace-nowrap"
           >
-            LEAVE A REVIEW
+            TINGGALKAN ULASAN
             <ArrowRight size={20} strokeWidth={3} />
           </Link>
         </div>
@@ -78,10 +78,10 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
                     <div className="text-black font-bold tracking-wide leading-relaxed mb-6 text-base flex-1 relative z-10">
                       <p>
                         &quot;
-                        {t.content.length > 100 ? t.content.substring(0, 100) + '...' : t.content}
+                        {t.content.length > 30 ? t.content.substring(0, 30) + '...' : t.content}
                         &quot;
                       </p>
-                      {t.content.length > 100 && (
+                      {t.content.length > 30 && (
                         <button
                           onClick={() => setSelectedTestimonial(t)}
                           className="block mt-3 text-sm text-primary hover:underline font-bold comic-heading"
@@ -112,7 +112,7 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
           ) : (
             <div className="bg-white border-[3px] border-black border-dashed p-8 text-center comic-shadow relative z-10 max-w-2xl mx-auto">
               <span className="comic-heading text-xl text-slate-400">
-                NO TESTIMONIALS YET... BE THE FIRST!
+                BELUM ADA TESTIMONI... JADILAH YANG PERTAMA!
               </span>
             </div>
           )}
@@ -131,7 +131,7 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
               <X size={24} strokeWidth={3} />
             </button>
             <div className="comic-heading text-2xl text-black mb-4 border-b-[3px] border-dashed border-black pb-4">
-              Testimonial Detail
+              Detail Testimoni
             </div>
             <p className="text-black font-bold tracking-wide leading-relaxed mb-6 text-lg">
               &quot;{selectedTestimonial.content}&quot;

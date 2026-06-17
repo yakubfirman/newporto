@@ -93,7 +93,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-halftone opacity-60 pointer-events-none"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
       <div className="absolute top-24 left-6 hidden lg:flex flex-col gap-1 text-xs font-black text-white bg-black border-[3px] border-black px-3 py-1.5 comic-shadow -rotate-3 z-20 uppercase tracking-widest comic-heading text-xl">
-        <span>ISSUE #1</span>
+        <span>EDISI #1</span>
         <span className="text-primary">VOL. 2026</span>
       </div>
       <div
@@ -103,7 +103,7 @@ export default function HeroSection() {
         <div className="overflow-hidden mb-4 sm:mb-6">
           <div className="hero-badge inline-flex items-center gap-2 px-3 sm:px-6 py-1 sm:py-2 border-[3px] sm:border-4 border-black bg-primary text-white comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all cursor-default -rotate-2">
             <span className="text-xs sm:text-xl comic-heading tracking-widest">
-              Based in Surakarta
+              Berbasis di Surakarta
             </span>
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function HeroSection() {
           >
             <div className="overflow-hidden px-2 pt-2 pb-4 -mx-2 -mt-2 -mb-4">
               <span className="hero-word inline-block bg-primary text-white px-2 sm:px-4 py-0.5 sm:py-1 -rotate-3 border-[2px] sm:border-[3px] border-black comic-shadow">
-                I AM A
+                SAYA SEORANG
               </span>
             </div>
             <div className="hero-word inline-flex items-center justify-center w-[150px] sm:w-[220px] lg:w-[350px] xl:w-[420px] gap-2 px-6 sm:px-8 py-2.5 sm:py-3 border-[3px] border-black bg-white text-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 tracking-wide ml-1 sm:ml-2 h-full">
@@ -157,7 +157,7 @@ export default function HeroSection() {
               href="#proyek"
               className="inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white border-[3px] border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all rotate-2 tracking-wide w-full sm:w-auto"
             >
-              View Projects <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={3} />
+              Lihat Proyek <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={3} />
             </Link>
           </div>
           <div className="hero-btn w-full sm:w-auto">
@@ -165,7 +165,7 @@ export default function HeroSection() {
               href="/about"
               className="inline-flex justify-center items-center gap-2 comic-heading text-xl sm:text-2xl px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black border-[3px] border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all -rotate-2 tracking-wide w-full sm:w-auto"
             >
-              Read Profile
+              Baca Profil
             </Link>
           </div>
         </div>

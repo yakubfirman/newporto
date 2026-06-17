@@ -73,8 +73,8 @@ export default function Footer({
               </span>
             </Link>
             <p className="text-black font-bold uppercase leading-relaxed max-w-sm mb-8 bg-white border-2 border-black p-3 rotate-1">
-              A passionate Full-stack Web Developer & SEO Specialist dedicated to building
-              high-performance digital experiences.
+              Seorang Pengembang Web Full-stack & Spesialis SEO yang penuh semangat, berdedikasi
+              untuk membangun pengalaman digital berkinerja tinggi.
             </p>
             <div className="flex items-center gap-4">
               <a
@@ -104,7 +104,7 @@ export default function Footer({
 
           <div className="bg-white border-[3px] border-black p-5 comic-shadow rotate-1 hover:-rotate-0 transition-transform duration-300">
             <h3 className="comic-heading text-black mb-5 uppercase tracking-widest text-lg border-b-[3px] border-black pb-1 bg-primary text-white inline-block px-2 -mx-2">
-              Quick Links
+              Tautan Cepat
             </h3>
             <ul className="space-y-3">
               <li>
@@ -117,7 +117,7 @@ export default function Footer({
                     strokeWidth={3}
                     className="text-primary opacity-0 -ml-4 group-hover:ml-0 group-hover:opacity-100 transition-all"
                   />{' '}
-                  About Me
+                  Tentang Saya
                 </Link>
               </li>
               <li>
@@ -130,7 +130,7 @@ export default function Footer({
                     strokeWidth={3}
                     className="text-primary opacity-0 -ml-4 group-hover:ml-0 group-hover:opacity-100 transition-all"
                   />{' '}
-                  Projects
+                  Proyek
                 </Link>
               </li>
               <li>
@@ -143,7 +143,7 @@ export default function Footer({
                     strokeWidth={3}
                     className="text-primary opacity-0 -ml-4 group-hover:ml-0 group-hover:opacity-100 transition-all"
                   />{' '}
-                  Blog & Insights
+                  Blog & Wawasan
                 </Link>
               </li>
               <li>
@@ -156,7 +156,7 @@ export default function Footer({
                     strokeWidth={3}
                     className="text-primary opacity-0 -ml-4 group-hover:ml-0 group-hover:opacity-100 transition-all"
                   />{' '}
-                  Contact
+                  Kontak
                 </Link>
               </li>
             </ul>
@@ -168,15 +168,15 @@ export default function Footer({
           <div className="absolute inset-0 bg-halftone opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity"></div>
 
           <p className="text-black text-xs md:text-sm comic-heading uppercase tracking-widest relative z-10 text-center md:text-left">
-            &copy; {new Date().getFullYear()} <span className="notranslate">Yakub Firman</span>. All
-            rights reserved.
+            &copy; {new Date().getFullYear()} <span className="notranslate">Yakub Firman</span>. Hak
+            cipta dilindungi.
           </p>
           <p className="text-black text-xs md:text-sm comic-heading uppercase tracking-widest flex items-center justify-center md:justify-end gap-1.5 relative z-10">
-            Designed with{' '}
+            Dirancang dengan{' '}
             <span className="text-primary animate-pulse text-xl drop-shadow-[0_0_5px_rgba(239,68,68,0.3)]">
               &hearts;
             </span>{' '}
-            in Surakarta
+            di Surakarta
           </p>
         </div>
       </div>

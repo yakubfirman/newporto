@@ -34,7 +34,7 @@ export default function AboutSection({ settings }: AboutSectionProps) {
               <div className="absolute inset-0 pointer-events-none"></div>
               <div className="absolute bottom-6 right-6 z-10">
                 <span className="comic-heading text-2xl text-black bg-white border-4 border-black px-4 py-2 -rotate-3 mt-4 comic-shadow">
-                  WHO AM I?
+                  SIAPA SAYA?
                 </span>
               </div>
             </div>
@@ -43,21 +43,21 @@ export default function AboutSection({ settings }: AboutSectionProps) {
           {/* TEXT SIDE */}
           <div className="lg:col-span-7 section-header lg:pt-2 bg-white comic-panel p-4 sm:p-6 lg:p-8 rotate-1">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl comic-heading text-white leading-none mb-3 sm:mb-5 uppercase comic-text">
-              {settings?.home_about_heading || 'Turning complex problems into elegant solutions!'}
+              {settings?.home_about_heading || 'Mengubah masalah kompleks menjadi solusi elegan!'}
             </h2>
 
             <div className="space-y-3 sm:space-y-4 text-black leading-relaxed text-sm md:text-base mb-6 sm:mb-8 font-bold tracking-wide whitespace-pre-wrap">
               {settings?.home_about_text ||
-                "I'm a Computer Science graduate (2026) based in Surakarta, Central Java. I specialize in building robust Headless CMS architectures using Laravel and Next.js, bridging the gap between powerful backend logic and seamless frontend experiences.\n\nBeyond writing clean code, I'm deeply passionate about SEO and web performance. I also actively share my knowledge as a speaker at various tech seminars and workshops, focusing on frontend development and media literacy."}
+                'Saya adalah lulusan Teknik Informatika (2026) yang berdomisili di Surakarta, Jawa Tengah. Saya spesialis dalam membangun arsitektur Headless CMS yang tangguh menggunakan Laravel dan Next.js, menjembatani logika backend yang kuat dengan pengalaman frontend yang mulus.\n\nSelain menulis kode yang rapi, saya sangat antusias dengan SEO dan performa web. Saya juga aktif berbagi pengetahuan sebagai pembicara di berbagai seminar dan workshop teknologi, berfokus pada pengembangan frontend dan literasi media.'}
             </div>
 
             {/* Comic Stats */}
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-6 mb-6 sm:mb-8 border-y-4 border-black py-4 sm:py-6 bg-halftone-red -mx-5 sm:-mx-8 px-5 sm:px-8">
               {[
-                { value: '3+', label: 'Years Exp.' },
-                { value: '20+', label: 'Projects' },
-                { value: '15+', label: 'Clients' },
-                { value: '5+', label: 'Events' },
+                { value: '3+', label: 'Tahun Pengalaman' },
+                { value: '20+', label: 'Proyek' },
+                { value: '15+', label: 'Klien' },
+                { value: '5+', label: 'Acara' },
               ].map((stat, i) => (
                 <div
                   key={i}
@@ -80,7 +80,7 @@ export default function AboutSection({ settings }: AboutSectionProps) {
               href="/about"
               className="group inline-flex justify-center items-center gap-2 sm:gap-3 comic-heading text-xl sm:text-2xl text-white bg-black px-5 sm:px-6 py-3 sm:py-4 hover:bg-primary transition-colors border-4 border-black comic-shadow-red -rotate-1 w-full sm:w-auto text-center"
             >
-              More about my background
+              Selengkapnya tentang latar belakang saya
               <ArrowRight size={20} className="sm:w-6 sm:h-6" strokeWidth={4} />
             </Link>
           </div>

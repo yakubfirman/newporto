@@ -70,10 +70,10 @@ export default function ContactPage() {
         <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5 mb-10 sm:mb-16">
           <div className="comic-panel-red p-4 sm:p-6 -rotate-1 max-w-xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
-              Get in Touch
+              Hubungi Saya
             </h1>
             <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
-              Let's Start a Conversation.
+              Mari Mulai Percakapan.
             </p>
           </div>
         </div>
@@ -82,12 +82,12 @@ export default function ContactPage() {
           {/* Form */}
           <div className="comic-panel bg-white p-5 sm:p-8 rotate-1">
             <h3 className="comic-heading text-xl sm:text-2xl mb-6 text-black uppercase tracking-wide border-b-4 border-black pb-4">
-              Send Me a Message
+              Kirim Saya Pesan
             </h3>
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 mt-6">
               {success && (
                 <div className="p-4 bg-white border-[3px] border-black comic-shadow-red text-black font-bold mb-6 text-xs sm:text-sm uppercase -rotate-1">
-                  Your message has been sent successfully! I will get back to you soon.
+                  Pesan Anda berhasil dikirim! Saya akan segera menghubungi Anda kembali.
                 </div>
               )}
               {error && (
@@ -101,7 +101,7 @@ export default function ContactPage() {
                   htmlFor="name"
                   className="block comic-heading text-lg text-black mb-2 uppercase"
                 >
-                  Name
+                  Nama
                 </label>
                 <input
                   type="text"
@@ -133,7 +133,7 @@ export default function ContactPage() {
                   htmlFor="subject"
                   className="block comic-heading text-lg text-black mb-2 uppercase"
                 >
-                  Subject
+                  Subjek
                 </label>
                 <input
                   type="text"
@@ -148,7 +148,7 @@ export default function ContactPage() {
                   htmlFor="message"
                   className="block comic-heading text-lg text-black mb-2 uppercase"
                 >
-                  Message
+                  Pesan
                 </label>
                 <textarea
                   name="message"
@@ -156,7 +156,7 @@ export default function ContactPage() {
                   required
                   rows={5}
                   className="w-full px-4 py-3 border-[3px] border-black bg-slate-50 focus:bg-white focus:outline-none transition-colors text-black font-bold uppercase tracking-wide placeholder-slate-400 comic-shadow resize-none"
-                  placeholder="Tell me about your project..."
+                  placeholder="Ceritakan tentang proyek Anda..."
                 ></textarea>
               </div>
               <button
@@ -165,10 +165,10 @@ export default function ContactPage() {
                 className="w-full comic-heading text-xl text-white bg-primary border-[3px] border-black py-4 hover:bg-black transition-colors flex items-center justify-center gap-2 disabled:opacity-70 comic-shadow mt-4 uppercase"
               >
                 {isSubmitting ? (
-                  'Sending...'
+                  'Mengirim...'
                 ) : (
                   <>
-                    Send Message <Send size={24} strokeWidth={3} />
+                    Kirim Pesan <Send size={24} strokeWidth={3} />
                   </>
                 )}
               </button>
@@ -179,7 +179,7 @@ export default function ContactPage() {
           <div className="space-y-8 lg:mt-0 mt-4">
             <div className="comic-panel bg-halftone-red p-5 sm:p-8 -rotate-1">
               <h3 className="text-xl sm:text-2xl comic-heading mb-6 text-black bg-white px-4 py-2 border-[4px] border-black inline-block rotate-2 comic-shadow text-center w-full">
-                Contact Info
+                Info Kontak
               </h3>
 
               <div className="space-y-4">
@@ -204,7 +204,7 @@ export default function ContactPage() {
                     <MapPin size={24} strokeWidth={2} />
                   </div>
                   <div>
-                    <h4 className="comic-heading text-lg text-black mb-1 uppercase">Location</h4>
+                    <h4 className="comic-heading text-lg text-black mb-1 uppercase">Lokasi</h4>
                     <p className="font-bold text-slate-700 text-sm sm:text-base uppercase tracking-wide">
                       Surakarta, Jawa Tengah
                     </p>
@@ -215,11 +215,11 @@ export default function ContactPage() {
 
             <div className="comic-panel-red p-6 sm:p-8 rotate-1">
               <h4 className="comic-heading text-2xl text-white mb-3 uppercase tracking-wide">
-                Availability
+                Ketersediaan
               </h4>
               <p className="text-white font-bold text-sm sm:text-base leading-relaxed uppercase tracking-wide">
-                I am currently open to freelance opportunities and full-time roles. Let's discuss
-                how I can help bring your ideas to life.
+                Saat ini saya terbuka untuk peluang lepas dan peran penuh waktu. Mari diskusikan
+                bagaimana saya dapat membantu mewujudkan ide Anda.
               </p>
             </div>
           </div>

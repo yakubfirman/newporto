@@ -40,15 +40,15 @@ export default function TestimonialForm() {
     return (
       <div className="bg-white border-[3px] border-black p-8 text-center comic-shadow rotate-1 h-full flex flex-col items-center justify-center">
         <CheckCircle size={48} className="text-primary mb-4" />
-        <h3 className="comic-heading text-2xl mb-2 text-black">Thank You!</h3>
+        <h3 className="comic-heading text-2xl mb-2 text-black">Terima Kasih!</h3>
         <p className="text-slate-700 font-medium">
-          Your testimonial has been submitted and is awaiting review.
+          Testimoni Anda telah dikirim dan menunggu tinjauan.
         </p>
         <button
           onClick={() => setSuccess(false)}
           className="mt-6 comic-heading text-sm text-white border-2 border-black px-4 py-2 hover:bg-black transition-colors bg-primary"
         >
-          SUBMIT ANOTHER
+          KIRIM LAGI
         </button>
       </div>
     );
@@ -61,10 +61,10 @@ export default function TestimonialForm() {
       </div>
       <div>
         <h3 className="comic-heading text-2xl sm:text-3xl mb-2 text-black leading-tight pr-12">
-          LEAVE A REVIEW
+          TINGGALKAN ULASAN
         </h3>
         <p className="text-slate-600 font-medium mb-6">
-          Worked with me? I'd love to hear your thoughts!
+          Pernah bekerja dengan saya? Saya ingin mendengar pendapat Anda!
         </p>
 
         {error && (
@@ -75,7 +75,7 @@ export default function TestimonialForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="comic-heading text-sm text-black block mb-1">Your Name *</label>
+            <label className="comic-heading text-sm text-black block mb-1">Nama Anda *</label>
             <input
               required
               type="text"
@@ -86,7 +86,9 @@ export default function TestimonialForm() {
             />
           </div>
           <div>
-            <label className="comic-heading text-sm text-black block mb-1">Role / Company</label>
+            <label className="comic-heading text-sm text-black block mb-1">
+              Peran / Perusahaan
+            </label>
             <input
               type="text"
               value={formData.role}
@@ -96,9 +98,7 @@ export default function TestimonialForm() {
             />
           </div>
           <div>
-            <label className="comic-heading text-sm text-black block mb-1">
-              Your Testimonial *
-            </label>
+            <label className="comic-heading text-sm text-black block mb-1">Testimoni Anda *</label>
             <textarea
               required
               rows={4}
@@ -114,7 +114,7 @@ export default function TestimonialForm() {
             disabled={loading}
             className="w-full bg-primary text-white border-[3px] border-black px-6 py-3 comic-heading text-lg hover:bg-black transition-colors flex items-center justify-center gap-2 mt-4 comic-shadow disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'SUBMITTING...' : 'SUBMIT TESTIMONIAL'}
+            {loading ? 'MENGIRIM...' : 'KIRIM TESTIMONI'}
             {!loading && <Send size={20} strokeWidth={3} />}
           </button>
         </form>

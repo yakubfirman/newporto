@@ -18,21 +18,21 @@ export default function TestimonialPage() {
           className="inline-flex items-center gap-2 text-black font-bold mb-8 hover:underline comic-heading tracking-wide border-[3px] border-black px-4 py-2 bg-white comic-shadow hover:-translate-y-1 hover:bg-primary hover:text-white transition-all -rotate-1"
         >
           <ArrowLeft size={20} strokeWidth={3} />
-          BACK TO HOME
+          KEMBALI KE BERANDA
         </Link>
 
         <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5 mb-10 sm:mb-16">
           <div className="comic-panel-red p-4 sm:p-6 rotate-1 max-w-xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
-              Client Reviews
+              Ulasan Klien
             </h1>
             <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
-              Thoughts on our Journey.
+              Pemikiran tentang Perjalanan kita.
             </p>
           </div>
           <div className="comic-panel bg-white p-3 sm:p-4 -rotate-1 hidden md:block max-w-xs">
             <p className="font-bold text-black text-sm uppercase tracking-wide leading-snug">
-              YOUR FEEDBACK IS INCREDIBLY VALUABLE TO IMPROVE MY SERVICES.
+              UMPAN BALIK ANDA SANGAT BERHARGA UNTUK MENINGKATKAN LAYANAN SAYA.
             </p>
           </div>
         </div>

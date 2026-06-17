@@ -33,10 +33,10 @@ export default async function AboutPage() {
         <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5 mb-10 sm:mb-16">
           <div className="comic-panel-red p-4 sm:p-6 -rotate-1 max-w-xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
-              About Me
+              Tentang Saya
             </h1>
             <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
-              Designing Digital Products Since 2022.
+              Merancang Produk Digital Sejak 2022.
             </p>
           </div>
         </div>
@@ -59,20 +59,21 @@ export default async function AboutPage() {
               </div>
               <div className="w-full sm:w-2/3">
                 <h2 className="text-2xl sm:text-3xl comic-heading mb-4 text-black uppercase">
-                  {settings.about_page_heading || 'Who I Am'}
+                  {settings.about_page_heading || 'Siapa Saya'}
                 </h2>
                 <div className="text-black font-bold text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-wrap uppercase tracking-wide">
                   {settings.about_page_text || (
                     <>
-                      I am <span className="notranslate">Yakub Firman Mustofa</span>, a passionate
-                      Web Developer and SEO Specialist based in Surakarta, Jawa Tengah. With a
-                      strong background in IT, I specialize in building high-performance web
-                      applications that not only look great but also rank well on search engines.
+                      Saya adalah <span className="notranslate">Yakub Firman Mustofa</span>, seorang
+                      Web Developer dan SEO Specialist yang berdomisili di Surakarta, Jawa Tengah.
+                      Dengan latar belakang TI yang kuat, saya mengkhususkan diri dalam membangun
+                      aplikasi web berkinerja tinggi yang tidak hanya terlihat bagus tetapi juga
+                      mendapat peringkat yang baik di mesin pencari.
                       <br />
                       <br />
-                      My approach combines technical excellence with strategic thinking. I believe
-                      in Headless CMS architectures, clean code, and user-centric design to deliver
-                      digital products that stand out.
+                      Pendekatan saya menggabungkan keunggulan teknis dengan pemikiran strategis.
+                      Saya percaya pada arsitektur Headless CMS, kode yang rapi, dan desain yang
+                      berpusat pada pengguna untuk menghasilkan produk digital yang menonjol.
                     </>
                   )}
                 </div>
@@ -82,7 +83,7 @@ export default async function AboutPage() {
             {/* Experience */}
             <section>
               <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-primary text-white p-3 sm:px-5 border-[4px] border-black comic-shadow -rotate-1 w-max">
-                <Briefcase className="w-6 h-6 sm:w-8 sm:h-8" strokeWidth={3} /> Experience
+                <Briefcase className="w-6 h-6 sm:w-8 sm:h-8" strokeWidth={3} /> Pengalaman
               </h2>
               <div className="space-y-6">
                 {experiences.length > 0 ? (
@@ -100,13 +101,13 @@ export default async function AboutPage() {
                         })}{' '}
                         -{' '}
                         {exp.is_current
-                          ? 'Present'
+                          ? 'Sekarang'
                           : exp.end_date
                             ? new Date(exp.end_date).toLocaleDateString('en-US', {
                                 month: 'short',
                                 year: 'numeric',
                               })
-                            : 'Present'}
+                            : 'Sekarang'}
                       </p>
                       <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
                         {exp.description}
@@ -115,7 +116,7 @@ export default async function AboutPage() {
                   ))
                 ) : (
                   <p className="text-black font-bold text-sm comic-panel p-4 rotate-1 bg-white inline-block">
-                    No experiences listed yet.
+                    Belum ada pengalaman yang dicantumkan.
                   </p>
                 )}
               </div>
@@ -125,7 +126,7 @@ export default async function AboutPage() {
             <section>
               <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-white p-3 sm:px-5 border-[4px] border-black comic-shadow rotate-1 w-max">
                 <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8 text-primary" strokeWidth={3} />{' '}
-                Education
+                Pendidikan
               </h2>
               <div className="space-y-6">
                 {educations.length > 0 ? (
@@ -140,12 +141,12 @@ export default async function AboutPage() {
                         {new Date(edu.start_date).toLocaleDateString('en-US', { year: 'numeric' })}{' '}
                         -{' '}
                         {edu.is_current
-                          ? 'Present'
+                          ? 'Sekarang'
                           : edu.end_date
                             ? new Date(edu.end_date).toLocaleDateString('en-US', {
                                 year: 'numeric',
                               })
-                            : 'Present'}
+                            : 'Sekarang'}
                       </p>
                       {edu.description && (
                         <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
@@ -156,7 +157,7 @@ export default async function AboutPage() {
                   ))
                 ) : (
                   <p className="text-black font-bold text-sm comic-panel p-4 -rotate-1 bg-white inline-block">
-                    No education listed yet.
+                    Belum ada pendidikan yang dicantumkan.
                   </p>
                 )}
               </div>
@@ -167,12 +168,12 @@ export default async function AboutPage() {
           <div>
             <div className="sticky top-32 comic-panel bg-halftone-red p-5 sm:p-8 rotate-2">
               <h3 className="text-2xl comic-heading mb-6 text-black bg-white px-4 py-2 border-[4px] border-black inline-block -rotate-3 comic-shadow text-center w-full">
-                Quick Facts!
+                Fakta Singkat!
               </h3>
               <ul className="space-y-4">
                 <li className="bg-white border-[3px] border-black p-3 sm:p-4 comic-shadow rotate-1 hover:-rotate-1 transition-transform">
                   <span className="block text-[10px] sm:text-xs comic-heading uppercase tracking-widest text-black bg-primary text-white border-2 border-black px-2 py-0.5 inline-block mb-2 -rotate-2">
-                    Location
+                    Lokasi
                   </span>
                   <span className="block font-bold text-black uppercase text-sm sm:text-base tracking-wide">
                     Surakarta, Jawa Tengah
@@ -180,15 +181,15 @@ export default async function AboutPage() {
                 </li>
                 <li className="bg-white border-[3px] border-black p-3 sm:p-4 comic-shadow -rotate-2 hover:rotate-1 transition-transform">
                   <span className="block text-[10px] sm:text-xs comic-heading uppercase tracking-widest text-black bg-black text-white border-2 border-black px-2 py-0.5 inline-block mb-2 rotate-2">
-                    Availability
+                    Ketersediaan
                   </span>
                   <span className="block font-bold text-primary uppercase text-sm sm:text-base tracking-wide">
-                    Open to work
+                    Terbuka untuk bekerja
                   </span>
                 </li>
                 <li className="bg-white border-[3px] border-black p-3 sm:p-4 comic-shadow rotate-1 hover:-rotate-1 transition-transform">
                   <span className="block text-[10px] sm:text-xs comic-heading uppercase tracking-widest text-black bg-white border-2 border-black px-2 py-0.5 inline-block mb-2 -rotate-1">
-                    Focus
+                    Fokus
                   </span>
                   <span className="block font-bold text-black uppercase text-sm sm:text-base tracking-wide">
                     Full-stack & SEO

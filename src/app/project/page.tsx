@@ -55,10 +55,10 @@ export default async function ProjectPage(props: {
         <div className="section-header flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-5 mb-8 sm:mb-12">
           <div className="comic-panel-red p-4 sm:p-6 -rotate-1 max-w-xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
-              Selected Works
+              Karya Terpilih
             </h1>
             <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
-              Projects & Case Studies.
+              Proyek & Studi Kasus.
             </p>
           </div>
         </div>
@@ -101,10 +101,10 @@ export default async function ProjectPage(props: {
                     href={`/project?page=${currentPage - 1}`}
                     className="comic-panel px-4 py-2 bg-white text-black font-bold hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all uppercase rotate-1"
                   >
-                    Previous
+                    Sebelumnya
                   </Link>
                 ) : (
-                  <div className="px-4 py-2 opacity-0 pointer-events-none">Previous</div>
+                  <div className="px-4 py-2 opacity-0 pointer-events-none">Sebelumnya</div>
                 )}
 
                 <span className="comic-heading text-xl text-black bg-white px-4 py-2 border-[3px] border-black comic-shadow -rotate-1">
@@ -116,19 +116,17 @@ export default async function ProjectPage(props: {
                     href={`/project?page=${currentPage + 1}`}
                     className="comic-panel px-4 py-2 bg-black text-white font-bold hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all uppercase rotate-1 comic-shadow-red"
                   >
-                    Next
+                    Berikutnya
                   </Link>
                 ) : (
-                  <div className="px-4 py-2 opacity-0 pointer-events-none">Next</div>
+                  <div className="px-4 py-2 opacity-0 pointer-events-none">Berikutnya</div>
                 )}
               </div>
             )}
           </>
         ) : (
           <div className="comic-panel p-8 sm:p-12 text-center bg-white rotate-1 max-w-xl mx-auto">
-            <span className="comic-heading text-xl text-black">
-              No projects available at the moment.
-            </span>
+            <span className="comic-heading text-xl text-black">Belum ada proyek saat ini.</span>
           </div>
         )}
       </div>

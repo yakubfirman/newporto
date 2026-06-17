@@ -22,8 +22,8 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
   }, []);
 
   const navLinks = [
-    { href: '/about', label: 'About' },
-    { href: '/project', label: 'Project' },
+    { href: '/about', label: 'Tentang' },
+    { href: '/project', label: 'Proyek' },
     { href: '/blog', label: 'Blog' },
   ];
 
@@ -71,7 +71,7 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
                 href="/contact"
                 className="px-5 py-1.5 bg-primary text-white border-2 border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all comic-heading text-lg uppercase tracking-widest rotate-1"
               >
-                Get in Touch
+                Hubungi Saya
               </Link>
             </div>
 
@@ -120,7 +120,7 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-center py-3 px-5 text-lg font-black uppercase tracking-widest text-white border-[3px] border-black bg-black shadow-[4px_4px_0px_0px_rgba(239,68,68,1)] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all"
             >
-              Get in Touch
+              Hubungi Saya
             </Link>
           </div>
         </div>
