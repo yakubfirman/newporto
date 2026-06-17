@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Space_Grotesk, Bangers } from 'next/font/google';
 import './globals.css';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { getSettings } from '@/lib/api';
 
 const sans = Space_Grotesk({
@@ -122,6 +123,7 @@ export default async function RootLayout({
         <ClientLayoutWrapper headerImageUrl={headerImageUrl} contactEmail={contactEmail}>
           {children}
         </ClientLayoutWrapper>
+        <LanguageSwitcher />
       </body>
     </html>
   );

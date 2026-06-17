@@ -109,7 +109,7 @@ export default function HeroSection() {
         </div>
 
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] xl:text-[7rem] comic-heading text-white leading-[0.9] mb-4 md:mb-6 w-full flex flex-col items-center uppercase comic-text">
-          <div className="flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-1">
+          <div className="flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-1 notranslate">
             {'Yakub Firman Mustofa'.split(' ').map((word, i) => (
               <div key={i} className="overflow-hidden px-2 pt-2 pb-4 -mx-2 -mt-2 -mb-4">
                 <span className="hero-word inline-block">{word}</span>

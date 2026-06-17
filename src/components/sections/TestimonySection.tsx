@@ -95,11 +95,11 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
                         {t.name.charAt(0)}
                       </div>
                       <div className="min-w-0">
-                        <p className="comic-heading text-black text-xl leading-none mb-1 truncate">
+                        <p className="comic-heading text-black text-xl leading-none mb-1 truncate notranslate">
                           {t.name}
                         </p>
                         {t.role && (
-                          <p className="text-xs comic-heading text-white bg-black px-2 py-0.5 inline-block tracking-widest truncate max-w-full">
+                          <p className="text-xs comic-heading text-white bg-black px-2 py-0.5 inline-block tracking-widest truncate max-w-full notranslate">
                             {t.role}
                           </p>
                         )}
@@ -141,11 +141,11 @@ export default function TestimonySection({ testimonials }: TestimonySectionProps
                 {selectedTestimonial.name.charAt(0)}
               </div>
               <div className="min-w-0">
-                <p className="comic-heading text-black text-xl leading-none mb-1 truncate">
+                <p className="comic-heading text-black text-xl leading-none mb-1 truncate notranslate">
                   {selectedTestimonial.name}
                 </p>
                 {selectedTestimonial.role && (
-                  <p className="text-xs comic-heading text-white bg-black px-2 py-0.5 inline-block tracking-widest truncate max-w-full">
+                  <p className="text-xs comic-heading text-white bg-black px-2 py-0.5 inline-block tracking-widest truncate max-w-full notranslate">
                     {selectedTestimonial.role}
                   </p>
                 )}

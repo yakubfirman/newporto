@@ -62,8 +62,19 @@ export default async function AboutPage() {
                   {settings.about_page_heading || 'Who I Am'}
                 </h2>
                 <div className="text-black font-bold text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-wrap uppercase tracking-wide">
-                  {settings.about_page_text ||
-                    'I am Yakub Firman Mustofa, a passionate Web Developer and SEO Specialist based in Surakarta, Jawa Tengah. With a strong background in IT, I specialize in building high-performance web applications that not only look great but also rank well on search engines.\n\nMy approach combines technical excellence with strategic thinking. I believe in Headless CMS architectures, clean code, and user-centric design to deliver digital products that stand out.'}
+                  {settings.about_page_text || (
+                    <>
+                      I am <span className="notranslate">Yakub Firman Mustofa</span>, a passionate
+                      Web Developer and SEO Specialist based in Surakarta, Jawa Tengah. With a
+                      strong background in IT, I specialize in building high-performance web
+                      applications that not only look great but also rank well on search engines.
+                      <br />
+                      <br />
+                      My approach combines technical excellence with strategic thinking. I believe
+                      in Headless CMS architectures, clean code, and user-centric design to deliver
+                      digital products that stand out.
+                    </>
+                  )}
                 </div>
               </div>
             </section>

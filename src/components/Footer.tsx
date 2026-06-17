@@ -68,7 +68,8 @@ export default function Footer({
                 />
               </div>
               <span className="comic-heading text-2xl tracking-tighter text-black uppercase pr-2 pt-1">
-                Yakub Firman<span className="text-primary">.</span>
+                <span className="notranslate">Yakub Firman</span>
+                <span className="text-primary">.</span>
               </span>
             </Link>
             <p className="text-black font-bold uppercase leading-relaxed max-w-sm mb-8 bg-white border-2 border-black p-3 rotate-1">
@@ -167,7 +168,8 @@ export default function Footer({
           <div className="absolute inset-0 bg-halftone opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity"></div>
 
           <p className="text-black text-xs md:text-sm comic-heading uppercase tracking-widest relative z-10 text-center md:text-left">
-            &copy; {new Date().getFullYear()} Yakub Firman. All rights reserved.
+            &copy; {new Date().getFullYear()} <span className="notranslate">Yakub Firman</span>. All
+            rights reserved.
           </p>
           <p className="text-black text-xs md:text-sm comic-heading uppercase tracking-widest flex items-center justify-center md:justify-end gap-1.5 relative z-10">
             Designed with{' '}
