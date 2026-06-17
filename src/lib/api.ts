@@ -1,4 +1,9 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+let baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://apiweb.immsolo.or.id/api';
+baseUrl = baseUrl.replace(/\/$/, '');
+if (!baseUrl.endsWith('/api')) {
+  baseUrl += '/api';
+}
+export const API_URL = baseUrl;
 
 export interface Project {
   id: number;
