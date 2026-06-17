@@ -80,63 +80,20 @@ export default async function AboutPage() {
               </div>
             </section>
 
-            {/* Experience */}
+            {/* Pendidikan */}
             <section>
-              <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-primary text-white p-3 sm:px-5 border-[4px] border-black comic-shadow -rotate-1 w-max">
-                <Briefcase className="w-6 h-6 sm:w-8 sm:h-8" strokeWidth={3} /> Pengalaman
-              </h2>
-              <div className="space-y-6">
-                {experiences.length > 0 ? (
-                  experiences.map((exp, i) => (
-                    <div
-                      key={exp.id}
-                      className={`comic-panel p-5 sm:p-6 relative bg-white ${i % 2 === 0 ? 'rotate-1' : '-rotate-1'}`}
-                    >
-                      <h3 className="comic-heading text-xl sm:text-2xl text-black">{exp.title}</h3>
-                      <p className="text-[10px] sm:text-xs font-bold text-white bg-black px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
-                        {exp.company} •{' '}
-                        {new Date(exp.start_date).toLocaleDateString('en-US', {
-                          month: 'short',
-                          year: 'numeric',
-                        })}{' '}
-                        -{' '}
-                        {exp.is_current
-                          ? 'Sekarang'
-                          : exp.end_date
-                            ? new Date(exp.end_date).toLocaleDateString('en-US', {
-                                month: 'short',
-                                year: 'numeric',
-                              })
-                            : 'Sekarang'}
-                      </p>
-                      <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
-                        {exp.description}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-black font-bold text-sm comic-panel p-4 rotate-1 bg-white inline-block">
-                    Belum ada pengalaman yang dicantumkan.
-                  </p>
-                )}
-              </div>
-            </section>
-
-            {/* Education */}
-            <section>
-              <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-white p-3 sm:px-5 border-[4px] border-black comic-shadow rotate-1 w-max">
-                <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8 text-primary" strokeWidth={3} />{' '}
-                Pendidikan
+              <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-primary text-white p-3 sm:px-5 border-4 border-black comic-shadow -rotate-1 w-max">
+                <GraduationCap className="w-6 h-6 sm:w-8 sm:h-8" strokeWidth={3} /> Pendidikan
               </h2>
               <div className="space-y-6">
                 {educations.length > 0 ? (
                   educations.map((edu, i) => (
                     <div
                       key={edu.id}
-                      className={`comic-panel p-5 sm:p-6 relative bg-white ${i % 2 === 0 ? '-rotate-1' : 'rotate-1'}`}
+                      className={`comic-panel p-5 sm:p-6 relative bg-white ${i % 2 === 0 ? 'rotate-1' : '-rotate-1'}`}
                     >
                       <h3 className="comic-heading text-xl sm:text-2xl text-black">{edu.degree}</h3>
-                      <p className="text-[10px] sm:text-xs font-bold text-white bg-primary px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                      <p className="text-[10px] sm:text-xs font-bold text-white bg-black px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
                         {edu.institution} •{' '}
                         {new Date(edu.start_date).toLocaleDateString('en-US', { year: 'numeric' })}{' '}
                         -{' '}
@@ -156,8 +113,148 @@ export default async function AboutPage() {
                     </div>
                   ))
                 ) : (
-                  <p className="text-black font-bold text-sm comic-panel p-4 -rotate-1 bg-white inline-block">
+                  <p className="text-black font-bold text-sm comic-panel p-4 rotate-1 bg-white inline-block">
                     Belum ada pendidikan yang dicantumkan.
+                  </p>
+                )}
+              </div>
+            </section>
+
+            {/* Riwayat Kerja */}
+            <section>
+              <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-white p-3 sm:px-5 border-4 border-black comic-shadow rotate-1 w-max">
+                <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-primary" strokeWidth={3} /> Riwayat
+                Kerja
+              </h2>
+              <div className="space-y-6">
+                {experiences.filter((exp) => exp.type === 'work').length > 0 ? (
+                  experiences
+                    .filter((exp) => exp.type === 'work')
+                    .map((exp, i) => (
+                      <div
+                        key={exp.id}
+                        className={`comic-panel p-5 sm:p-6 relative bg-white ${i % 2 === 0 ? '-rotate-1' : 'rotate-1'}`}
+                      >
+                        <h3 className="comic-heading text-xl sm:text-2xl text-black">
+                          {exp.title}
+                        </h3>
+                        <p className="text-[10px] sm:text-xs font-bold text-white bg-primary px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                          {exp.company} •{' '}
+                          {new Date(exp.start_date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            year: 'numeric',
+                          })}{' '}
+                          -{' '}
+                          {exp.is_current
+                            ? 'Sekarang'
+                            : exp.end_date
+                              ? new Date(exp.end_date).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  year: 'numeric',
+                                })
+                              : 'Sekarang'}
+                        </p>
+                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
+                          {exp.description}
+                        </p>
+                      </div>
+                    ))
+                ) : (
+                  <p className="text-black font-bold text-sm comic-panel p-4 -rotate-1 bg-white inline-block">
+                    Belum ada riwayat kerja yang dicantumkan.
+                  </p>
+                )}
+              </div>
+            </section>
+
+            {/* Riwayat Organisasi */}
+            <section>
+              <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-primary text-white p-3 sm:px-5 border-4 border-black comic-shadow -rotate-1 w-max">
+                <Briefcase className="w-6 h-6 sm:w-8 sm:h-8" strokeWidth={3} /> Riwayat Organisasi
+              </h2>
+              <div className="space-y-6">
+                {experiences.filter((exp) => exp.type === 'organization').length > 0 ? (
+                  experiences
+                    .filter((exp) => exp.type === 'organization')
+                    .map((exp, i) => (
+                      <div
+                        key={exp.id}
+                        className={`comic-panel p-5 sm:p-6 relative bg-white ${i % 2 === 0 ? 'rotate-1' : '-rotate-1'}`}
+                      >
+                        <h3 className="comic-heading text-xl sm:text-2xl text-black">
+                          {exp.title}
+                        </h3>
+                        <p className="text-[10px] sm:text-xs font-bold text-white bg-black px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                          {exp.company} •{' '}
+                          {new Date(exp.start_date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            year: 'numeric',
+                          })}{' '}
+                          -{' '}
+                          {exp.is_current
+                            ? 'Sekarang'
+                            : exp.end_date
+                              ? new Date(exp.end_date).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  year: 'numeric',
+                                })
+                              : 'Sekarang'}
+                        </p>
+                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
+                          {exp.description}
+                        </p>
+                      </div>
+                    ))
+                ) : (
+                  <p className="text-black font-bold text-sm comic-panel p-4 rotate-1 bg-white inline-block">
+                    Belum ada riwayat organisasi yang dicantumkan.
+                  </p>
+                )}
+              </div>
+            </section>
+
+            {/* Riwayat Pembicara */}
+            <section>
+              <h2 className="text-3xl comic-heading mb-8 flex items-center gap-3 text-black bg-white p-3 sm:px-5 border-4 border-black comic-shadow rotate-1 w-max">
+                <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-primary" strokeWidth={3} /> Riwayat
+                Pembicara
+              </h2>
+              <div className="space-y-6">
+                {experiences.filter((exp) => exp.type === 'speaker').length > 0 ? (
+                  experiences
+                    .filter((exp) => exp.type === 'speaker')
+                    .map((exp, i) => (
+                      <div
+                        key={exp.id}
+                        className={`comic-panel p-5 sm:p-6 relative bg-white ${i % 2 === 0 ? '-rotate-1' : 'rotate-1'}`}
+                      >
+                        <h3 className="comic-heading text-xl sm:text-2xl text-black">
+                          {exp.title}
+                        </h3>
+                        <p className="text-[10px] sm:text-xs font-bold text-white bg-primary px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                          {exp.company} •{' '}
+                          {new Date(exp.start_date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            year: 'numeric',
+                          })}{' '}
+                          -{' '}
+                          {exp.is_current
+                            ? 'Sekarang'
+                            : exp.end_date
+                              ? new Date(exp.end_date).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  year: 'numeric',
+                                })
+                              : 'Sekarang'}
+                        </p>
+                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
+                          {exp.description}
+                        </p>
+                      </div>
+                    ))
+                ) : (
+                  <p className="text-black font-bold text-sm comic-panel p-4 -rotate-1 bg-white inline-block">
+                    Belum ada riwayat pembicara yang dicantumkan.
                   </p>
                 )}
               </div>

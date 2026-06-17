@@ -28,6 +28,7 @@ export interface Experience {
   start_date: string;
   end_date: string | null;
   is_current: boolean;
+  type: 'work' | 'organization' | 'speaker';
 }
 
 export interface Education {

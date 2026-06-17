@@ -21,6 +21,7 @@ export default function EditExperiencePage({ params }: { params: Promise<{ id: s
     start_date: '',
     end_date: '',
     is_current: false,
+    type: 'work',
   });
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function EditExperiencePage({ params }: { params: Promise<{ id: s
           start_date: data.start_date.split('T')[0], // format to YYYY-MM-DD
           end_date: data.end_date ? data.end_date.split('T')[0] : '',
           is_current: data.is_current,
+          type: data.type || 'work',
         });
       } catch (err: any) {
         setError(err.message);
@@ -44,7 +46,9 @@ export default function EditExperiencePage({ params }: { params: Promise<{ id: s
     loadExperience();
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -103,6 +107,20 @@ export default function EditExperiencePage({ params }: { params: Promise<{ id: s
         className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden"
       >
         <div className="p-6 md:p-8 space-y-6">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">Tipe Riwayat</label>
+            <select
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+            >
+              <option value="work">Kerja</option>
+              <option value="organization">Organisasi</option>
+              <option value="speaker">Pembicara</option>
+            </select>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-slate-700">Role / Job Title</label>

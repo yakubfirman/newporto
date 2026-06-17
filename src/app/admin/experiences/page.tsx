@@ -96,6 +96,13 @@ export default function AdminExperiencesPage() {
                     <td className="px-6 py-4">
                       <div className="font-semibold text-slate-800">{exp.title}</div>
                       <div className="text-sm text-slate-500 mt-1">{exp.company}</div>
+                      <span className="inline-block mt-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 uppercase tracking-wider">
+                        {exp.type === 'work'
+                          ? 'Kerja'
+                          : exp.type === 'organization'
+                            ? 'Organisasi'
+                            : 'Pembicara'}
+                      </span>
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-slate-600">
