@@ -82,6 +82,7 @@ export default function Footer({
                 href="https://github.com/yakubfirman"
                 target="_blank"
                 rel="noreferrer"
+                aria-label="Profil GitHub Yakub Firman"
                 className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-black hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
               >
                 <GithubIcon size={20} />
@@ -90,12 +91,14 @@ export default function Footer({
                 href="https://linkedin.com/in/yakubfirman"
                 target="_blank"
                 rel="noreferrer"
+                aria-label="Profil LinkedIn Yakub Firman"
                 className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-[#0077b5] hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
               >
                 <LinkedinIcon size={20} />
               </a>
               <a
                 href={`mailto:${contactEmail}`}
+                aria-label="Kirim Email ke Yakub Firman"
                 className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-primary hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
               >
                 <Mail size={20} strokeWidth={3} />
