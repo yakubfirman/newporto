@@ -183,9 +183,9 @@ export default function AdminHeader({ isSidebarOpen, setIsSidebarOpen }: AdminHe
           >
             <div className="flex flex-col items-end hidden sm:flex">
               <span className="text-sm font-semibold text-slate-700 group-hover:text-primary transition-colors">
-                Admin User
+                Yakub Firman Mustofa
               </span>
-              <span className="text-xs text-slate-500">admin@yakubfirman.id</span>
+              <span className="text-xs text-slate-500">yakubfirman.id</span>
             </div>
             <div className="w-9 h-9 rounded-full bg-slate-200 border border-slate-300 overflow-hidden flex items-center justify-center font-bold font-heading shrink-0">
               {profileImage ? (
