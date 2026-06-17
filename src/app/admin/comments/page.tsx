@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Trash2, MessageSquare, CheckCircle, XCircle } from 'lucide-react';
 import { fetchAdminAPI } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import TableSearch from '@/components/admin/TableSearch';
+import TablePagination from '@/components/admin/TablePagination';
+import { useTablePagination } from '@/hooks/useTablePagination';
 
 export interface AdminComment {
   id: number;
@@ -62,6 +65,24 @@ export default function AdminCommentsPage() {
     return <div className="p-8 text-center text-slate-500">Loading comments...</div>;
   }
 
+  const searchFn = useCallback((comment: AdminComment, term: string) => {
+    return Boolean(
+      comment.name.toLowerCase().includes(term) ||
+      comment.content.toLowerCase().includes(term) ||
+      (comment.post && comment.post.title.toLowerCase().includes(term))
+    );
+  }, []);
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems: paginatedComments,
+    filteredItemsCount,
+  } = useTablePagination(comments, searchFn, 10);
+
   return (
     <div className="space-y-6">
       <AdminPageHeader
@@ -74,6 +95,11 @@ export default function AdminCommentsPage() {
       )}
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <TableSearch
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search comments by author, content, or post title..."
+        />
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
@@ -86,15 +112,15 @@ export default function AdminCommentsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {comments.length === 0 ? (
+              {paginatedComments.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
                     <MessageSquare size={48} className="mx-auto text-slate-300 mb-4" />
-                    <p>No comments found.</p>
+                    <p>{searchTerm ? 'No comments match your search.' : 'No comments found.'}</p>
                   </td>
                 </tr>
               ) : (
-                comments.map((comment) => (
+                paginatedComments.map((comment) => (
                   <tr key={comment.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-medium text-slate-900">{comment.name}</div>
@@ -150,6 +176,13 @@ export default function AdminCommentsPage() {
             </tbody>
           </table>
         </div>
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredItemsCount}
+          itemsPerPage={10}
+        />
       </div>
     </div>
   );

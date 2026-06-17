@@ -1,11 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Plus, User, Briefcase } from 'lucide-react';
 import { fetchAdminAPI, Experience } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import AdminTableActions from '@/components/admin/AdminTableActions';
+import TableSearch from '@/components/admin/TableSearch';
+import TablePagination from '@/components/admin/TablePagination';
+import { useTablePagination } from '@/hooks/useTablePagination';
 
 export default function AdminExperiencesPage() {
   const [experiences, setExperiences] = useState<Experience[]>([]);
@@ -48,6 +51,24 @@ export default function AdminExperiencesPage() {
     );
   if (error) return <div className="bg-red-50 text-red-600 p-4 rounded-lg">Error: {error}</div>;
 
+  const searchFn = useCallback((experience: Experience, term: string) => {
+    return Boolean(
+      experience.title.toLowerCase().includes(term) ||
+      experience.company.toLowerCase().includes(term) ||
+      (experience.description && experience.description.toLowerCase().includes(term))
+    );
+  }, []);
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems: paginatedExperiences,
+    filteredItemsCount,
+  } = useTablePagination(experiences, searchFn, 10);
+
   return (
     <div className="space-y-6">
       <AdminPageHeader
@@ -58,6 +79,11 @@ export default function AdminExperiencesPage() {
       />
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <TableSearch
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search experiences by title, company, or description..."
+        />
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -69,29 +95,35 @@ export default function AdminExperiencesPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {experiences.length === 0 ? (
+              {paginatedExperiences.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="px-6 py-16 text-center text-slate-500">
                     <div className="flex flex-col items-center justify-center space-y-3">
                       <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-2">
                         <User size={28} className="text-slate-300" />
                       </div>
-                      <p className="text-slate-600 font-medium">No experiences found</p>
-                      <p className="text-slate-400 text-sm max-w-sm">
-                        You haven't added any work history yet. Click the "Add Experience" button to
-                        showcase your career journey.
+                      <p className="text-slate-600 font-medium">
+                        {searchTerm ? 'No experiences match your search.' : 'No experiences found'}
                       </p>
-                      <Link
-                        href="/admin/experiences/create"
-                        className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg font-medium hover:bg-primary/20 transition-colors text-sm"
-                      >
-                        <Plus size={16} /> Add Experience
-                      </Link>
+                      {!searchTerm && (
+                        <>
+                          <p className="text-slate-400 text-sm max-w-sm">
+                            You haven't added any work history yet. Click the "Add Experience"
+                            button to showcase your career journey.
+                          </p>
+                          <Link
+                            href="/admin/experiences/create"
+                            className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-lg font-medium hover:bg-primary/20 transition-colors text-sm"
+                          >
+                            <Plus size={16} /> Add Experience
+                          </Link>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>
               ) : (
-                experiences.map((exp) => (
+                paginatedExperiences.map((exp) => (
                   <tr key={exp.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-semibold text-slate-800">{exp.title}</div>
@@ -144,6 +176,13 @@ export default function AdminExperiencesPage() {
             </tbody>
           </table>
         </div>
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredItemsCount}
+          itemsPerPage={10}
+        />
       </div>
     </div>
   );

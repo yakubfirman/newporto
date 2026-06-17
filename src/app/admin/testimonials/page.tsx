@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Trash2, MessageSquare, CheckCircle, XCircle } from 'lucide-react';
 import { fetchAdminAPI, Testimonial } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import TableSearch from '@/components/admin/TableSearch';
+import TablePagination from '@/components/admin/TablePagination';
+import { useTablePagination } from '@/hooks/useTablePagination';
 
 export default function AdminTestimonialsPage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -49,6 +52,24 @@ export default function AdminTestimonialsPage() {
     return <div className="p-8 text-center text-slate-500">Loading testimonials...</div>;
   }
 
+  const searchFn = useCallback((testimonial: Testimonial, term: string) => {
+    return Boolean(
+      testimonial.name.toLowerCase().includes(term) ||
+      testimonial.content.toLowerCase().includes(term) ||
+      (testimonial.role && testimonial.role.toLowerCase().includes(term))
+    );
+  }, []);
+
+  const {
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    paginatedItems: paginatedTestimonials,
+    filteredItemsCount,
+  } = useTablePagination(testimonials, searchFn, 10);
+
   return (
     <div className="space-y-6">
       <AdminPageHeader
@@ -61,6 +82,11 @@ export default function AdminTestimonialsPage() {
       )}
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <TableSearch
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search testimonials by author, role, or content..."
+        />
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
@@ -72,15 +98,17 @@ export default function AdminTestimonialsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {testimonials.length === 0 ? (
+              {paginatedTestimonials.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="px-6 py-12 text-center text-slate-500">
                     <MessageSquare size={48} className="mx-auto text-slate-300 mb-4" />
-                    <p>No testimonials found.</p>
+                    <p>
+                      {searchTerm ? 'No testimonials match your search.' : 'No testimonials found.'}
+                    </p>
                   </td>
                 </tr>
               ) : (
-                testimonials.map((testimonial) => (
+                paginatedTestimonials.map((testimonial) => (
                   <tr key={testimonial.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="font-medium text-slate-900">{testimonial.name}</div>
@@ -135,6 +163,13 @@ export default function AdminTestimonialsPage() {
             </tbody>
           </table>
         </div>
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredItemsCount}
+          itemsPerPage={10}
+        />
       </div>
     </div>
   );
