@@ -26,12 +26,9 @@ interface AdminSidebarProps {
 
 export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
   const pathname = usePathname();
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-    Overview: true,
-    Content: true,
-    Resume: false,
-    Settings: false,
-  });
+  // Changed from Record<string, boolean> to a single active string state
+  // to ensure only one group can be open at a time.
+  const [activeGroup, setActiveGroup] = useState<string | null>(null);
 
   const navGroups = [
     {
@@ -69,19 +66,19 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
     },
   ];
 
-  // Auto-open group if active path is inside it
+  // Auto-open group if active path is inside it (only on mount or path change)
   useEffect(() => {
     navGroups.forEach((group) => {
       const hasActiveChild = group.items.some((item) => pathname.startsWith(item.href));
       if (hasActiveChild) {
-        setOpenGroups((prev) => ({ ...prev, [group.title]: true }));
+        setActiveGroup(group.title);
       }
     });
   }, [pathname]);
 
   const toggleGroup = (title: string) => {
     if (!isSidebarOpen) return; // Prevent toggle when sidebar is closed
-    setOpenGroups((prev) => ({ ...prev, [title]: !prev[title] }));
+    setActiveGroup((prev) => (prev === title ? null : title));
   };
 
   return (
@@ -109,7 +106,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
 
       <div className="flex-1 overflow-y-auto py-4 overflow-x-hidden custom-scrollbar">
         {navGroups.map((group, groupIndex) => {
-          const isOpen = !isSidebarOpen || openGroups[group.title];
+          const isOpen = !isSidebarOpen || activeGroup === group.title;
 
           return (
             <div key={group.title} className="mb-2">
