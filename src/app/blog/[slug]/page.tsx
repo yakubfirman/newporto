@@ -174,7 +174,7 @@ export default async function BlogPostPage(props: Props) {
       <div className="w-full relative bg-yellow-50">
         <div className="absolute inset-0 bg-halftone opacity-40 pointer-events-none"></div>
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-24 relative z-10">
-          <div className="flex flex-col lg:grid lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_350px] gap-8 sm:gap-10 lg:gap-16 items-start">
+          <div className="flex flex-col lg:grid lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px] gap-8 sm:gap-10 lg:gap-12 items-start">
             {/* Markdown Content & Comments */}
             <div className="w-full min-w-0">
               <div className="bg-white border-[3px] sm:border-4 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-8 md:p-10 lg:p-14">

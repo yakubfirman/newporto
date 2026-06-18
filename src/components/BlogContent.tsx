@@ -63,19 +63,15 @@ export default function BlogContent({ content }: BlogContentProps) {
       `}</style>
       <div
         ref={contentRef}
-        className="blog-content prose prose-base md:prose-lg max-w-[75ch] mx-auto overflow-hidden
-          prose-headings:font-poppins prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900
-          prose-h1:text-3xl prose-h1:sm:text-4xl prose-h1:md:text-5xl prose-h1:leading-tight prose-h1:mb-8
-          prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:md:text-4xl prose-h2:mt-12 prose-h2:mb-6
-          prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:md:text-3xl prose-h3:mt-8 prose-h3:mb-4
-          prose-a:text-primary prose-a:font-semibold prose-a:break-words hover:prose-a:underline
-          prose-pre:bg-slate-900 prose-pre:border-[3px] prose-pre:border-black prose-pre:p-4 prose-pre:sm:p-6 prose-pre:rounded-none
-          prose-img:border-[3px] prose-img:sm:border-[4px] prose-img:border-black prose-img:rounded-none prose-img:my-10
-          prose-p:font-sans prose-p:text-lg prose-p:leading-[1.8] prose-p:text-slate-700 prose-p:mb-6
-          prose-li:font-sans prose-li:text-lg prose-li:text-slate-700 prose-li:leading-[1.8]
-          prose-ul:my-6 prose-ol:my-6
+        className="blog-content prose prose-base md:prose-lg max-w-[75ch] mx-auto overflow-hidden font-poppins
+          prose-headings:font-bold prose-headings:text-slate-900
+          prose-a:text-primary prose-a:font-semibold hover:prose-a:underline
+          prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-pre:rounded-md
+          prose-img:rounded-md prose-img:my-8
+          prose-p:text-slate-700 prose-p:leading-relaxed
+          prose-li:text-slate-700
           prose-strong:font-bold prose-strong:text-slate-900
-          prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-slate-50 prose-blockquote:p-4 prose-blockquote:italic prose-blockquote:text-slate-700"
+          prose-blockquote:border-l-4 prose-blockquote:border-slate-300 prose-blockquote:bg-slate-50 prose-blockquote:text-slate-700"
       />
     </>
   );
