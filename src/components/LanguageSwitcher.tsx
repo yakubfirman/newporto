@@ -77,17 +77,17 @@ export default function LanguageSwitcher() {
 
       <button
         onClick={toggleLanguage}
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center gap-2 bg-white border-[4px] border-black px-4 py-3 comic-shadow hover:bg-primary hover:text-white transition-all hover:-translate-y-1 group"
+        className="flex items-center justify-center gap-1 sm:gap-2 bg-white border-2 border-black px-2 sm:px-3 py-1 sm:py-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-primary hover:text-white transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none group"
         aria-label="Switch Language"
-        style={{ borderRadius: '0', transform: 'rotate(-2deg)' }}
+        style={{ borderRadius: '0', transform: 'rotate(-1deg)' }}
       >
         <Languages
-          size={24}
+          size={18}
           strokeWidth={3}
-          className="group-hover:rotate-12 transition-transform"
+          className="group-hover:rotate-12 transition-transform sm:w-[20px] sm:h-[20px]"
         />
         <span
-          className="font-heading text-xl font-bold tracking-wider"
+          className="font-heading text-base sm:text-lg font-bold tracking-wider pt-0.5"
           style={{ fontFamily: 'var(--font-bangers)' }}
         >
           {currentLang === 'id' ? 'ID' : 'EN'}

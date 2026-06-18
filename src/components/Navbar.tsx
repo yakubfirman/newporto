@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImageUrl?: string }) {
   const pathname = usePathname();
@@ -66,23 +67,27 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
               </div>
             </div>
 
-            <div className="hidden md:flex items-center shrink-0">
-              <Link href="/contact" className="btn-primary">
-                Hubungi Saya
-              </Link>
-            </div>
+            <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+              <div className="hidden md:flex items-center">
+                <Link href="/contact" className="btn-primary">
+                  Hubungi Saya
+                </Link>
+              </div>
 
-            <button
-              aria-label={isMobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
-              className="md:hidden shrink-0 w-10 h-10 flex items-center justify-center text-black bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:translate-x-0.5 active:shadow-none transition-all z-50 relative"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X size={24} strokeWidth={3} />
-              ) : (
-                <Menu size={24} strokeWidth={3} />
-              )}
-            </button>
+              <LanguageSwitcher />
+
+              <button
+                aria-label={isMobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
+                className="md:hidden shrink-0 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-black bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:translate-x-0.5 active:shadow-none transition-all z-50 relative"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? (
+                  <X size={20} strokeWidth={3} className="sm:w-6 sm:h-6" />
+                ) : (
+                  <Menu size={20} strokeWidth={3} className="sm:w-6 sm:h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </nav>
       </header>
