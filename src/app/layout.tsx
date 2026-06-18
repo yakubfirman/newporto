@@ -56,9 +56,15 @@ export async function generateMetadata(): Promise<Metadata> {
       'max-image-preview': 'large' as const,
       'max-snippet': -1,
     },
+    manifest: '/manifest.json',
     icons: {
-      icon: headerImageUrl,
-      apple: headerImageUrl,
+      icon: [
+        { url: '/icons/icon-32x32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/icons/icon-96x96.png', sizes: '96x96', type: 'image/png' },
+        { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      ],
+      apple: [{ url: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png' }],
+      other: [{ rel: 'apple-touch-icon-precomposed', url: '/icons/icon-192x192.png' }],
     },
     openGraph: {
       type: 'website',
@@ -126,6 +132,12 @@ export default async function RootLayout({
       className={`${inter.variable} ${bangers.variable} ${poppins.variable} h-full antialiased`}
     >
       <head>
+        <meta name="theme-color" content="#e11d48" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Yakub Firman" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="apple-touch-startup-image" href="/icons/icon-512x512.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

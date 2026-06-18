@@ -24,6 +24,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const post = await fetchAPI<Post>(`/posts/${params.slug}${query}`);
     if (!post) throw new Error('Post not found');
 
+    const ogImageUrl = `https://yakubfirman.id/blog/${post.slug}/opengraph-image`;
     return {
       title: `${post.title} | Yakub Firman Mustofa`,
       description: post.excerpt || '',
@@ -33,13 +34,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         type: 'article',
         publishedTime: post.published_at || undefined,
         url: `https://yakubfirman.id/blog/${post.slug}`,
-        images: post.cover_image ? [{ url: post.cover_image }] : [],
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
       },
       twitter: {
         card: 'summary_large_image',
         title: post.title,
         description: post.excerpt || '',
-        images: post.cover_image ? [post.cover_image] : [],
+        images: [ogImageUrl],
       },
       alternates: {
         canonical: `https://yakubfirman.id/blog/${post.slug}`,

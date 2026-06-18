@@ -18,9 +18,33 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
   try {
     const project = await fetchAPI<Project>(`/projects/${params.slug}`);
+    const ogImageUrl = `https://yakubfirman.id/project/${project.slug}/opengraph-image`;
     return {
       title: `${project.title} | Yakub Firman Mustofa`,
       description: project.description,
+      openGraph: {
+        title: project.title,
+        description: project.description,
+        type: 'website',
+        url: `https://yakubfirman.id/project/${project.slug}`,
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+            alt: project.title,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: project.title,
+        description: project.description,
+        images: [ogImageUrl],
+      },
+      alternates: {
+        canonical: `https://yakubfirman.id/project/${project.slug}`,
+      },
     };
   } catch (error) {
     return {
