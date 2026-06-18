@@ -60,15 +60,18 @@ export default function BlogContent({ content }: BlogContentProps) {
           border-left-width: 4px;
           border-color: #cc0000;
         }
+        .blog-content h1, .blog-content h2, .blog-content h3, .blog-content h4, .blog-content h5, .blog-content h6 {
+          font-family: var(--font-poppins) !important;
+        }
       `}</style>
       <div
         ref={contentRef}
-        className="blog-content prose prose-base md:prose-lg max-w-[75ch] mx-auto overflow-hidden font-poppins whitespace-pre-wrap break-words
+        className="blog-content prose prose-base md:prose-lg max-w-[75ch] mx-auto overflow-hidden font-poppins break-words
           prose-headings:font-poppins prose-headings:font-bold prose-headings:text-slate-900
           prose-a:text-primary prose-a:font-semibold hover:prose-a:underline
           prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-pre:rounded-md
           prose-img:rounded-md prose-img:my-8
-          prose-p:text-slate-700 prose-p:leading-relaxed
+          prose-p:text-slate-700 prose-p:leading-relaxed prose-p:my-4
           prose-li:text-slate-700
           prose-strong:font-bold prose-strong:text-slate-900
           prose-blockquote:border-l-4 prose-blockquote:border-slate-300 prose-blockquote:bg-slate-50 prose-blockquote:text-slate-700"
