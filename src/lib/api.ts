@@ -17,6 +17,8 @@ export interface Project {
   url: string | null;
   github_url: string | null;
   is_highlighted: boolean;
+  meta_title?: string | null;
+  meta_description?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -68,6 +70,8 @@ export interface Post {
   likes: number | string;
   comments_count?: number | string;
   comments?: Comment[];
+  meta_title?: string | null;
+  meta_description?: string | null;
   created_at: string;
   updated_at: string;
 }
