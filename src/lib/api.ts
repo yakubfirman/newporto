@@ -108,6 +108,12 @@ export interface Testimonial {
 export async function fetchAPI<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const defaultOptions: RequestInit = {
     ...options,
+    // Enable Next.js ISR (Incremental Static Regeneration) by default
+    // to prevent excessive requests to the backend (caches for 1 hour)
+    next: {
+      revalidate: 3600,
+      ...(options.next || {}),
+    },
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
