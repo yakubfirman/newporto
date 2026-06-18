@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, Search } from 'lucide-react';
-import { fetchAPI, Post } from '@/lib/api';
+import { fetchAPI, Post, getSettings } from '@/lib/api';
 import BlogContent from '@/components/BlogContent';
 import PostComments from '@/components/PostComments';
 
@@ -59,9 +59,10 @@ export default async function BlogPostPage(props: Props) {
 
   let post: Post | null = null;
   let allPosts: Post[] = [];
+  let settings: Record<string, string> = {};
 
   try {
-    const [postData, postsData] = await Promise.all([
+    const [postData, postsData, settingsData] = await Promise.all([
       fetchAPI<Post>(`/posts/${params.slug}${query}`).catch((e) => {
         console.error('Error fetching post data:', e);
         return null;
@@ -70,9 +71,11 @@ export default async function BlogPostPage(props: Props) {
         console.error('Error fetching all posts:', e);
         return [] as Post[];
       }),
+      getSettings().catch(() => ({}) as Record<string, string>),
     ]);
     post = postData;
     allPosts = Array.isArray(postsData) ? postsData : [];
+    settings = settingsData || {};
   } catch (error) {
     console.error('Critical error in BlogPostPage:', error);
   }
@@ -82,6 +85,13 @@ export default async function BlogPostPage(props: Props) {
   }
 
   const recentPosts = allPosts.filter((p) => p && p.slug !== post?.slug).slice(0, 4);
+
+  const authorName = post.author || 'Yakub Firman Mustofa';
+  const isMe =
+    !post.author ||
+    authorName.toLowerCase().includes('yakub') ||
+    authorName.toLowerCase().includes('firman');
+  const authorImage = isMe ? settings.header_image_url || '/profile.jpg' : null;
 
   return (
     <article className="min-h-screen bg-white comic-body">
@@ -134,8 +144,18 @@ export default async function BlogPostPage(props: Props) {
                       })
                     : 'Draft'}
                 </span>
-                <span className="px-2 py-1 text-[10px] sm:text-xs font-bold text-black bg-white uppercase tracking-widest border-2 border-black inline-flex items-center gap-1">
-                  By {post.author || 'Yakub Firman Mustofa'}
+                <span className="px-2 py-1 text-[10px] sm:text-xs font-bold text-black bg-white uppercase tracking-widest border-2 border-black inline-flex items-center gap-2">
+                  {authorImage && (
+                    <Image
+                      src={authorImage}
+                      alt={authorName}
+                      width={20}
+                      height={20}
+                      className="rounded-full border border-black w-5 h-5 object-cover"
+                      unoptimized={authorImage.includes('localhost')}
+                    />
+                  )}
+                  <span>By {authorName}</span>
                 </span>
               </div>
               <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl comic-heading text-white leading-tight sm:leading-none mb-3 sm:mb-4 comic-text-white uppercase">
