@@ -11,6 +11,7 @@ import {
   MdMail,
   MdRateReview,
   MdSettings,
+  MdAnalytics,
 } from 'react-icons/md';
 import { API_URL } from '@/lib/api';
 
@@ -24,6 +25,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
 
   const navItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: <MdDashboard size={20} /> },
+    { name: 'Analytics', href: '/admin/analytics', icon: <MdAnalytics size={20} /> },
     { name: 'Projects', href: '/admin/projects', icon: <MdWork size={20} /> },
     { name: 'Blog Posts', href: '/admin/posts', icon: <MdArticle size={20} /> },
     { name: 'Comments', href: '/admin/comments', icon: <MdComment size={20} /> },
