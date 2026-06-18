@@ -6,6 +6,7 @@ import { ArrowLeft, Calendar, Search } from 'lucide-react';
 import { fetchAPI, Post, getSettings } from '@/lib/api';
 import BlogContent from '@/components/BlogContent';
 import PostComments from '@/components/PostComments';
+import ReadingProgress from '@/components/ReadingProgress';
 
 export const revalidate = 0;
 
@@ -99,6 +100,7 @@ export default async function BlogPostPage(props: Props) {
 
   return (
     <article className="min-h-screen bg-white comic-body">
+      <ReadingProgress />
       {/* Article JSON-LD for AEO/GEO */}
       <script
         type="application/ld+json"

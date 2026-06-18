@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Bangers, Poppins } from 'next/font/google';
 import './globals.css';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
+import CustomCursor from '@/components/CustomCursor';
 import { getSettings } from '@/lib/api';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'block' });
@@ -142,6 +143,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans selection:bg-primary/20">
+        <CustomCursor />
         <ClientLayoutWrapper
           headerImageUrl={headerImageUrl}
           contactEmail={contactEmail}

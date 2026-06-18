@@ -47,9 +47,18 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
                   unoptimized={headerImageUrl.includes('localhost')}
                 />
               </div>
-              <span className="comic-heading text-2xl md:text-3xl text-black uppercase pt-1 truncate">
-                <span className="notranslate text-primary">Yakub Firman</span>
-                <span>.</span>
+              <span className="comic-heading text-2xl md:text-3xl text-black uppercase pt-1 truncate flex items-center gap-3">
+                <span>
+                  <span className="notranslate text-primary">Yakub Firman</span>
+                  <span>.</span>
+                </span>
+                <span className="hidden md:flex items-center gap-1.5 px-2.5 py-0.5 bg-green-50 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-[10px] tracking-widest -rotate-2 group-hover:rotate-0 transition-transform">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500 border border-black"></span>
+                  </span>
+                  Available
+                </span>
               </span>
             </Link>
 
