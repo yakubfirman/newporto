@@ -64,14 +64,14 @@ export default function BlogContent({ content }: BlogContentProps) {
       <div
         ref={contentRef}
         className="blog-content prose prose-sm sm:prose-base md:prose-lg lg:prose-xl max-w-none overflow-hidden
-          prose-headings:font-black prose-headings:tracking-tight prose-headings:text-black
+          prose-headings:font-sans prose-headings:font-black prose-headings:tracking-tight prose-headings:text-black
           prose-h1:text-2xl prose-h1:sm:text-3xl prose-h1:md:text-4xl
           prose-h2:text-xl prose-h2:sm:text-2xl prose-h2:md:text-3xl
           prose-a:text-primary prose-a:font-bold prose-a:break-words hover:prose-a:underline
           prose-pre:bg-black prose-pre:border-[3px] prose-pre:border-black prose-pre:p-3 prose-pre:sm:p-4
           prose-img:border-[3px] prose-img:sm:border-[4px] prose-img:border-black
-          prose-p:leading-relaxed prose-p:text-slate-800
-          prose-li:text-slate-800 prose-li:leading-relaxed"
+          prose-p:font-poppins prose-p:leading-relaxed prose-p:text-slate-800
+          prose-li:font-poppins prose-li:text-slate-800 prose-li:leading-relaxed"
       />
     </>
   );

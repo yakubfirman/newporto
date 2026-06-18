@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Bangers } from 'next/font/google';
+import { Inter, Bangers, Poppins } from 'next/font/google';
 import './globals.css';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -10,6 +10,13 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'bl
 const bangers = Bangers({
   weight: ['400'],
   variable: '--font-bangers',
+  subsets: ['latin'],
+  display: 'block',
+});
+
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
   subsets: ['latin'],
   display: 'block',
 });
@@ -115,7 +122,10 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${inter.variable} ${bangers.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${bangers.variable} ${poppins.variable} h-full antialiased`}
+    >
       <head>
         <script
           type="application/ld+json"
