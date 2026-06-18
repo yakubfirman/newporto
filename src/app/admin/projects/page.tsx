@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { Plus, ExternalLink, GitBranch, Briefcase } from 'lucide-react';
+import { Plus, ExternalLink, GitBranch, Briefcase, GripVertical } from 'lucide-react';
 import { fetchAdminAPI, Project } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import AdminTableActions from '@/components/admin/AdminTableActions';
@@ -78,12 +78,28 @@ export default function AdminProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <AdminPageHeader
-        title="Projects"
-        description="Manage your portfolio projects"
-        actionLabel="Add Project"
-        actionHref="/admin/projects/create"
-      />
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800 font-heading">Projects</h2>
+          <p className="text-sm text-slate-500 mt-1">Manage your portfolio projects</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/projects/reorder"
+            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold px-4 py-2.5 rounded-lg transition-colors text-sm"
+          >
+            <GripVertical size={16} />
+            Urutkan
+          </Link>
+          <Link
+            href="/admin/projects/create"
+            className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
+          >
+            <Plus size={18} />
+            <span className="hidden sm:inline">Add Project</span>
+          </Link>
+        </div>
+      </div>
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
         <TableSearch

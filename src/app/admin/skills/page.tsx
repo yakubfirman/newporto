@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Star } from 'lucide-react';
+import { Star, GripVertical, Plus } from 'lucide-react';
+import Link from 'next/link';
 import { fetchAdminAPI, Skill } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import AdminTableActions from '@/components/admin/AdminTableActions';
@@ -70,12 +71,28 @@ export default function AdminSkillsPage() {
 
   return (
     <div className="space-y-6">
-      <AdminPageHeader
-        title="Skills"
-        description="Manage your technical and soft skills"
-        actionLabel="Add Skill"
-        actionHref="/admin/skills/create"
-      />
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800 font-heading">Skills</h2>
+          <p className="text-sm text-slate-500 mt-1">Manage your technical and soft skills</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/skills/reorder"
+            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-bold px-4 py-2.5 rounded-lg transition-colors text-sm"
+          >
+            <GripVertical size={16} />
+            Urutkan
+          </Link>
+          <Link
+            href="/admin/skills/create"
+            className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
+          >
+            <Plus size={18} />
+            <span className="hidden sm:inline">Add Skill</span>
+          </Link>
+        </div>
+      </div>
 
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
         <TableSearch

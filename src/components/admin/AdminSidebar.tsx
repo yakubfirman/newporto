@@ -13,6 +13,7 @@ import {
   MdSettings,
   MdAnalytics,
 } from 'react-icons/md';
+import { Image as ImageIcon } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 
 interface AdminSidebarProps {
@@ -26,6 +27,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
   const navItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: <MdDashboard size={20} /> },
     { name: 'Analytics', href: '/admin/analytics', icon: <MdAnalytics size={20} /> },
+    { name: 'Media Library', href: '/admin/media', icon: <ImageIcon size={20} /> },
     { name: 'Projects', href: '/admin/projects', icon: <MdWork size={20} /> },
     { name: 'Blog Posts', href: '/admin/posts', icon: <MdArticle size={20} /> },
     { name: 'Comments', href: '/admin/comments', icon: <MdComment size={20} /> },

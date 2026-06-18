@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Search, Globe } from 'lucide-react';
 import { fetchAdminAPI, Project } from '@/lib/api';
 import ImageCropper from '@/components/admin/ImageCropper';
 import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
@@ -28,6 +28,8 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
     url: '',
     github_url: '',
     is_highlighted: false,
+    meta_title: '',
+    meta_description: '',
   });
 
   useEffect(() => {
@@ -45,6 +47,8 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
           url: data.url || '',
           github_url: data.github_url || '',
           is_highlighted: data.is_highlighted,
+          meta_title: (data as any).meta_title || '',
+          meta_description: (data as any).meta_description || '',
         });
       } catch (err: any) {
         setError(err.message);
@@ -183,6 +187,85 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
                 rows={2}
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
               />
+            </div>
+
+            {/* SEO Section */}
+            <div className="border border-slate-200 rounded-xl p-6 space-y-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+              <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                <Search size={18} className="text-blue-600" />
+                <span>SEO &amp; Meta Data</span>
+              </h3>
+
+              {/* Search Preview */}
+              <div className="p-4 border border-slate-200 rounded-lg bg-white font-sans shadow-sm">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3 block">
+                  Search Engine Preview
+                </span>
+                <div className="text-sm text-[#202124] flex items-center gap-1 mb-1">
+                  <Globe size={14} className="text-slate-400" />
+                  <span>yakubfirman.id</span>
+                  <span className="text-slate-500 mx-1">›</span>
+                  <span className="text-slate-500">
+                    project › {formData.slug || 'project-slug'}
+                  </span>
+                </div>
+                <div className="text-[20px] text-[#1a0dab] font-medium hover:underline cursor-pointer mb-1 leading-tight">
+                  {formData.meta_title || formData.title || 'Project Title'} | Yakub Firman
+                </div>
+                <div className="text-sm text-[#4d5156] line-clamp-2">
+                  {formData.meta_description ||
+                    formData.description ||
+                    'Project description will appear here for search engines.'}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700 flex justify-between">
+                  <span>
+                    Meta Title{' '}
+                    <span className="text-slate-400 font-normal">(default: project title)</span>
+                  </span>
+                  <span
+                    className={`text-xs ${formData.meta_title.length > 60 ? 'text-red-500 font-bold' : 'text-slate-400'}`}
+                  >
+                    {formData.meta_title.length} / 60
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.meta_title}
+                  onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
+                  placeholder="Custom SEO title..."
+                  maxLength={60}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none transition-all text-sm"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700 flex justify-between">
+                  <span>
+                    Meta Description{' '}
+                    <span className="text-slate-400 font-normal">(default: short description)</span>
+                  </span>
+                  <span
+                    className={`text-xs ${formData.meta_description.length > 160 ? 'text-red-500 font-bold' : 'text-slate-400'}`}
+                  >
+                    {formData.meta_description.length} / 160
+                  </span>
+                </label>
+                <textarea
+                  value={formData.meta_description}
+                  onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                  placeholder="Custom SEO description for search engines..."
+                  rows={3}
+                  maxLength={160}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 outline-none transition-all text-sm resize-none ${
+                    formData.meta_description.length > 160
+                      ? 'border-red-300 bg-red-50'
+                      : 'border-slate-300'
+                  }`}
+                />
+              </div>
             </div>
 
             <div className="space-y-2">

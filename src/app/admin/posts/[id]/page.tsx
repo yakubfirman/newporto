@@ -29,6 +29,8 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     cover_image: '',
     is_published: false,
     published_at: '',
+    meta_title: '',
+    meta_description: '',
   });
 
   useEffect(() => {
@@ -45,6 +47,8 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
           cover_image: data.cover_image || '',
           is_published: data.is_published || false,
           published_at: data.published_at ? data.published_at.split('T')[0] : '',
+          meta_title: data.meta_title || '',
+          meta_description: data.meta_description || '',
         });
       } catch (err: any) {
         setError(err.message);
@@ -349,6 +353,47 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
                   </span>
                 </button>
               )}
+            </div>
+          </div>
+
+          {/* SEO Settings */}
+          <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <span className="text-blue-400">🔍</span> SEO Settings
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">
+                  Meta Title <span className="text-slate-500">(default: post title)</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.meta_title}
+                  onChange={(e) => setFormData({ ...formData, meta_title: e.target.value })}
+                  placeholder="Custom meta title for SEO..."
+                  maxLength={60}
+                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  {(formData.meta_title || '').length}/60 characters
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">
+                  Meta Description <span className="text-slate-500">(default: excerpt)</span>
+                </label>
+                <textarea
+                  value={formData.meta_description}
+                  onChange={(e) => setFormData({ ...formData, meta_description: e.target.value })}
+                  placeholder="Custom meta description for search engines..."
+                  rows={3}
+                  maxLength={160}
+                  className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  {(formData.meta_description || '').length}/160 characters
+                </p>
+              </div>
             </div>
           </div>
 
