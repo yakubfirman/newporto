@@ -30,15 +30,13 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
   // to ensure only one group can be open at a time.
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
 
+  const topItems = [
+    { name: 'Dashboard', href: '/admin/dashboard', icon: <MdDashboard size={20} /> },
+    { name: 'Analytics', href: '/admin/analytics', icon: <MdAnalytics size={20} /> },
+    { name: 'Messages', href: '/admin/messages', icon: <MdMail size={20} /> },
+  ];
+
   const navGroups = [
-    {
-      title: 'Overview',
-      items: [
-        { name: 'Dashboard', href: '/admin/dashboard', icon: <MdDashboard size={20} /> },
-        { name: 'Analytics', href: '/admin/analytics', icon: <MdAnalytics size={20} /> },
-        { name: 'Messages', href: '/admin/messages', icon: <MdMail size={20} /> },
-      ],
-    },
     {
       title: 'Content',
       items: [
@@ -81,6 +79,32 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
     setActiveGroup((prev) => (prev === title ? null : title));
   };
 
+  const renderItem = (item: any) => {
+    const isActive = pathname.startsWith(item.href);
+    return (
+      <Link
+        key={item.name}
+        href={item.href}
+        title={!isSidebarOpen ? item.name : undefined}
+        className={`group relative flex items-center ${isSidebarOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-all font-medium text-sm ${
+          isActive
+            ? 'bg-primary/10 text-primary'
+            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+        }`}
+      >
+        {isActive && (
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-primary rounded-r-full" />
+        )}
+        <span
+          className={`shrink-0 transition-transform duration-200 ${isActive ? 'text-primary scale-110' : 'text-slate-400 group-hover:scale-110 group-hover:text-slate-600'}`}
+        >
+          {item.icon}
+        </span>
+        {isSidebarOpen && <span className="whitespace-nowrap">{item.name}</span>}
+      </Link>
+    );
+  };
+
   return (
     <aside
       className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-slate-200 flex flex-col hidden md:flex transition-all duration-300`}
@@ -105,6 +129,14 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto py-4 overflow-x-hidden custom-scrollbar">
+        {/* Independent Top Items */}
+        <div className={`flex flex-col space-y-1 ${isSidebarOpen ? 'px-3' : 'px-2'} mb-4`}>
+          {topItems.map(renderItem)}
+        </div>
+
+        {isSidebarOpen && <div className="h-px bg-slate-100 mx-4 my-4" />}
+
+        {/* Grouped Items */}
         {navGroups.map((group, groupIndex) => {
           const isOpen = !isSidebarOpen || activeGroup === group.title;
 
@@ -119,7 +151,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
                   {isOpen ? <MdExpandMore size={16} /> : <MdChevronRight size={16} />}
                 </button>
               ) : (
-                groupIndex !== 0 && <div className="h-px bg-slate-100 mx-4 my-2" />
+                <div className="h-px bg-slate-100 mx-4 my-2" />
               )}
 
               <div
@@ -129,31 +161,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
                   opacity: isOpen ? 1 : 0,
                 }}
               >
-                {group.items.map((item) => {
-                  const isActive = pathname.startsWith(item.href);
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      title={!isSidebarOpen ? item.name : undefined}
-                      className={`group relative flex items-center ${isSidebarOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-all font-medium text-sm ${
-                        isActive
-                          ? 'bg-primary/10 text-primary'
-                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                      }`}
-                    >
-                      {isActive && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-primary rounded-r-full" />
-                      )}
-                      <span
-                        className={`shrink-0 transition-transform duration-200 ${isActive ? 'text-primary scale-110' : 'text-slate-400 group-hover:scale-110 group-hover:text-slate-600'}`}
-                      >
-                        {item.icon}
-                      </span>
-                      {isSidebarOpen && <span className="whitespace-nowrap">{item.name}</span>}
-                    </Link>
-                  );
-                })}
+                {group.items.map(renderItem)}
               </div>
             </div>
           );
