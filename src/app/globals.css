@@ -25,12 +25,8 @@
   --foreground: #000000;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff; /* keep it white for comic theme */
-    --foreground: #000000;
-  }
-}
+
+
 
 body {
   background-color: var(--background);
