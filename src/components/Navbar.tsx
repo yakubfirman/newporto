@@ -47,8 +47,8 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
                 />
               </div>
               <span className="comic-heading text-2xl md:text-3xl text-black uppercase pt-1 truncate">
-                <span className="notranslate">Yakub Firman</span>
-                <span className="text-primary">.</span>
+                <span className="notranslate text-primary">Yakub Firman</span>
+                <span>.</span>
               </span>
             </Link>
 
