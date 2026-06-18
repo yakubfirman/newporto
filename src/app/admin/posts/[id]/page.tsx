@@ -17,13 +17,14 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showImageCropper, setShowImageCropper] = useState(false);
+  const [croppingImage, setCroppingImage] = useState<'cover' | 'author' | null>(null);
 
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
     excerpt: '',
     author: '',
+    author_image_url: '',
     content: '',
     cover_image: '',
     is_published: false,
@@ -39,6 +40,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
           slug: data.slug,
           excerpt: data.excerpt || '',
           author: data.author || 'Yakub Firman Mustofa',
+          author_image_url: data.author_image_url || '',
           content: data.content || '',
           cover_image: data.cover_image || '',
           is_published: data.is_published || false,
@@ -160,19 +162,56 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
 
             <div className="space-y-2">
               <label className="text-sm font-semibold text-slate-700">Author</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User size={16} className="text-slate-400" />
+              <div className="flex gap-4 items-start">
+                <div className="flex-1">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <User size={16} className="text-slate-400" />
+                    </div>
+                    <input
+                      required
+                      type="text"
+                      name="author"
+                      value={formData.author}
+                      onChange={handleChange}
+                      className="w-full pl-10 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
+                      placeholder="Author Name"
+                    />
+                  </div>
                 </div>
-                <input
-                  required
-                  type="text"
-                  name="author"
-                  value={formData.author}
-                  onChange={handleChange}
-                  className="w-full pl-10 px-4 py-2 border border-slate-300 rounded-r-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
-                  placeholder="Author Name"
-                />
+                <div className="shrink-0 flex flex-col items-center">
+                  <div className="relative w-16 h-16 bg-slate-100 rounded-full border border-slate-300 overflow-hidden flex items-center justify-center mb-1 group">
+                    {formData.author_image_url ? (
+                      <>
+                        <img
+                          src={formData.author_image_url}
+                          alt="Author"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setFormData((prev) => ({ ...prev, author_image_url: '' }))
+                            }
+                            className="text-white text-xs font-semibold px-2 py-1 bg-red-500 rounded"
+                          >
+                            X
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <User size={24} className="text-slate-400" />
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setCroppingImage('author')}
+                    className="text-xs text-primary font-semibold hover:underline"
+                  >
+                    {formData.author_image_url ? 'Change Photo' : 'Add Photo'}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -281,7 +320,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       type="button"
-                      onClick={() => setShowImageCropper(true)}
+                      onClick={() => setCroppingImage('cover')}
                       className="px-4 py-2 bg-white text-slate-800 font-medium rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
                     >
                       Change Cover
@@ -298,7 +337,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
               ) : (
                 <button
                   type="button"
-                  onClick={() => setShowImageCropper(true)}
+                  onClick={() => setCroppingImage('cover')}
                   className="w-full aspect-video border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-500 hover:bg-slate-50 hover:border-primary hover:text-primary transition-colors mt-2"
                 >
                   <span className="mb-2">
@@ -335,14 +374,18 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         </div>
       </form>
 
-      {showImageCropper && (
+      {croppingImage && (
         <ImageCropper
-          aspectRatio={16 / 9}
+          aspectRatio={croppingImage === 'author' ? 1 : 16 / 9}
           onCropComplete={(url) => {
-            setFormData({ ...formData, cover_image: url });
-            setShowImageCropper(false);
+            if (croppingImage === 'cover') {
+              setFormData({ ...formData, cover_image: url });
+            } else {
+              setFormData({ ...formData, author_image_url: url });
+            }
+            setCroppingImage(null);
           }}
-          onCancel={() => setShowImageCropper(false)}
+          onCancel={() => setCroppingImage(null)}
         />
       )}
     </div>

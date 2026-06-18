@@ -59,6 +59,7 @@ export interface Post {
   slug: string;
   excerpt: string;
   author: string;
+  author_image_url?: string | null;
   content: string;
   cover_image: string | null;
   is_published: boolean;
