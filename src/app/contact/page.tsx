@@ -28,6 +28,14 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
+
+    // Honeypot check for bots
+    if (formData.get('_gotcha')) {
+      setIsSubmitting(false);
+      (e.target as HTMLFormElement).reset();
+      return;
+    }
+
     const data = {
       name: formData.get('name'),
       email: formData.get('email'),
@@ -85,6 +93,15 @@ export default function ContactPage() {
               Kirim Saya Pesan
             </h3>
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 mt-6">
+              {/* Honeypot field for anti-spam */}
+              <input
+                type="text"
+                name="_gotcha"
+                style={{ display: 'none' }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
               <div>
                 <label
                   htmlFor="name"
@@ -97,6 +114,7 @@ export default function ContactPage() {
                   name="name"
                   id="name"
                   required
+                  aria-required="true"
                   className="w-full px-4 py-3 border-[3px] border-black bg-slate-50 focus:bg-white focus:outline-none transition-colors text-black font-bold uppercase tracking-wide placeholder-slate-400 comic-shadow"
                   placeholder="John Doe"
                 />
@@ -113,6 +131,7 @@ export default function ContactPage() {
                   name="email"
                   id="email"
                   required
+                  aria-required="true"
                   className="w-full px-4 py-3 border-[3px] border-black bg-slate-50 focus:bg-white focus:outline-none transition-colors text-black font-bold uppercase tracking-wide placeholder-slate-400 comic-shadow"
                   placeholder="john@example.com"
                 />
@@ -143,6 +162,7 @@ export default function ContactPage() {
                   name="message"
                   id="message"
                   required
+                  aria-required="true"
                   rows={5}
                   className="w-full px-4 py-3 border-[3px] border-black bg-slate-50 focus:bg-white focus:outline-none transition-colors text-black font-bold uppercase tracking-wide placeholder-slate-400 comic-shadow resize-none"
                   placeholder="Ceritakan tentang proyek Anda..."
@@ -151,13 +171,36 @@ export default function ContactPage() {
               <button
                 disabled={isSubmitting}
                 type="submit"
-                className="btn-primary w-full disabled:opacity-70"
+                aria-label="Kirim Pesan"
+                className="btn-primary w-full disabled:opacity-70 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
-                  'Mengirim...'
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Mengirim...
+                  </>
                 ) : (
                   <>
-                    Kirim Pesan <Send size={24} strokeWidth={3} />
+                    Kirim Pesan <Send size={24} strokeWidth={3} aria-hidden="true" />
                   </>
                 )}
               </button>

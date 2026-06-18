@@ -139,22 +139,30 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
         {/* Grouped Items */}
         {navGroups.map((group, groupIndex) => {
           const isOpen = !isSidebarOpen || activeGroup === group.title;
+          const groupId = `group-${group.title.toLowerCase().replace(/\\s+/g, '-')}`;
 
           return (
             <div key={group.title} className="mb-2">
               {isSidebarOpen ? (
                 <button
                   onClick={() => toggleGroup(group.title)}
+                  aria-expanded={isOpen}
+                  aria-controls={groupId}
                   className="w-full flex items-center justify-between px-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider hover:text-slate-600 transition-colors"
                 >
                   <span>{group.title}</span>
-                  {isOpen ? <MdExpandMore size={16} /> : <MdChevronRight size={16} />}
+                  {isOpen ? (
+                    <MdExpandMore size={16} aria-hidden="true" />
+                  ) : (
+                    <MdChevronRight size={16} aria-hidden="true" />
+                  )}
                 </button>
               ) : (
                 <div className="h-px bg-slate-100 mx-4 my-2" />
               )}
 
               <div
+                id={groupId}
                 className={`flex flex-col space-y-1 ${isSidebarOpen ? 'px-3' : 'px-2'} overflow-hidden transition-all duration-300 ease-in-out`}
                 style={{
                   maxHeight: isOpen ? '500px' : '0',
