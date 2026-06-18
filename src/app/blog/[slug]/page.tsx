@@ -4,8 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Calendar, Search } from 'lucide-react';
 import { fetchAPI, Post } from '@/lib/api';
-import 'highlight.js/styles/github-dark.css';
-import DOMPurify from 'isomorphic-dompurify';
+import BlogContent from '@/components/BlogContent';
 import PostComments from '@/components/PostComments';
 
 export const revalidate = 0;
@@ -83,7 +82,6 @@ export default async function BlogPostPage(props: Props) {
   }
 
   const recentPosts = allPosts.filter((p) => p && p.slug !== post?.slug).slice(0, 4);
-  const sanitizedContent = post.content ? DOMPurify.sanitize(post.content) : '';
 
   return (
     <article className="min-h-screen bg-white comic-body">
@@ -180,10 +178,7 @@ export default async function BlogPostPage(props: Props) {
             {/* Markdown Content & Comments */}
             <div>
               <div className="comic-panel bg-white p-6 sm:p-10 md:p-14 rotate-0 comic-shadow-sm">
-                <div
-                  className="prose prose-slate prose-lg md:prose-xl max-w-none prose-headings:font-black prose-headings:tracking-tight prose-headings:text-black prose-a:text-primary prose-a:font-bold hover:prose-a:underline prose-pre:bg-black prose-pre:border-[3px] prose-pre:border-black prose-pre:comic-shadow prose-img:border-[4px] prose-img:border-black prose-img:comic-shadow prose-p:leading-relaxed prose-p:text-slate-800 prose-li:text-slate-800 prose-li:leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-                />
+                <BlogContent content={post.content || ''} />
               </div>
 
               {/* Comments Section */}
