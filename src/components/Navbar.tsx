@@ -68,13 +68,13 @@ export default function Navbar({ headerImageUrl = '/profile.jpg' }: { headerImag
             </div>
 
             <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+              <LanguageSwitcher />
+
               <div className="hidden md:flex items-center">
                 <Link href="/contact" className="btn-primary">
                   Hubungi Saya
                 </Link>
               </div>
-
-              <LanguageSwitcher />
 
               <button
                 aria-label={isMobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
