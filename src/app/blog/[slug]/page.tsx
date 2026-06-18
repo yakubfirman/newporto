@@ -109,21 +109,21 @@ export default async function BlogPostPage(props: Props) {
       />
 
       {/* Hero / Banner Comic Style */}
-      <div className="w-full relative overflow-hidden bg-white pt-32 pb-16 md:pt-40 md:pb-24 border-b-[6px] border-black">
+      <div className="w-full relative overflow-hidden bg-white pt-24 pb-10 sm:pt-28 sm:pb-14 md:pt-40 md:pb-24 border-b-4 sm:border-b-[6px] border-black">
         <div className="absolute inset-0 bg-halftone opacity-20 pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-black hover:text-primary transition-colors mb-8 font-bold uppercase tracking-wide bg-white border-[3px] border-black px-4 py-2 comic-shadow rotate-1 w-max"
+            className="inline-flex items-center gap-2 text-black hover:text-primary transition-colors mb-6 sm:mb-8 font-bold uppercase tracking-wide bg-white border-2 sm:border-[3px] border-black px-3 py-1.5 sm:px-4 sm:py-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:comic-shadow sm:rotate-1 w-max text-sm sm:text-base"
           >
-            <ArrowLeft size={18} strokeWidth={3} /> Back to Blog
+            <ArrowLeft size={16} strokeWidth={3} className="sm:w-[18px] sm:h-[18px]" /> Back to Blog
           </Link>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-16 items-center">
             {/* Title side */}
-            <div className="comic-panel-red p-6 sm:p-8 -rotate-1 relative z-10">
-              <div className="flex flex-wrap gap-2 mb-4">
+            <div className="comic-panel-red p-4 sm:p-6 md:p-8 sm:-rotate-1 relative z-10 !shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:!shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] !border-[3px] sm:!border-4">
+              <div className="flex flex-wrap gap-2 mb-3 sm:mb-4">
                 <span className="px-2 py-1 text-[10px] sm:text-xs font-bold text-white bg-black uppercase tracking-widest border-2 border-black inline-flex items-center gap-1">
                   <Calendar size={12} strokeWidth={3} />
                   {post.published_at
@@ -138,16 +138,16 @@ export default async function BlogPostPage(props: Props) {
                   By {post.author || 'Yakub Firman Mustofa'}
                 </span>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl comic-heading text-white leading-none mb-4 comic-text-white uppercase">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl comic-heading text-white leading-tight sm:leading-none mb-3 sm:mb-4 comic-text-white uppercase">
                 {post.title}
               </h1>
-              <p className="text-white font-bold text-sm md:text-base max-w-2xl tracking-wide leading-relaxed">
+              <p className="text-white font-bold text-xs sm:text-sm md:text-base max-w-2xl tracking-wide leading-relaxed">
                 {post.excerpt}
               </p>
             </div>
 
             {/* Image side */}
-            <div className="relative aspect-[16/10] w-full border-[6px] border-black bg-yellow-400 comic-shadow rotate-2 overflow-hidden flex items-center justify-center">
+            <div className="relative aspect-[16/10] w-full border-4 sm:border-[6px] border-black bg-yellow-400 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:comic-shadow sm:rotate-2 overflow-hidden flex items-center justify-center">
               {post.cover_image ? (
                 <Image
                   src={post.cover_image}
@@ -160,7 +160,7 @@ export default async function BlogPostPage(props: Props) {
               ) : (
                 <>
                   <div className="absolute inset-0 bg-halftone opacity-30"></div>
-                  <span className="comic-heading text-4xl text-black rotate-[-10deg] tracking-wider relative z-10 uppercase">
+                  <span className="comic-heading text-2xl sm:text-4xl text-black rotate-[-10deg] tracking-wider relative z-10 uppercase">
                     NO IMAGE
                   </span>
                 </>
@@ -173,11 +173,11 @@ export default async function BlogPostPage(props: Props) {
       {/* Content */}
       <div className="w-full relative bg-yellow-50">
         <div className="absolute inset-0 bg-halftone opacity-40 pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10">
-          <div className="grid lg:grid-cols-[1fr_350px] gap-12 lg:gap-16 items-start">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-24 relative z-10">
+          <div className="flex flex-col lg:grid lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_350px] gap-8 sm:gap-10 lg:gap-16 items-start">
             {/* Markdown Content & Comments */}
-            <div>
-              <div className="comic-panel bg-white p-6 sm:p-10 md:p-14 rotate-0 comic-shadow-sm">
+            <div className="w-full min-w-0">
+              <div className="bg-white border-[3px] sm:border-4 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-8 md:p-10 lg:p-14">
                 <BlogContent content={post.content || ''} />
               </div>
 
@@ -190,10 +190,10 @@ export default async function BlogPostPage(props: Props) {
             </div>
 
             {/* Sidebar */}
-            <aside className="sticky top-32 space-y-8">
+            <aside className="w-full lg:sticky lg:top-32 space-y-6 sm:space-y-8">
               {/* Search Widget */}
-              <div className="comic-panel bg-white p-6 -rotate-1">
-                <h3 className="comic-heading text-xl text-black mb-4 uppercase tracking-wide">
+              <div className="bg-white border-[3px] sm:border-4 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-6 sm:-rotate-1">
+                <h3 className="comic-heading text-lg sm:text-xl text-black mb-3 sm:mb-4 uppercase tracking-wide">
                   Search Articles
                 </h3>
                 <form action="/blog" method="GET" className="flex flex-col gap-3">
@@ -202,11 +202,11 @@ export default async function BlogPostPage(props: Props) {
                     name="search"
                     placeholder="Keyword..."
                     required
-                    className="w-full border-[3px] border-black px-4 py-2 font-bold text-black focus:outline-none focus:bg-yellow-100 uppercase"
+                    className="w-full border-2 sm:border-[3px] border-black px-3 sm:px-4 py-2 font-bold text-black focus:outline-none focus:bg-yellow-100 uppercase text-sm sm:text-base"
                   />
                   <button
                     type="submit"
-                    className="border-[4px] border-black comic-shadow px-4 py-2 !bg-primary text-white hover:!bg-black transition-colors font-bold uppercase tracking-wide text-center"
+                    className="border-[3px] sm:border-[4px] border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:comic-shadow px-4 py-2 !bg-primary text-white hover:!bg-black transition-colors font-bold uppercase tracking-wide text-center text-sm sm:text-base"
                   >
                     Search <Search size={16} className="inline ml-1 mb-1" strokeWidth={3} />
                   </button>
@@ -214,17 +214,17 @@ export default async function BlogPostPage(props: Props) {
               </div>
 
               {/* Recent Posts */}
-              <div className="comic-panel bg-white p-6 rotate-1">
-                <h3 className="comic-heading text-xl text-black mb-6 uppercase tracking-wide border-b-4 border-black pb-2">
+              <div className="bg-white border-[3px] sm:border-4 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-6 sm:rotate-1">
+                <h3 className="comic-heading text-lg sm:text-xl text-black mb-4 sm:mb-6 uppercase tracking-wide border-b-[3px] sm:border-b-4 border-black pb-2">
                   Recent Articles
                 </h3>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {recentPosts.map((rp) => (
                     <Link key={rp.id} href={`/blog/${rp.slug}`} className="group block">
-                      <h4 className="font-black text-black group-hover:text-primary transition-colors leading-snug line-clamp-2 uppercase">
+                      <h4 className="font-black text-black group-hover:text-primary transition-colors leading-snug line-clamp-2 uppercase text-sm sm:text-base">
                         {rp.title}
                       </h4>
-                      <time className="text-xs font-bold text-slate-500 uppercase mt-1 block tracking-wide">
+                      <time className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase mt-1 block tracking-wide">
                         {rp.published_at
                           ? new Date(rp.published_at).toLocaleDateString('en-US', {
                               year: 'numeric',
@@ -236,7 +236,7 @@ export default async function BlogPostPage(props: Props) {
                     </Link>
                   ))}
                   {recentPosts.length === 0 && (
-                    <p className="text-sm font-bold text-slate-500 ">No other articles found.</p>
+                    <p className="text-sm font-bold text-slate-500">No other articles found.</p>
                   )}
                 </div>
               </div>
