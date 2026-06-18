@@ -91,7 +91,11 @@ export default async function BlogPostPage(props: Props) {
     !post.author ||
     authorName.toLowerCase().includes('yakub') ||
     authorName.toLowerCase().includes('firman');
-  const authorImage = isMe ? settings.header_image_url || '/profile.jpg' : null;
+
+  let authorImage = post.author_image_url || null;
+  if (!authorImage && isMe) {
+    authorImage = settings.header_image_url || '/profile.jpg';
+  }
 
   return (
     <article className="min-h-screen bg-white comic-body">
