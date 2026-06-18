@@ -22,12 +22,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const query = isPreview ? '?preview=true' : '';
   try {
     const post = await fetchAPI<Post>(`/posts/${params.slug}${query}`);
+    if (!post) throw new Error('Post not found');
+
     return {
       title: `${post.title} | Yakub Firman Mustofa`,
-      description: post.excerpt,
+      description: post.excerpt || '',
       openGraph: {
         title: post.title,
-        description: post.excerpt,
+        description: post.excerpt || '',
         type: 'article',
         publishedTime: post.published_at || undefined,
         url: `https://yakubfirman.id/blog/${post.slug}`,
@@ -36,7 +38,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       twitter: {
         card: 'summary_large_image',
         title: post.title,
-        description: post.excerpt,
+        description: post.excerpt || '',
         images: post.cover_image ? [post.cover_image] : [],
       },
       alternates: {
@@ -61,18 +63,27 @@ export default async function BlogPostPage(props: Props) {
 
   try {
     const [postData, postsData] = await Promise.all([
-      fetchAPI<Post>(`/posts/${params.slug}${query}`),
-      fetchAPI<Post[]>('/posts'),
+      fetchAPI<Post>(`/posts/${params.slug}${query}`).catch((e) => {
+        console.error('Error fetching post data:', e);
+        return null;
+      }),
+      fetchAPI<Post[]>('/posts').catch((e) => {
+        console.error('Error fetching all posts:', e);
+        return [] as Post[];
+      }),
     ]);
     post = postData;
-    allPosts = postsData;
+    allPosts = Array.isArray(postsData) ? postsData : [];
   } catch (error) {
+    console.error('Critical error in BlogPostPage:', error);
+  }
+
+  if (!post) {
     notFound();
   }
 
-  if (!post) return notFound();
-
-  const recentPosts = allPosts.filter((p) => p.slug !== post?.slug).slice(0, 4);
+  const recentPosts = allPosts.filter((p) => p && p.slug !== post?.slug).slice(0, 4);
+  const sanitizedContent = post.content ? DOMPurify.sanitize(post.content) : '';
 
   return (
     <article className="min-h-screen bg-white comic-body">
@@ -171,7 +182,7 @@ export default async function BlogPostPage(props: Props) {
               <div className="comic-panel bg-white p-6 sm:p-10 md:p-14 rotate-0 comic-shadow-sm">
                 <div
                   className="prose prose-slate prose-lg md:prose-xl max-w-none prose-headings:font-black prose-headings:tracking-tight prose-headings:text-black prose-a:text-primary prose-a:font-bold hover:prose-a:underline prose-pre:bg-black prose-pre:border-[3px] prose-pre:border-black prose-pre:comic-shadow prose-img:border-[4px] prose-img:border-black prose-img:comic-shadow prose-p:leading-relaxed prose-p:text-slate-800 prose-li:text-slate-800 prose-li:leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+                  dangerouslySetInnerHTML={{ __html: sanitizedContent }}
                 />
               </div>
 

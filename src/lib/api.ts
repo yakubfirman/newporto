@@ -63,8 +63,8 @@ export interface Post {
   cover_image: string | null;
   is_published: boolean;
   published_at: string | null;
-  likes: number;
-  comments_count?: number;
+  likes: number | string;
+  comments_count?: number | string;
   comments?: Comment[];
   created_at: string;
   updated_at: string;

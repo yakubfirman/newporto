@@ -6,7 +6,7 @@ import { API_URL, Comment } from '@/lib/api';
 
 interface PostCommentsProps {
   postId: number;
-  initialLikes: number;
+  initialLikes: number | string;
   comments: Comment[];
 }
 
@@ -15,7 +15,7 @@ export default function PostComments({
   initialLikes,
   comments: initialComments,
 }: PostCommentsProps) {
-  const [likes, setLikes] = useState(initialLikes);
+  const [likes, setLikes] = useState(Number(initialLikes));
   const [isLiking, setIsLiking] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
   const [comments, setComments] = useState<Comment[]>(initialComments);
