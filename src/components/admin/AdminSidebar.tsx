@@ -32,6 +32,7 @@ export default function AdminSidebar({ isSidebarOpen }: AdminSidebarProps) {
     { name: 'Skills', href: '/admin/skills', icon: <MdBuild size={20} /> },
     { name: 'Messages', href: '/admin/messages', icon: <MdMail size={20} /> },
     { name: 'Testimonials', href: '/admin/testimonials', icon: <MdRateReview size={20} /> },
+    { name: 'Social Media', href: '/admin/social-media', icon: <MdPerson size={20} /> },
     { name: 'Settings', href: '/admin/settings', icon: <MdSettings size={20} /> },
   ];
 

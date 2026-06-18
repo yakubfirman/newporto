@@ -79,6 +79,15 @@ export interface Skill {
   is_highlighted: boolean;
 }
 
+export interface SocialMedia {
+  id: number;
+  name: string;
+  url: string;
+  icon_url: string | null;
+  is_active: boolean;
+  order: number;
+}
+
 export interface Testimonial {
   id: number;
   name: string;
