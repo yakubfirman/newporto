@@ -63,7 +63,7 @@ export default function BlogContent({ content }: BlogContentProps) {
       `}</style>
       <div
         ref={contentRef}
-        className="blog-content prose prose-base md:prose-lg max-w-[75ch] mx-auto overflow-hidden font-poppins
+        className="blog-content prose prose-base md:prose-lg max-w-[75ch] mx-auto overflow-hidden font-poppins whitespace-pre-wrap break-words
           prose-headings:font-poppins prose-headings:font-bold prose-headings:text-slate-900
           prose-a:text-primary prose-a:font-semibold hover:prose-a:underline
           prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-pre:rounded-md
