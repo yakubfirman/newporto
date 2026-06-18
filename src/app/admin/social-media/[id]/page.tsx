@@ -1,13 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI, SocialMedia } from '@/lib/api';
 
-export default function EditSocialMediaPage({ params }: { params: { id: string } }) {
+export default function EditSocialMediaPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
+  const { id } = use(params);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export default function EditSocialMediaPage({ params }: { params: { id: string }
   useEffect(() => {
     const loadSocialMedia = async () => {
       try {
-        const data = await fetchAdminAPI<SocialMedia>(`/admin/social-media/${params.id}`);
+        const data = await fetchAdminAPI<SocialMedia>(`/admin/social-media/${id}`);
         setFormData({
           name: data.name,
           url: data.url,
@@ -38,7 +40,7 @@ export default function EditSocialMediaPage({ params }: { params: { id: string }
       }
     };
     loadSocialMedia();
-  }, [params.id]);
+  }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
@@ -60,7 +62,7 @@ export default function EditSocialMediaPage({ params }: { params: { id: string }
     setError(null);
 
     try {
-      await fetchAdminAPI(`/admin/social-media/${params.id}`, {
+      await fetchAdminAPI(`/admin/social-media/${id}`, {
         method: 'PUT',
         body: JSON.stringify(formData),
       });
