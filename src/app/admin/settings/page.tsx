@@ -93,7 +93,7 @@ export default function AdminSettingsPage() {
             return;
           }
 
-          const file = new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' });
+          const file = new File([blob], 'cropped_image.webp', { type: 'image/webp' });
 
           try {
             const url = await uploadFile(file);
@@ -105,8 +105,8 @@ export default function AdminSettingsPage() {
             setIsUploading(false);
           }
         },
-        'image/jpeg',
-        0.9
+        'image/webp',
+        0.85
       );
   };
 
@@ -184,7 +184,13 @@ export default function AdminSettingsPage() {
               <Cropper
                 src={cropperImageSrc}
                 style={{ height: '100%', width: '100%' }}
-                aspectRatio={currentKeyToUpload === 'header_image_url' ? 1 : 4 / 5}
+                aspectRatio={
+                  currentKeyToUpload === 'og_image_url'
+                    ? 16 / 9
+                    : currentKeyToUpload === 'header_image_url'
+                      ? 1
+                      : 4 / 5
+                }
                 guides={true}
                 ref={cropperRef}
                 viewMode={1}
@@ -302,9 +308,11 @@ export default function AdminSettingsPage() {
                         </label>
                         <span className="text-xs text-slate-500">
                           Max size 5MB (
-                          {setting.key === 'header_image_url'
-                            ? '1:1 square ratio'
-                            : '4:5 portrait ratio'}
+                          {setting.key === 'og_image_url'
+                            ? '16:9 widescreen ratio'
+                            : setting.key === 'header_image_url'
+                              ? '1:1 square ratio'
+                              : '4:5 portrait ratio'}
                           )
                         </span>
                       </div>

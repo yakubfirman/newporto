@@ -7,6 +7,7 @@ import { Plus, Eye, EyeOff, FileText } from 'lucide-react';
 import { fetchAdminAPI, Post } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import AdminTableActions from '@/components/admin/AdminTableActions';
+import { showConfirmDeleteAlert, showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function AdminPostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -31,13 +32,14 @@ export default function AdminPostsPage() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this blog post?')) return;
+    const result = await showConfirmDeleteAlert('this item');
+    if (!result.isConfirmed) return;
 
     try {
       await fetchAdminAPI(`/admin/posts/${id}`, { method: 'DELETE' });
       setPosts(posts.filter((p) => p.id !== id));
     } catch (err: any) {
-      alert('Failed to delete: ' + err.message);
+      showErrorAlert('Error', 'Failed to delete: ' + err.message);
     }
   };
 
@@ -49,7 +51,7 @@ export default function AdminPostsPage() {
       });
       setPosts(posts.map((p) => (p.id === post.id ? updatedPost : p)));
     } catch (err: any) {
-      alert('Failed to update status: ' + err.message);
+      showErrorAlert('Error', 'Failed to update status: ' + err.message);
     }
   };
 
@@ -152,6 +154,7 @@ export default function AdminPostsPage() {
                       <AdminTableActions
                         editUrl={`/admin/posts/${post.id}`}
                         onDelete={() => handleDelete(post.id)}
+                        previewUrl={`/blog/${post.slug}?preview=true`}
                       />
                     </td>
                   </tr>

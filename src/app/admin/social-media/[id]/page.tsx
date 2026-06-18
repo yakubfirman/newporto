@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI, SocialMedia } from '@/lib/api';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function EditSocialMediaPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -67,6 +68,7 @@ export default function EditSocialMediaPage({ params }: { params: Promise<{ id: 
         body: JSON.stringify(formData),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/social-media');
       router.refresh();
     } catch (err: any) {

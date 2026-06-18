@@ -45,7 +45,7 @@ export default function PostCard({ post, className = '' }: PostCardProps) {
         <h2 className="text-xl sm:text-2xl comic-heading mb-3 text-black group-hover:text-primary transition-colors leading-snug">
           {post.title}
         </h2>
-        <p className="text-slate-700 font-bold text-sm mb-6 flex-1 line-clamp-3 leading-relaxed uppercase tracking-wide">
+        <p className="text-slate-700 font-bold text-sm mb-6 flex-1 line-clamp-3 leading-relaxed tracking-wide">
           {post.excerpt}
         </p>
         <span className="inline-flex items-center gap-2 comic-heading text-lg text-black group-hover:text-primary transition-colors uppercase">

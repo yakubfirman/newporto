@@ -7,6 +7,7 @@ import { ArrowLeft, Save, Image as ImageIcon, Search, Globe, User } from 'lucide
 import { fetchAdminAPI } from '@/lib/api';
 import RichTextEditor from '@/components/RichTextEditor';
 import ImageCropper from '@/components/admin/ImageCropper';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function CreatePostPage() {
   const router = useRouter();
@@ -69,6 +70,7 @@ export default function CreatePostPage() {
         body: JSON.stringify(payload),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/posts');
       router.refresh();
     } catch (err: any) {

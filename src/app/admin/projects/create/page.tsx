@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI } from '@/lib/api';
 import ImageCropper from '@/components/admin/ImageCropper';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function CreateProjectPage() {
   const router = useRouter();
@@ -84,6 +85,7 @@ export default function CreateProjectPage() {
         body: JSON.stringify(payload),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/projects');
       router.refresh(); // Refresh Next.js cache
     } catch (err: any) {

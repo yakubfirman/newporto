@@ -93,7 +93,7 @@ export default function Footer({
                 <span className="text-primary">.</span>
               </span>
             </Link>
-            <p className="text-black font-bold uppercase leading-relaxed max-w-sm mb-8 bg-white border-2 border-black p-3 rotate-1">
+            <p className="text-black font-bold leading-relaxed max-w-sm mb-8 bg-white border-2 border-black p-3 rotate-1">
               {footerText}
             </p>
             <div className="flex flex-wrap items-center gap-4">
@@ -186,11 +186,11 @@ export default function Footer({
           {/* Subtle Halftone inside bar */}
           <div className="absolute inset-0 bg-halftone opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity"></div>
 
-          <p className="text-black text-xs md:text-sm comic-heading uppercase tracking-widest relative z-10 text-center md:text-left">
+          <p className="text-black text-xs md:text-sm comic-heading tracking-widest relative z-10 text-center md:text-left">
             &copy; {new Date().getFullYear()} <span className="notranslate">Yakub Firman</span>. Hak
             cipta dilindungi.
           </p>
-          <p className="text-black text-xs md:text-sm comic-heading uppercase tracking-widest flex items-center justify-center md:justify-end gap-1.5 relative z-10">
+          <p className="text-black text-xs md:text-sm comic-heading tracking-widest flex items-center justify-center md:justify-end gap-1.5 relative z-10">
             Dirancang dengan{' '}
             <span className="text-primary animate-pulse text-xl drop-shadow-[0_0_5px_rgba(239,68,68,0.3)]">
               &hearts;

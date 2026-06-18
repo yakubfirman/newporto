@@ -26,12 +26,12 @@ export default function TestimonialPage() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
               Ulasan Klien
             </h1>
-            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
+            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide ">
               Pemikiran tentang Perjalanan kita.
             </p>
           </div>
           <div className="comic-panel bg-white p-3 sm:p-4 -rotate-1 hidden md:block max-w-xs">
-            <p className="font-bold text-black text-sm uppercase tracking-wide leading-snug">
+            <p className="font-bold text-black text-sm tracking-wide leading-snug">
               UMPAN BALIK ANDA SANGAT BERHARGA UNTUK MENINGKATKAN LAYANAN SAYA.
             </p>
           </div>

@@ -57,13 +57,13 @@ export default async function BlogPage(props: {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
               Blog & Wawasan
             </h1>
-            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
+            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide ">
               Pemikiran tentang Lanskap Digital.
             </p>
           </div>
           <div className="flex flex-col gap-4 items-start md:items-end rotate-1 md:rotate-0">
             <div className="comic-panel bg-white p-3 sm:p-4 hidden md:block max-w-xs rotate-2">
-              <p className="font-bold text-black text-sm uppercase tracking-wide leading-snug">
+              <p className="font-bold text-black text-sm tracking-wide leading-snug">
                 TUTORIAL, OPINI, DAN TIPS PENGEMBANGAN WEB.
               </p>
             </div>

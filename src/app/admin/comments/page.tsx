@@ -7,6 +7,7 @@ import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import TableSearch from '@/components/admin/TableSearch';
 import TablePagination from '@/components/admin/TablePagination';
 import { useTablePagination } from '@/hooks/useTablePagination';
+import { showConfirmDeleteAlert, showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export interface AdminComment {
   id: number;
@@ -43,12 +44,13 @@ export default function AdminCommentsPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this comment?')) return;
+    const result = await showConfirmDeleteAlert('this item');
+    if (!result.isConfirmed) return;
     try {
       await fetchAdminAPI(`/admin/comments/${id}`, { method: 'DELETE' });
       fetchComments();
     } catch (err: any) {
-      alert(err.message || 'Failed to delete comment');
+      showErrorAlert('Error', err.message || 'Failed to delete comment');
     }
   };
 
@@ -57,7 +59,7 @@ export default function AdminCommentsPage() {
       await fetchAdminAPI(`/admin/comments/${id}/toggle`, { method: 'PATCH' });
       fetchComments(); // refresh
     } catch (err: any) {
-      alert(err.message || 'Failed to update status');
+      showErrorAlert('Error', err.message || 'Failed to update status');
     }
   };
 

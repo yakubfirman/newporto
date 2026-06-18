@@ -30,7 +30,7 @@ export default function CTASection() {
             </span>
           </h2>
 
-          <p className="text-black font-bold text-base sm:text-lg md:text-xl max-w-2xl mb-8 sm:mb-10 uppercase tracking-wide leading-relaxed">
+          <p className="text-black font-bold text-base sm:text-lg md:text-xl max-w-2xl mb-8 sm:mb-10 tracking-wide leading-relaxed">
             Saat ini saya terbuka untuk peran penuh waktu, proyek lepas, dan kolaborasi menarik.
           </p>
 

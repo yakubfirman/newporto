@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI, Skill } from '@/lib/api';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function EditSkillPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -60,6 +61,7 @@ export default function EditSkillPage({ params }: { params: Promise<{ id: string
         body: JSON.stringify(formData),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/skills');
       router.refresh();
     } catch (err: any) {

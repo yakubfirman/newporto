@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI, Experience } from '@/lib/api';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function EditExperiencePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function EditExperiencePage({ params }: { params: Promise<{ id: s
         body: JSON.stringify(payload),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/experiences');
       router.refresh();
     } catch (err: any) {

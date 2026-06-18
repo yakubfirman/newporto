@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { fetchAdminAPI, Post } from '@/lib/api';
 import RichTextEditor from '@/components/RichTextEditor';
 import ImageCropper from '@/components/admin/ImageCropper';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -95,6 +96,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         body: JSON.stringify(payload),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/posts');
       router.refresh();
     } catch (err: any) {
@@ -311,14 +313,25 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-3.5 rounded-xl hover:bg-primary-hover transition-colors font-bold shadow-md shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <Save size={20} />
-            {isSubmitting ? 'Saving Updates...' : 'Update Blog Post'}
-          </button>
+          <div className="flex gap-4">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 flex items-center justify-center gap-2 bg-primary text-white px-4 py-3.5 rounded-xl hover:bg-primary-hover transition-colors font-bold shadow-md shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Save size={20} />
+              {isSubmitting ? 'Saving...' : 'Update'}
+            </button>
+            <a
+              href={`/blog/${formData.slug}?preview=true`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 text-white px-4 py-3.5 rounded-xl hover:bg-emerald-700 transition-colors font-bold shadow-md shadow-emerald-600/20"
+            >
+              <Globe size={20} />
+              Preview
+            </a>
+          </div>
         </div>
       </form>
 

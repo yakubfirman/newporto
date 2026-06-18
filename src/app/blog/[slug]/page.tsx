@@ -12,12 +12,16 @@ export const revalidate = 0;
 
 interface Props {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ preview?: string }>;
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
+  const searchParams = await props.searchParams;
+  const isPreview = searchParams?.preview === 'true';
+  const query = isPreview ? '?preview=true' : '';
   try {
-    const post = await fetchAPI<Post>(`/posts/${params.slug}`);
+    const post = await fetchAPI<Post>(`/posts/${params.slug}${query}`);
     return {
       title: `${post.title} | Yakub Firman Mustofa`,
       description: post.excerpt,
@@ -48,12 +52,16 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function BlogPostPage(props: Props) {
   const params = await props.params;
+  const searchParams = await props.searchParams;
+  const isPreview = searchParams?.preview === 'true';
+  const query = isPreview ? '?preview=true' : '';
+
   let post: Post | null = null;
   let allPosts: Post[] = [];
 
   try {
     const [postData, postsData] = await Promise.all([
-      fetchAPI<Post>(`/posts/${params.slug}`),
+      fetchAPI<Post>(`/posts/${params.slug}${query}`),
       fetchAPI<Post[]>('/posts'),
     ]);
     post = postData;
@@ -124,7 +132,7 @@ export default async function BlogPostPage(props: Props) {
               <h1 className="text-4xl sm:text-5xl md:text-6xl comic-heading text-white leading-none mb-4 comic-text-white uppercase">
                 {post.title}
               </h1>
-              <p className="text-white font-bold text-sm md:text-base max-w-2xl uppercase tracking-wide leading-relaxed">
+              <p className="text-white font-bold text-sm md:text-base max-w-2xl tracking-wide leading-relaxed">
                 {post.excerpt}
               </p>
             </div>
@@ -222,9 +230,7 @@ export default async function BlogPostPage(props: Props) {
                     </Link>
                   ))}
                   {recentPosts.length === 0 && (
-                    <p className="text-sm font-bold text-slate-500 uppercase">
-                      No other articles found.
-                    </p>
+                    <p className="text-sm font-bold text-slate-500 ">No other articles found.</p>
                   )}
                 </div>
               </div>

@@ -33,7 +33,7 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
 
         {displayedProjects.length > 0 ? (
           <div className="max-w-7xl mx-auto w-full relative z-10">
-            <div className="stagger-grid grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="stagger-grid grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               {displayedProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}

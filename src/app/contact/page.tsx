@@ -3,11 +3,10 @@
 import { useState, useEffect } from 'react';
 import { Send, Mail, MapPin } from 'lucide-react';
 import { API_URL } from '@/lib/api';
+import { showComicSuccessAlert, showComicErrorAlert } from '@/lib/alert';
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
   const [contactEmail, setContactEmail] = useState('contact@yakubfirman.id');
 
   useEffect(() => {
@@ -27,8 +26,6 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSuccess(false);
-    setError('');
 
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -52,10 +49,13 @@ export default function ContactPage() {
         throw new Error('Failed to send message');
       }
 
-      setSuccess(true);
+      await showComicSuccessAlert(
+        'Berhasil!',
+        'Pesan Anda berhasil dikirim! Saya akan segera menghubungi Anda kembali.'
+      );
       (e.target as HTMLFormElement).reset();
     } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again.');
+      showComicErrorAlert('Oops!', err.message || 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -72,7 +72,7 @@ export default function ContactPage() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
               Hubungi Saya
             </h1>
-            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
+            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide ">
               Mari Mulai Percakapan.
             </p>
           </div>
@@ -85,17 +85,6 @@ export default function ContactPage() {
               Kirim Saya Pesan
             </h3>
             <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 mt-6">
-              {success && (
-                <div className="p-4 bg-white border-[3px] border-black comic-shadow-red text-black font-bold mb-6 text-xs sm:text-sm uppercase -rotate-1">
-                  Pesan Anda berhasil dikirim! Saya akan segera menghubungi Anda kembali.
-                </div>
-              )}
-              {error && (
-                <div className="p-4 bg-white border-[3px] border-black comic-shadow text-red-600 font-bold mb-6 text-sm uppercase rotate-1">
-                  {error}
-                </div>
-              )}
-
               <div>
                 <label
                   htmlFor="name"
@@ -192,7 +181,7 @@ export default function ContactPage() {
                     <a
                       href={`mailto:${contactEmail}`}
                       title={contactEmail}
-                      className="font-bold text-slate-700 hover:text-primary transition-colors text-sm sm:text-base uppercase tracking-wide truncate block w-full"
+                      className="font-bold text-slate-700 hover:text-primary transition-colors text-sm sm:text-base tracking-wide truncate block w-full"
                     >
                       {contactEmail}
                     </a>
@@ -205,7 +194,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="comic-heading text-lg text-black mb-1 uppercase">Lokasi</h4>
-                    <p className="font-bold text-slate-700 text-sm sm:text-base uppercase tracking-wide">
+                    <p className="font-bold text-slate-700 text-sm sm:text-base tracking-wide">
                       Surakarta, Jawa Tengah
                     </p>
                   </div>
@@ -217,7 +206,7 @@ export default function ContactPage() {
               <h4 className="comic-heading text-2xl text-white mb-3 uppercase tracking-wide">
                 Ketersediaan
               </h4>
-              <p className="text-white font-bold text-sm sm:text-base leading-relaxed uppercase tracking-wide">
+              <p className="text-white font-bold text-sm sm:text-base leading-relaxed tracking-wide">
                 Saat ini saya terbuka untuk peluang lepas dan peran penuh waktu. Mari diskusikan
                 bagaimana saya dapat membantu mewujudkan ide Anda.
               </p>

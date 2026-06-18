@@ -96,7 +96,7 @@ export default async function ProjectDetailPage(props: Props) {
               <h1 className="text-4xl sm:text-5xl md:text-6xl comic-heading text-white leading-none mb-4 comic-text-white uppercase">
                 {project.title}
               </h1>
-              <p className="text-white font-bold text-sm md:text-base max-w-2xl uppercase tracking-wide leading-relaxed">
+              <p className="text-white font-bold text-sm md:text-base max-w-2xl tracking-wide leading-relaxed">
                 {project.description}
               </p>
             </div>

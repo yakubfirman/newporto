@@ -4,18 +4,16 @@ import { useState } from 'react';
 import { Send, CheckCircle, Image as ImageIcon } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 import ImageCropper from '@/components/admin/ImageCropper';
+import { showComicSuccessAlert, showComicErrorAlert } from '@/lib/alert';
 
 export default function TestimonialForm() {
   const [formData, setFormData] = useState({ name: '', role: '', content: '', image: '' });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
   const [showImageCropper, setShowImageCropper] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
 
     try {
       const res = await fetch(`${API_URL}/testimonials`, {
@@ -29,32 +27,17 @@ export default function TestimonialForm() {
 
       if (!res.ok) throw new Error('Failed to submit testimonial.');
 
-      setSuccess(true);
+      await showComicSuccessAlert(
+        'Terima Kasih!',
+        'Testimoni Anda telah dikirim dan menunggu tinjauan.'
+      );
       setFormData({ name: '', role: '', content: '', image: '' });
     } catch (err: any) {
-      setError(err.message || 'Something went wrong.');
+      showComicErrorAlert('Oops!', err.message || 'Something went wrong.');
     } finally {
       setLoading(false);
     }
   };
-
-  if (success) {
-    return (
-      <div className="bg-white border-[3px] border-black p-8 text-center comic-shadow rotate-1 h-full flex flex-col items-center justify-center">
-        <CheckCircle size={48} className="text-primary mb-4" />
-        <h3 className="comic-heading text-2xl mb-2 text-black">Terima Kasih!</h3>
-        <p className="text-slate-700 font-medium">
-          Testimoni Anda telah dikirim dan menunggu tinjauan.
-        </p>
-        <button
-          onClick={() => setSuccess(false)}
-          className="mt-6 comic-heading text-sm text-white border-2 border-black px-4 py-2 hover:bg-black transition-colors bg-primary"
-        >
-          KIRIM LAGI
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-white border-[3px] border-black p-6 sm:p-8 comic-shadow h-full flex flex-col justify-between relative">
@@ -68,12 +51,6 @@ export default function TestimonialForm() {
         <p className="text-slate-600 font-medium mb-6">
           Pernah bekerja dengan saya? Saya ingin mendengar pendapat Anda!
         </p>
-
-        {error && (
-          <div className="bg-red-100 text-red-600 p-3 mb-6 border-[2px] border-black comic-heading text-sm">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

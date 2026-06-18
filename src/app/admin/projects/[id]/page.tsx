@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI, Project } from '@/lib/api';
 import ImageCropper from '@/components/admin/ImageCropper';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -111,6 +112,7 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
         body: JSON.stringify(payload),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/projects');
       router.refresh();
     } catch (err: any) {

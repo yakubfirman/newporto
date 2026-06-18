@@ -8,6 +8,7 @@ import AdminTableActions from '@/components/admin/AdminTableActions';
 import TableSearch from '@/components/admin/TableSearch';
 import TablePagination from '@/components/admin/TablePagination';
 import { useTablePagination } from '@/hooks/useTablePagination';
+import { showConfirmDeleteAlert, showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function AdminEducationsPage() {
   const [educations, setEducations] = useState<Education[]>([]);
@@ -32,13 +33,14 @@ export default function AdminEducationsPage() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this education record?')) return;
+    const result = await showConfirmDeleteAlert('this item');
+    if (!result.isConfirmed) return;
 
     try {
       await fetchAdminAPI(`/admin/educations/${id}`, { method: 'DELETE' });
       setEducations(educations.filter((p) => p.id !== id));
     } catch (err: any) {
-      alert('Failed to delete: ' + err.message);
+      showErrorAlert('Error', 'Failed to delete: ' + err.message);
     }
   };
 

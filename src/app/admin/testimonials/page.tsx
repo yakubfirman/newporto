@@ -7,6 +7,7 @@ import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import TableSearch from '@/components/admin/TableSearch';
 import TablePagination from '@/components/admin/TablePagination';
 import { useTablePagination } from '@/hooks/useTablePagination';
+import { showConfirmDeleteAlert, showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function AdminTestimonialsPage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -30,12 +31,13 @@ export default function AdminTestimonialsPage() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this testimonial?')) return;
+    const result = await showConfirmDeleteAlert('this item');
+    if (!result.isConfirmed) return;
     try {
       await fetchAdminAPI(`/admin/testimonials/${id}`, { method: 'DELETE' });
       fetchTestimonials();
     } catch (err: any) {
-      alert(err.message || 'Failed to delete testimonial');
+      showErrorAlert('Error', err.message || 'Failed to delete testimonial');
     }
   };
 
@@ -44,7 +46,7 @@ export default function AdminTestimonialsPage() {
       await fetchAdminAPI(`/admin/testimonials/${id}/toggle`, { method: 'PATCH' });
       fetchTestimonials(); // refresh
     } catch (err: any) {
-      alert(err.message || 'Failed to update status');
+      showErrorAlert('Error', err.message || 'Failed to update status');
     }
   };
 

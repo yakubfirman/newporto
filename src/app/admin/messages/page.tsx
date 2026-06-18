@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Trash2, Mail, MailOpen, AlertCircle } from 'lucide-react';
 import { fetchAdminAPI } from '@/lib/api';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
+import { showConfirmDeleteAlert, showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export interface Message {
   id: number;
@@ -40,7 +41,8 @@ export default function AdminMessagesPage() {
 
   const handleDelete = async (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!window.confirm('Are you sure you want to delete this message?')) return;
+    const result = await showConfirmDeleteAlert('this item');
+    if (!result.isConfirmed) return;
 
     try {
       await fetchAdminAPI(`/admin/messages/${id}`, { method: 'DELETE' });
@@ -49,7 +51,7 @@ export default function AdminMessagesPage() {
         setSelectedMessage(null);
       }
     } catch (err: any) {
-      alert('Failed to delete: ' + err.message);
+      showErrorAlert('Error', 'Failed to delete: ' + err.message);
     }
   };
 

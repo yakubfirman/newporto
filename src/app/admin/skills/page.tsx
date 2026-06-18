@@ -9,6 +9,7 @@ import { getSkillIcon } from '@/components/sections/SkillsSection';
 import TableSearch from '@/components/admin/TableSearch';
 import TablePagination from '@/components/admin/TablePagination';
 import { useTablePagination } from '@/hooks/useTablePagination';
+import { showConfirmDeleteAlert, showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function AdminSkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -33,13 +34,14 @@ export default function AdminSkillsPage() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this skill?')) return;
+    const result = await showConfirmDeleteAlert('this item');
+    if (!result.isConfirmed) return;
 
     try {
       await fetchAdminAPI(`/admin/skills/${id}`, { method: 'DELETE' });
       setSkills(skills.filter((p) => p.id !== id));
     } catch (err: any) {
-      alert('Failed to delete: ' + err.message);
+      showErrorAlert('Error', 'Failed to delete: ' + err.message);
     }
   };
 

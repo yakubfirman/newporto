@@ -35,7 +35,7 @@ export default async function AboutPage() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
               Tentang Saya
             </h1>
-            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
+            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide ">
               Merancang Produk Digital Sejak 2024.
             </p>
           </div>
@@ -61,7 +61,7 @@ export default async function AboutPage() {
                 <h2 className="text-2xl sm:text-3xl comic-heading mb-4 text-black uppercase">
                   {settings.about_page_heading || 'Siapa Saya'}
                 </h2>
-                <div className="text-black font-bold text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-wrap uppercase tracking-wide">
+                <div className="text-black font-bold text-sm md:text-base leading-relaxed space-y-4 whitespace-pre-wrap tracking-wide">
                   {settings.about_page_text || (
                     <>
                       Saya adalah <span className="notranslate">Yakub Firman Mustofa</span>, seorang
@@ -93,7 +93,7 @@ export default async function AboutPage() {
                       className={`comic-panel p-5 sm:p-6 relative bg-white ${i % 2 === 0 ? 'rotate-1' : '-rotate-1'}`}
                     >
                       <h3 className="comic-heading text-xl sm:text-2xl text-black">{edu.degree}</h3>
-                      <p className="text-[10px] sm:text-xs font-bold text-white bg-black px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                      <p className="text-[10px] sm:text-xs font-bold text-white bg-black px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 ">
                         {edu.institution} •{' '}
                         {new Date(edu.start_date).toLocaleDateString('en-US', { year: 'numeric' })}{' '}
                         -{' '}
@@ -106,7 +106,7 @@ export default async function AboutPage() {
                             : 'Sekarang'}
                       </p>
                       {edu.description && (
-                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
+                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap tracking-wide">
                           {edu.description}
                         </p>
                       )}
@@ -138,7 +138,7 @@ export default async function AboutPage() {
                         <h3 className="comic-heading text-xl sm:text-2xl text-black">
                           {exp.title}
                         </h3>
-                        <p className="text-[10px] sm:text-xs font-bold text-white bg-primary px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                        <p className="text-[10px] sm:text-xs font-bold text-white bg-primary px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 ">
                           {exp.company} •{' '}
                           {new Date(exp.start_date).toLocaleDateString('en-US', {
                             month: 'short',
@@ -154,7 +154,7 @@ export default async function AboutPage() {
                                 })
                               : 'Sekarang'}
                         </p>
-                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
+                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap tracking-wide">
                           {exp.description}
                         </p>
                       </div>
@@ -184,7 +184,7 @@ export default async function AboutPage() {
                         <h3 className="comic-heading text-xl sm:text-2xl text-black">
                           {exp.title}
                         </h3>
-                        <p className="text-[10px] sm:text-xs font-bold text-white bg-black px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                        <p className="text-[10px] sm:text-xs font-bold text-white bg-black px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 ">
                           {exp.company} •{' '}
                           {new Date(exp.start_date).toLocaleDateString('en-US', {
                             month: 'short',
@@ -200,7 +200,7 @@ export default async function AboutPage() {
                                 })
                               : 'Sekarang'}
                         </p>
-                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
+                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap tracking-wide">
                           {exp.description}
                         </p>
                       </div>
@@ -231,7 +231,7 @@ export default async function AboutPage() {
                         <h3 className="comic-heading text-xl sm:text-2xl text-black">
                           {exp.title}
                         </h3>
-                        <p className="text-[10px] sm:text-xs font-bold text-white bg-primary px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 uppercase">
+                        <p className="text-[10px] sm:text-xs font-bold text-white bg-primary px-2 py-1 inline-block border-2 border-black tracking-widest mt-2 mb-4 ">
                           {exp.company} •{' '}
                           {new Date(exp.start_date).toLocaleDateString('en-US', {
                             month: 'short',
@@ -247,7 +247,7 @@ export default async function AboutPage() {
                                 })
                               : 'Sekarang'}
                         </p>
-                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap uppercase tracking-wide">
+                        <p className="text-black font-bold text-xs sm:text-sm leading-relaxed whitespace-pre-wrap tracking-wide">
                           {exp.description}
                         </p>
                       </div>
@@ -272,7 +272,7 @@ export default async function AboutPage() {
                   <span className="block text-[10px] sm:text-xs comic-heading uppercase tracking-widest text-black bg-primary text-white border-2 border-black px-2 py-0.5 inline-block mb-2 -rotate-2">
                     Lokasi
                   </span>
-                  <span className="block font-bold text-black uppercase text-sm sm:text-base tracking-wide">
+                  <span className="block font-bold text-black text-sm sm:text-base tracking-wide">
                     {settings.about_fact_location || 'Surakarta, Jawa Tengah'}
                   </span>
                 </li>
@@ -280,7 +280,7 @@ export default async function AboutPage() {
                   <span className="block text-[10px] sm:text-xs comic-heading uppercase tracking-widest text-black bg-black text-white border-2 border-black px-2 py-0.5 inline-block mb-2 rotate-2">
                     Ketersediaan
                   </span>
-                  <span className="block font-bold text-primary uppercase text-sm sm:text-base tracking-wide">
+                  <span className="block font-bold text-primary text-sm sm:text-base tracking-wide">
                     {settings.about_fact_availability || 'Terbuka untuk bekerja'}
                   </span>
                 </li>
@@ -288,7 +288,7 @@ export default async function AboutPage() {
                   <span className="block text-[10px] sm:text-xs comic-heading uppercase tracking-widest text-black bg-white border-2 border-black px-2 py-0.5 inline-block mb-2 -rotate-1">
                     Fokus
                   </span>
-                  <span className="block font-bold text-black uppercase text-sm sm:text-base tracking-wide">
+                  <span className="block font-bold text-black text-sm sm:text-base tracking-wide">
                     {settings.about_fact_focus || 'Full-stack & SEO'}
                   </span>
                 </li>

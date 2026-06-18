@@ -17,8 +17,10 @@ const bangers = Bangers({
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings().catch(() => ({}) as Record<string, string>);
   const headerImageUrl = settings.header_image_url || '/profile.jpg';
+  const ogImageUrl = settings.og_image_url || headerImageUrl;
 
   return {
+    metadataBase: new URL('https://yakubfirman.id'),
     title: {
       default: 'Yakub Firman Mustofa - Web Developer & SEO Specialist',
       template: '%s | Yakub Firman Mustofa',
@@ -62,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
         'Portfolio of Yakub Firman Mustofa. Building high-performance web applications with Laravel and Next.js.',
       images: [
         {
-          url: headerImageUrl,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: 'Yakub Firman Mustofa',
@@ -73,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: 'Yakub Firman Mustofa - Web Developer & SEO Specialist',
       description: 'Web Developer & SEO Specialist based in Surakarta.',
-      images: [headerImageUrl],
+      images: [ogImageUrl],
     },
   };
 }

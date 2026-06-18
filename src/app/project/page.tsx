@@ -66,7 +66,7 @@ export default async function ProjectPage(props: {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl comic-heading text-white leading-none mb-2 comic-text-white">
               Karya Terpilih
             </h1>
-            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide uppercase">
+            <p className="text-white font-bold text-sm sm:text-base md:text-lg tracking-wide ">
               Proyek & Studi Kasus.
             </p>
           </div>
@@ -113,7 +113,7 @@ export default async function ProjectPage(props: {
 
         {filteredProjects.length > 0 ? (
           <>
-            <div className="stagger-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="stagger-grid grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               {paginatedProjects.map((project, idx) => (
                 <ProjectCard
                   key={project.id}

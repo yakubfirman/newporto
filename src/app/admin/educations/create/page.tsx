@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
 import { fetchAdminAPI } from '@/lib/api';
+import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function CreateEducationPage() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function CreateEducationPage() {
         body: JSON.stringify(payload),
       });
 
+      await showSuccessAlert('Success', 'Data saved successfully!');
       router.push('/admin/educations');
       router.refresh();
     } catch (err: any) {
