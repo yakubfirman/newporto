@@ -104,28 +104,20 @@ export default function Footer({
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`Profil ${social.name} Yakub Firman`}
-                  className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-black hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group/social"
+                  className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all group/social"
                 >
                   <span className="sr-only">{social.name}</span>
                   {social.icon_url ? (
                     <img
                       src={social.icon_url}
                       alt={social.name}
-                      className="w-5 h-5 object-contain group-hover/social:invert transition-all"
+                      className="w-5 h-5 object-contain transition-all"
                     />
                   ) : (
-                    <div className="w-5 h-5 bg-black rounded-full group-hover/social:bg-white" />
+                    <div className="w-5 h-5 bg-black rounded-full" />
                   )}
                 </a>
               ))}
-              <a
-                href={`mailto:${contactEmail}`}
-                aria-label="Kirim Email ke Yakub Firman"
-                className="w-10 h-10 bg-white flex items-center justify-center text-black border-[3px] border-black comic-shadow hover:bg-primary hover:text-white hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
-              >
-                <span className="sr-only">Email</span>
-                <Mail size={20} strokeWidth={3} aria-hidden="true" />
-              </a>
             </div>
           </div>
 
