@@ -59,12 +59,35 @@ export async function generateMetadata(): Promise<Metadata> {
     manifest: '/manifest.json',
     icons: {
       icon: [
-        { url: '/icons/icon-32x32.png', sizes: '32x32', type: 'image/png' },
-        { url: '/icons/icon-96x96.png', sizes: '96x96', type: 'image/png' },
-        { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+        {
+          url: settings.favicon_image_url || '/icons/icon-32x32.png',
+          sizes: '32x32',
+          type: 'image/png',
+        },
+        {
+          url: settings.favicon_image_url || '/icons/icon-96x96.png',
+          sizes: '96x96',
+          type: 'image/png',
+        },
+        {
+          url: settings.favicon_image_url || '/icons/icon-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
       ],
-      apple: [{ url: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png' }],
-      other: [{ rel: 'apple-touch-icon-precomposed', url: '/icons/icon-192x192.png' }],
+      apple: [
+        {
+          url: settings.favicon_image_url || '/icons/icon-152x152.png',
+          sizes: '152x152',
+          type: 'image/png',
+        },
+      ],
+      other: [
+        {
+          rel: 'apple-touch-icon-precomposed',
+          url: settings.favicon_image_url || '/icons/icon-192x192.png',
+        },
+      ],
     },
     openGraph: {
       type: 'website',

@@ -117,7 +117,8 @@ export default function AdminSettingsPage() {
           aspectRatio={
             currentKeyToUpload === 'og_image_url'
               ? 16 / 9
-              : currentKeyToUpload === 'header_image_url'
+              : currentKeyToUpload === 'header_image_url' ||
+                  currentKeyToUpload === 'favicon_image_url'
                 ? 1
                 : 4 / 5
           }
@@ -220,7 +221,8 @@ export default function AdminSettingsPage() {
                           Max size 5MB (
                           {setting.key === 'og_image_url'
                             ? '16:9 widescreen ratio'
-                            : setting.key === 'header_image_url'
+                            : setting.key === 'header_image_url' ||
+                                setting.key === 'favicon_image_url'
                               ? '1:1 square ratio'
                               : '4:5 portrait ratio'}
                           )
