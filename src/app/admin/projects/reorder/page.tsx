@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { GripVertical, Save, ArrowLeft, Layers } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { fetchAdminAPI } from '@/lib/api';
 
 interface Project {
   id: number;
@@ -19,14 +20,14 @@ export default function ReorderProjectsPage() {
   const [saved, setSaved] = useState(false);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [overIndex, setOverIndex] = useState<number | null>(null);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-
   useEffect(() => {
-    fetch(`${apiBase}/admin/projects`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((r) => r.json())
+    fetchAdminAPI<Project[]>('/admin/projects')
       .then((data) => {
         setProjects(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
         setLoading(false);
       });
   }, []);
@@ -54,14 +55,17 @@ export default function ReorderProjectsPage() {
   const handleSave = async () => {
     setSaving(true);
     const items = projects.map((p, i) => ({ id: p.id, order: i }));
-    await fetch(`${apiBase}/admin/projects/reorder`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items }),
-    });
+    try {
+      await fetchAdminAPI('/admin/projects/reorder', {
+        method: 'POST',
+        body: JSON.stringify({ items }),
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error(err);
+    }
     setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
   };
 
   if (loading)

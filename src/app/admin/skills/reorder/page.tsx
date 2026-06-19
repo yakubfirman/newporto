@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { GripVertical, Save, ArrowLeft, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { fetchAdminAPI } from '@/lib/api';
 
 interface Skill {
   id: number;
@@ -18,14 +19,14 @@ export default function ReorderSkillsPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-
   useEffect(() => {
-    fetch(`${apiBase}/admin/skills`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((r) => r.json())
+    fetchAdminAPI<Skill[]>('/admin/skills')
       .then((data) => {
         setSkills(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
         setLoading(false);
       });
   }, []);
@@ -47,14 +48,17 @@ export default function ReorderSkillsPage() {
   const handleSave = async () => {
     setSaving(true);
     const items = skills.map((s, i) => ({ id: s.id, order: i }));
-    await fetch(`${apiBase}/admin/skills/reorder`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items }),
-    });
+    try {
+      await fetchAdminAPI('/admin/skills/reorder', {
+        method: 'POST',
+        body: JSON.stringify({ items }),
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error(err);
+    }
     setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
   };
 
   if (loading)
