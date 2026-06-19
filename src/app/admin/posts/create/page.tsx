@@ -382,6 +382,7 @@ export default function CreatePostPage() {
         <ImagePickerModal
           aspectRatio={croppingImage === 'author' ? 1 : 16 / 9}
           title={croppingImage === 'author' ? 'Select Author Photo' : 'Select Cover Image'}
+          folder="posts"
           onSelect={(url) => {
             if (croppingImage === 'cover') {
               setFormData({ ...formData, cover_image: url });

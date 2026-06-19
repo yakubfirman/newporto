@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Upload,
   Trash2,
@@ -13,6 +13,9 @@ import {
   CheckSquare,
   Square,
   CheckCheck,
+  Folder,
+  ChevronRight,
+  Plus,
 } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 
@@ -24,7 +27,15 @@ interface MediaFile {
   last_modified: number;
 }
 
+interface MediaResponse {
+  folders: string[];
+  files: MediaFile[];
+  current_folder: string;
+}
+
 export default function MediaLibraryPage() {
+  const [currentFolder, setCurrentFolder] = useState('');
+  const [folders, setFolders] = useState<string[]>([]);
   const [media, setMedia] = useState<MediaFile[]>([]);
   const [filtered, setFiltered] = useState<MediaFile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +46,10 @@ export default function MediaLibraryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDraggingOver, setIsDraggingOver] = useState(false);
 
+  // ── Folder creation state
+  const [showCreateFolder, setShowCreateFolder] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
+
   // ── Multi-select state ────────────────────────────────────────────────────
   const [selectedPaths, setSelectedPaths] = useState<Set<string>>(new Set());
   const [bulkDeleting, setBulkDeleting] = useState(false);
@@ -43,24 +58,30 @@ export default function MediaLibraryPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
 
-  const fetchMedia = async () => {
+  const fetchMedia = useCallback(async () => {
+    setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/admin/media`, {
+      const url = new URL(`${API_URL}/admin/media`);
+      if (currentFolder) {
+        url.searchParams.append('folder', currentFolder);
+      }
+      const res = await fetch(url.toString(), {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
-      setMedia(data);
-      setFiltered(data);
+      const data: MediaResponse = await res.json();
+      setFolders(data.folders || []);
+      setMedia(data.files || []);
+      setFiltered(data.files || []);
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, currentFolder]);
 
   useEffect(() => {
     fetchMedia();
-  }, []);
+  }, [fetchMedia]);
 
   useEffect(() => {
     if (!searchTerm) {
@@ -72,9 +93,51 @@ export default function MediaLibraryPage() {
     setSelectedPaths(new Set());
   }, [searchTerm, media]);
 
-  const uploadFile = async (file: File) => {
+  const handleCreateFolder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newFolderName.trim()) return;
+    try {
+      const res = await fetch(`${API_URL}/admin/media/folder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ folder: currentFolder, name: newFolderName }),
+      });
+      if (res.ok) {
+        setNewFolderName('');
+        setShowCreateFolder(false);
+        fetchMedia();
+      } else {
+        const error = await res.json();
+        alert(error.message || 'Failed to create folder');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getBreadcrumbs = () => {
+    if (!currentFolder) return [{ name: 'Root', path: '' }];
+    const parts = currentFolder.split('/');
+    let currentPath = '';
+    const breadcrumbs = [{ name: 'Root', path: '' }];
+    parts.forEach((part) => {
+      if (part) {
+        currentPath += (currentPath ? '/' : '') + part;
+        breadcrumbs.push({ name: part, path: currentPath });
+      }
+    });
+    return breadcrumbs;
+  };
+
+  const uploadFileRequest = async (file: File) => {
     const formData = new FormData();
     formData.append('image', file);
+    if (currentFolder) {
+      formData.append('folder', currentFolder);
+    }
     const res = await fetch(`${API_URL}/admin/upload`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
@@ -91,7 +154,7 @@ export default function MediaLibraryPage() {
 
     let done = 0;
     for (const file of files) {
-      await uploadFile(file);
+      await uploadFileRequest(file);
       done++;
       setUploadProgress(Math.round((done / files.length) * 100));
     }
@@ -112,7 +175,7 @@ export default function MediaLibraryPage() {
       setUploadProgress(0);
       let done = 0;
       for (const file of files) {
-        await uploadFile(file);
+        await uploadFileRequest(file);
         done++;
         setUploadProgress(Math.round((done / files.length) * 100));
       }
@@ -120,7 +183,7 @@ export default function MediaLibraryPage() {
       setUploading(false);
       setUploadProgress(0);
     },
-    [token, API_URL]
+    [token, currentFolder, fetchMedia]
   );
 
   // ── Single delete ─────────────────────────────────────────────────────────
@@ -139,9 +202,34 @@ export default function MediaLibraryPage() {
     }
   };
 
+  const handleDeleteFolder = async (folderName: string) => {
+    const fullPath = currentFolder ? `${currentFolder}/${folderName}` : folderName;
+    if (
+      !confirm(
+        `Are you sure you want to delete folder "${folderName}" and ALL its contents? This cannot be undone.`
+      )
+    )
+      return;
+
+    try {
+      const res = await fetch(`${API_URL}/admin/media/folder`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folder: fullPath }),
+      });
+      if (res.ok) {
+        fetchMedia();
+      } else {
+        const error = await res.json();
+        alert(error.message || 'Failed to delete folder');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   // ── Multi-select helpers ──────────────────────────────────────────────────
   const toggleSelect = (path: string) => {
-    // When in multi-select mode, clicking opens detail panel is disabled
     setSelectedPaths((prev) => {
       const next = new Set(prev);
       if (next.has(path)) {
@@ -151,16 +239,13 @@ export default function MediaLibraryPage() {
       }
       return next;
     });
-    // Close single-select detail panel when multi-selecting
     setSelectedFile(null);
   };
 
   const handleThumbnailClick = (file: MediaFile) => {
     if (isSelecting) {
-      // Already in selection mode — toggle this item
       toggleSelect(file.path);
     } else {
-      // Normal mode — open detail panel
       setSelectedFile(selectedFile?.path === file.path ? null : file);
     }
   };
@@ -170,14 +255,12 @@ export default function MediaLibraryPage() {
 
   const toggleSelectAll = () => {
     if (allFilteredSelected) {
-      // Deselect all visible
       setSelectedPaths((prev) => {
         const next = new Set(prev);
         filtered.forEach((f) => next.delete(f.path));
         return next;
       });
     } else {
-      // Select all visible
       setSelectedPaths((prev) => {
         const next = new Set(prev);
         filtered.forEach((f) => next.add(f.path));
@@ -259,6 +342,64 @@ export default function MediaLibraryPage() {
         </div>
       </div>
 
+      {/* Breadcrumbs & Folder controls */}
+      <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <div className="flex items-center text-sm font-medium overflow-x-auto whitespace-nowrap pb-1 sm:pb-0 hide-scrollbar">
+          {getBreadcrumbs().map((crumb, idx, arr) => (
+            <React.Fragment key={crumb.path}>
+              <button
+                onClick={() => setCurrentFolder(crumb.path)}
+                className={`hover:text-primary transition-colors ${idx === arr.length - 1 ? 'text-slate-800 font-bold' : 'text-slate-500'}`}
+              >
+                {crumb.name}
+              </button>
+              {idx < arr.length - 1 && (
+                <ChevronRight size={16} className="mx-2 text-slate-400 shrink-0" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowCreateFolder(!showCreateFolder)}
+            className="flex items-center gap-1.5 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold hover:border-primary hover:text-primary transition-colors"
+          >
+            <Plus size={16} /> New Folder
+          </button>
+        </div>
+      </div>
+
+      {/* Create Folder Form */}
+      {showCreateFolder && (
+        <form
+          onSubmit={handleCreateFolder}
+          className="flex items-center gap-3 bg-white p-4 rounded-xl border border-primary/20 shadow-sm"
+        >
+          <Folder size={20} className="text-primary" />
+          <input
+            type="text"
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+            placeholder="Folder name"
+            className="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            autoFocus
+          />
+          <button
+            type="submit"
+            className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover"
+          >
+            Create
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowCreateFolder(false)}
+            className="px-4 py-2 text-slate-500 text-sm font-semibold hover:text-slate-800 hover:bg-slate-50 rounded-lg"
+          >
+            Cancel
+          </button>
+        </form>
+      )}
+
       {/* Search + selection toolbar */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
@@ -276,7 +417,7 @@ export default function MediaLibraryPage() {
         {!loading && filtered.length > 0 && (
           <button
             onClick={toggleSelectAll}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-white transition-colors"
           >
             {allFilteredSelected ? (
               <>
@@ -352,7 +493,7 @@ export default function MediaLibraryPage() {
                 <div key={i} className="aspect-square bg-slate-100 rounded-xl animate-pulse" />
               ))}
             </div>
-          ) : filtered.length === 0 ? (
+          ) : folders.length === 0 && filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-slate-400">
               <ImageIcon size={56} strokeWidth={1} className="mb-4 text-slate-300" />
               {searchTerm ? (
@@ -369,13 +510,48 @@ export default function MediaLibraryPage() {
                 </>
               ) : (
                 <>
-                  <p className="text-lg font-semibold text-slate-600">No media yet</p>
+                  <p className="text-lg font-semibold text-slate-600">Folder is empty</p>
                   <p className="text-sm mt-1">Drop images here or click Upload</p>
                 </>
               )}
             </div>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 p-4">
+              {/* Folders */}
+              {!searchTerm &&
+                folders.map((folderName) => {
+                  const fullPath = currentFolder ? `${currentFolder}/${folderName}` : folderName;
+                  return (
+                    <div
+                      key={fullPath}
+                      className="group relative rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-center aspect-square flex flex-col items-center justify-center"
+                    >
+                      <button
+                        onClick={() => setCurrentFolder(fullPath)}
+                        className="absolute inset-0 flex flex-col items-center justify-center p-3 outline-none"
+                      >
+                        <div className="w-16 h-16 bg-blue-50 text-blue-400 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform mb-2">
+                          <Folder size={32} fill="currentColor" className="opacity-80" />
+                        </div>
+                        <span className="text-xs font-semibold text-slate-700 truncate w-full px-1">
+                          {folderName}
+                        </span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteFolder(folderName);
+                        }}
+                        className="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-lg opacity-0 group-hover:opacity-100 transition-all z-10 shadow-sm"
+                        title="Delete folder"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  );
+                })}
+
+              {/* Files */}
               {filtered.map((file) => {
                 const isChecked = selectedPaths.has(file.path);
                 const isActive = !isSelecting && selectedFile?.path === file.path;
@@ -414,7 +590,7 @@ export default function MediaLibraryPage() {
 
                       {/* Checkbox badge — top-left corner */}
                       <div
-                        className={`absolute top-1.5 left-1.5 transition-all duration-150 ${
+                        className={`absolute top-1.5 left-1.5 transition-all duration-150 z-10 ${
                           isChecked || isSelecting
                             ? 'opacity-100 scale-100'
                             : 'opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100'
@@ -434,6 +610,13 @@ export default function MediaLibraryPage() {
                           {isChecked && <Check size={11} className="text-white" strokeWidth={3} />}
                         </div>
                       </div>
+
+                      {/* Filename tooltip */}
+                      <div className="absolute bottom-0 inset-x-0 px-2 py-1 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p className="text-white text-[10px] truncate font-medium">
+                          {file.filename}
+                        </p>
+                      </div>
                     </div>
                   </button>
                 );
@@ -442,8 +625,10 @@ export default function MediaLibraryPage() {
           )}
 
           {isDraggingOver && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-primary font-bold text-xl">Drop to upload</div>
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-primary/5 rounded-xl border-2 border-primary border-dashed z-20">
+              <div className="text-primary font-bold text-xl bg-white px-6 py-3 rounded-xl shadow-sm">
+                Drop to upload here
+              </div>
             </div>
           )}
         </div>

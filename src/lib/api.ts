@@ -184,10 +184,13 @@ export async function fetchAdminAPI<T>(endpoint: string, options: RequestInit = 
   return response.json();
 }
 
-export async function uploadFile(file: File): Promise<string> {
+export async function uploadFile(file: File, folder?: string): Promise<string> {
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
   const formData = new FormData();
   formData.append('image', file);
+  if (folder) {
+    formData.append('folder', folder);
+  }
 
   const headers = new Headers();
   if (token) {

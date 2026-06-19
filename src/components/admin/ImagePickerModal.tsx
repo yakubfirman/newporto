@@ -3,7 +3,18 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import { X, Upload, Check, Image as ImageIcon, Search, LayoutGrid, RefreshCw } from 'lucide-react';
+import {
+  X,
+  Upload,
+  Check,
+  Image as ImageIcon,
+  Search,
+  LayoutGrid,
+  RefreshCw,
+  Folder,
+  ChevronRight,
+  Plus,
+} from 'lucide-react';
 import { uploadFile, API_URL } from '@/lib/api';
 
 interface MediaFile {
@@ -14,11 +25,19 @@ interface MediaFile {
   last_modified: number;
 }
 
+interface MediaResponse {
+  folders: string[];
+  files: MediaFile[];
+  current_folder: string;
+}
+
 interface ImagePickerModalProps {
   /** Aspect ratio for cropper (e.g. 16/9, 1, 4/3). Pass undefined to allow free crop. */
   aspectRatio?: number;
   /** Modal title shown in header */
   title?: string;
+  /** Default folder to open and upload into */
+  folder?: string;
   onSelect: (url: string) => void;
   onCancel: () => void;
 }
@@ -28,6 +47,7 @@ type Tab = 'upload' | 'library';
 export default function ImagePickerModal({
   aspectRatio,
   title = 'Select Image',
+  folder = '',
   onSelect,
   onCancel,
 }: ImagePickerModalProps) {
@@ -40,11 +60,16 @@ export default function ImagePickerModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ── Media Library tab state ───────────────────────────────────────────────
+  const [currentFolder, setCurrentFolder] = useState(folder);
+  const [folders, setFolders] = useState<string[]>([]);
   const [media, setMedia] = useState<MediaFile[]>([]);
   const [filtered, setFiltered] = useState<MediaFile[]>([]);
   const [loadingMedia, setLoadingMedia] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [pickedFile, setPickedFile] = useState<MediaFile | null>(null);
+
+  const [showCreateFolder, setShowCreateFolder] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
 
@@ -52,24 +77,29 @@ export default function ImagePickerModal({
   const fetchMedia = useCallback(async () => {
     setLoadingMedia(true);
     try {
-      const res = await fetch(`${API_URL}/admin/media`, {
+      const url = new URL(`${API_URL}/admin/media`);
+      if (currentFolder) {
+        url.searchParams.append('folder', currentFolder);
+      }
+      const res = await fetch(url.toString(), {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data: MediaFile[] = await res.json();
-      setMedia(data);
-      setFiltered(data);
+      const data: MediaResponse = await res.json();
+      setFolders(data.folders || []);
+      setMedia(data.files || []);
+      setFiltered(data.files || []);
     } catch (e) {
       console.error(e);
     } finally {
       setLoadingMedia(false);
     }
-  }, [token]);
+  }, [token, currentFolder]);
 
   useEffect(() => {
-    if (activeTab === 'library' && media.length === 0) {
+    if (activeTab === 'library') {
       fetchMedia();
     }
-  }, [activeTab]);
+  }, [activeTab, fetchMedia]);
 
   useEffect(() => {
     if (!searchTerm) {
@@ -79,6 +109,46 @@ export default function ImagePickerModal({
     }
     setPickedFile(null);
   }, [searchTerm, media]);
+
+  // ── Folder Handlers ───────────────────────────────────────────────────────
+  const handleCreateFolder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newFolderName.trim()) return;
+    try {
+      const res = await fetch(`${API_URL}/admin/media/folder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ folder: currentFolder, name: newFolderName }),
+      });
+      if (res.ok) {
+        setNewFolderName('');
+        setShowCreateFolder(false);
+        fetchMedia();
+      } else {
+        const error = await res.json();
+        alert(error.message || 'Failed to create folder');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getBreadcrumbs = () => {
+    if (!currentFolder) return [{ name: 'Root', path: '' }];
+    const parts = currentFolder.split('/');
+    let currentPath = '';
+    const breadcrumbs = [{ name: 'Root', path: '' }];
+    parts.forEach((part) => {
+      if (part) {
+        currentPath += (currentPath ? '/' : '') + part;
+        breadcrumbs.push({ name: part, path: currentPath });
+      }
+    });
+    return breadcrumbs;
+  };
 
   // ── Upload tab handlers ───────────────────────────────────────────────────
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +179,8 @@ export default function ImagePickerModal({
       const file = new File([blob], 'cropped-image.webp', {
         type: 'image/webp',
       });
-      const uploadedUrl = await uploadFile(file);
+
+      const uploadedUrl = await uploadFile(file, currentFolder);
       onSelect(uploadedUrl);
     } catch (error) {
       console.error('Failed to crop and upload image:', error);
@@ -131,8 +202,8 @@ export default function ImagePickerModal({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[92vh] overflow-hidden">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[92vh] overflow-hidden">
         {/* ── Header ── */}
         <div className="flex items-center justify-between px-6 pt-5 pb-0 shrink-0">
           <h3 className="font-bold text-lg text-slate-800">{title}</h3>
@@ -167,7 +238,12 @@ export default function ImagePickerModal({
           {/* Upload & Crop Tab */}
           {activeTab === 'upload' && (
             <div className="flex flex-col h-full">
-              <div className="flex-1 p-6 flex flex-col items-center justify-center min-h-[280px] bg-slate-50 m-4 rounded-xl border border-slate-200">
+              {/* Context info */}
+              <div className="px-6 pt-4 flex items-center gap-2 text-sm text-slate-500 font-medium">
+                <Folder size={16} /> Uploading to:{' '}
+                {currentFolder ? `uploads/${currentFolder}` : 'uploads (root)'}
+              </div>
+              <div className="flex-1 p-6 flex flex-col items-center justify-center min-h-[280px] bg-slate-50 m-4 mt-2 rounded-xl border border-slate-200">
                 {!src ? (
                   <div
                     className="w-full h-64 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center bg-white hover:bg-slate-50 hover:border-primary transition-colors cursor-pointer group"
@@ -202,11 +278,11 @@ export default function ImagePickerModal({
                     </span>
                   </div>
                 ) : (
-                  <div className="w-full rounded-xl overflow-hidden max-h-[55vh] bg-black">
+                  <div className="w-full rounded-xl overflow-hidden max-h-[50vh] bg-black">
                     <Cropper
                       ref={cropperRef}
                       src={src}
-                      style={{ height: '100%', width: '100%', maxHeight: '55vh' }}
+                      style={{ height: '100%', width: '100%', maxHeight: '50vh' }}
                       aspectRatio={aspectRatio}
                       guides={true}
                       viewMode={1}
@@ -239,43 +315,99 @@ export default function ImagePickerModal({
           {/* Media Library Tab */}
           {activeTab === 'library' && (
             <div className="p-4 flex flex-col gap-4 min-h-[340px]">
-              {/* Search + Refresh */}
-              <div className="flex items-center gap-2">
-                <div className="relative flex-1">
-                  <Search
-                    size={15}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                  />
+              {/* Breadcrumbs & Controls */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <div className="flex items-center text-sm font-medium overflow-x-auto whitespace-nowrap pb-1 sm:pb-0 hide-scrollbar">
+                  {getBreadcrumbs().map((crumb, idx, arr) => (
+                    <React.Fragment key={crumb.path}>
+                      <button
+                        onClick={() => setCurrentFolder(crumb.path)}
+                        className={`hover:text-primary transition-colors ${idx === arr.length - 1 ? 'text-slate-800 font-bold' : 'text-slate-500'}`}
+                      >
+                        {crumb.name}
+                      </button>
+                      {idx < arr.length - 1 && (
+                        <ChevronRight size={14} className="mx-1 text-slate-400 shrink-0" />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowCreateFolder(!showCreateFolder)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:border-primary hover:text-primary transition-colors"
+                  >
+                    <Plus size={16} /> New Folder
+                  </button>
+                  <button
+                    onClick={fetchMedia}
+                    disabled={loadingMedia}
+                    title="Refresh"
+                    className="p-1.5 border border-slate-200 bg-white rounded-lg hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors disabled:opacity-50"
+                  >
+                    <RefreshCw size={16} className={loadingMedia ? 'animate-spin' : ''} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Create Folder Form */}
+              {showCreateFolder && (
+                <form
+                  onSubmit={handleCreateFolder}
+                  className="flex items-center gap-2 bg-primary/5 p-3 rounded-xl border border-primary/20"
+                >
+                  <Folder size={18} className="text-primary" />
                   <input
                     type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search files..."
-                    className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white"
+                    value={newFolderName}
+                    onChange={(e) => setNewFolderName(e.target.value)}
+                    placeholder="Folder name"
+                    className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    autoFocus
                   />
-                </div>
-                <button
-                  onClick={fetchMedia}
-                  disabled={loadingMedia}
-                  title="Refresh"
-                  className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-colors disabled:opacity-50"
-                >
-                  <RefreshCw size={16} className={loadingMedia ? 'animate-spin' : ''} />
-                </button>
+                  <button
+                    type="submit"
+                    className="px-3 py-1.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover"
+                  >
+                    Create
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowCreateFolder(false)}
+                    className="px-3 py-1.5 text-slate-500 text-sm font-semibold hover:text-slate-800"
+                  >
+                    Cancel
+                  </button>
+                </form>
+              )}
+
+              {/* Search */}
+              <div className="relative">
+                <Search
+                  size={15}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search files..."
+                  className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white"
+                />
               </div>
 
               {/* Grid */}
               {loadingMedia ? (
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5">
-                  {[...Array(15)].map((_, i) => (
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                  {[...Array(12)].map((_, i) => (
                     <div key={i} className="aspect-square bg-slate-100 rounded-xl animate-pulse" />
                   ))}
                 </div>
-              ) : filtered.length === 0 ? (
+              ) : folders.length === 0 && filtered.length === 0 ? (
                 <div className="flex flex-col items-center justify-center flex-1 py-16 text-slate-400">
                   <ImageIcon size={48} strokeWidth={1} className="mb-3 text-slate-300" />
                   <p className="font-semibold text-slate-500">
-                    {searchTerm ? `No results for "${searchTerm}"` : 'No media yet'}
+                    {searchTerm ? `No results for "${searchTerm}"` : 'Folder is empty'}
                   </p>
                   {searchTerm && (
                     <button
@@ -287,7 +419,30 @@ export default function ImagePickerModal({
                   )}
                 </div>
               ) : (
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                  {/* Folders First */}
+                  {!searchTerm &&
+                    folders.map((folderName) => {
+                      const fullPath = currentFolder
+                        ? `${currentFolder}/${folderName}`
+                        : folderName;
+                      return (
+                        <button
+                          key={fullPath}
+                          onClick={() => setCurrentFolder(fullPath)}
+                          className="group flex flex-col items-center gap-2 p-3 rounded-xl border border-transparent hover:border-slate-200 hover:bg-slate-50 transition-all text-center"
+                        >
+                          <div className="w-16 h-16 bg-blue-50 text-blue-400 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform">
+                            <Folder size={32} fill="currentColor" className="opacity-80" />
+                          </div>
+                          <span className="text-xs font-semibold text-slate-700 truncate w-full px-1">
+                            {folderName}
+                          </span>
+                        </button>
+                      );
+                    })}
+
+                  {/* Files */}
                   {filtered.map((file) => {
                     const isPicked = pickedFile?.path === file.path;
                     return (
@@ -338,7 +493,7 @@ export default function ImagePickerModal({
 
               {/* Selected file info */}
               {pickedFile && (
-                <div className="flex items-center gap-3 p-3 bg-primary/5 border border-primary/20 rounded-xl">
+                <div className="flex items-center gap-3 p-3 bg-primary/5 border border-primary/20 rounded-xl mt-auto">
                   <img
                     src={pickedFile.url}
                     alt={pickedFile.filename}

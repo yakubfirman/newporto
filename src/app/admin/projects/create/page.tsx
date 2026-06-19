@@ -406,6 +406,7 @@ export default function CreateProjectPage() {
         <ImagePickerModal
           aspectRatio={16 / 9}
           title="Select Project Image"
+          folder="projects"
           onSelect={(url) => {
             setFormData({ ...formData, image: url });
             setShowImageCropper(false);

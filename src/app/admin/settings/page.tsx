@@ -4,8 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Save, AlertCircle, X } from 'lucide-react';
 import { fetchAdminAPI, uploadFile } from '@/lib/api';
 import Image from 'next/image';
-import Cropper, { ReactCropperElement } from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
+import ImagePickerModal from '@/components/admin/ImagePickerModal';
 
 interface Setting {
   id: number;
@@ -23,12 +22,9 @@ export default function AdminSettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  // Cropper State
-  const [showCropper, setShowCropper] = useState(false);
-  const [cropperImageSrc, setCropperImageSrc] = useState<string>('');
+  // Image Picker State
+  const [showImagePicker, setShowImagePicker] = useState(false);
   const [currentKeyToUpload, setCurrentKeyToUpload] = useState<string>('');
-  const [isUploading, setIsUploading] = useState(false);
-  const cropperRef = useRef<ReactCropperElement>(null);
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -55,59 +51,6 @@ export default function AdminSettingsPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setSuccess(false); // Hide success message on change
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Reset input so same file can be selected again
-    e.target.value = '';
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setCropperImageSrc(reader.result as string);
-      setCurrentKeyToUpload(key);
-      setShowCropper(true);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleApplyCrop = async () => {
-    if (!cropperRef.current) return;
-    const cropper = cropperRef.current.cropper;
-
-    setIsUploading(true);
-    setError(null);
-
-    cropper
-      .getCroppedCanvas({
-        maxWidth: 1080,
-        maxHeight: 1080,
-      })
-      .toBlob(
-        async (blob) => {
-          if (!blob) {
-            setError('Failed to crop image');
-            setIsUploading(false);
-            return;
-          }
-
-          const file = new File([blob], 'cropped_image.webp', { type: 'image/webp' });
-
-          try {
-            const url = await uploadFile(file);
-            setFormData((prev) => ({ ...prev, [currentKeyToUpload]: url }));
-            setShowCropper(false);
-          } catch (err: any) {
-            setError('Failed to upload image: ' + err.message);
-          } finally {
-            setIsUploading(false);
-          }
-        },
-        'image/webp',
-        0.85
-      );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -167,58 +110,24 @@ export default function AdminSettingsPage() {
         <h2 className="text-2xl font-bold text-slate-800 font-heading">Global Settings</h2>
       </div>
 
-      {/* Cropper Modal */}
-      {showCropper && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
-          <div className="bg-white rounded-xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col h-[80vh] md:h-[90vh]">
-            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
-              <h3 className="font-bold text-slate-800">Crop Image</h3>
-              <button
-                onClick={() => setShowCropper(false)}
-                className="text-slate-500 hover:text-slate-700"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-6 bg-slate-100 flex-1 min-h-0">
-              <Cropper
-                src={cropperImageSrc}
-                style={{ height: '100%', width: '100%' }}
-                aspectRatio={
-                  currentKeyToUpload === 'og_image_url'
-                    ? 16 / 9
-                    : currentKeyToUpload === 'header_image_url'
-                      ? 1
-                      : 4 / 5
-                }
-                guides={true}
-                ref={cropperRef}
-                viewMode={1}
-                background={false}
-                autoCropArea={1}
-                checkOrientation={false}
-              />
-            </div>
-            <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={() => setShowCropper(false)}
-                className="px-5 py-2 rounded-lg font-medium text-slate-600 hover:bg-slate-200 transition-colors"
-                disabled={isUploading}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleApplyCrop}
-                disabled={isUploading}
-                className="px-5 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors disabled:opacity-50 flex items-center gap-2"
-              >
-                {isUploading ? 'Uploading...' : 'Apply & Upload'}
-              </button>
-            </div>
-          </div>
-        </div>
+      {/* Image Picker Modal */}
+      {showImagePicker && (
+        <ImagePickerModal
+          folder="settings"
+          aspectRatio={
+            currentKeyToUpload === 'og_image_url'
+              ? 16 / 9
+              : currentKeyToUpload === 'header_image_url'
+                ? 1
+                : 4 / 5
+          }
+          title={`Select Image for ${currentKeyToUpload.replace(/_/g, ' ')}`}
+          onSelect={(url) => {
+            setFormData((prev) => ({ ...prev, [currentKeyToUpload]: url }));
+            setShowImagePicker(false);
+          }}
+          onCancel={() => setShowImagePicker(false)}
+        />
       )}
 
       {error && (
@@ -297,15 +206,16 @@ export default function AdminSettingsPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <label className="cursor-pointer bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
-                          Choose File to Upload
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={(e) => handleFileSelect(e, setting.key)}
-                          />
-                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCurrentKeyToUpload(setting.key);
+                            setShowImagePicker(true);
+                          }}
+                          className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+                        >
+                          Choose from Library or Upload
+                        </button>
                         <span className="text-xs text-slate-500">
                           Max size 5MB (
                           {setting.key === 'og_image_url'
