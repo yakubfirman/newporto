@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Search, Globe } from 'lucide-react';
 import { fetchAdminAPI, Project } from '@/lib/api';
-import ImageCropper from '@/components/admin/ImageCropper';
+import ImagePickerModal from '@/components/admin/ImagePickerModal';
 import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
@@ -427,9 +427,10 @@ export default function EditProjectPage({ params }: { params: Promise<{ id: stri
       </form>
 
       {showImageCropper && (
-        <ImageCropper
+        <ImagePickerModal
           aspectRatio={16 / 9}
-          onCropComplete={(url) => {
+          title="Select Project Image"
+          onSelect={(url) => {
             setFormData({ ...formData, image: url });
             setShowImageCropper(false);
           }}

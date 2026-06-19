@@ -7,7 +7,7 @@ import { ArrowLeft, Save, Image as ImageIcon, Search, Globe, User } from 'lucide
 import Image from 'next/image';
 import { fetchAdminAPI, Post } from '@/lib/api';
 import RichTextEditor from '@/components/RichTextEditor';
-import ImageCropper from '@/components/admin/ImageCropper';
+import ImagePickerModal from '@/components/admin/ImagePickerModal';
 import { showSuccessAlert, showErrorAlert } from '@/lib/alert';
 
 export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
@@ -420,9 +420,10 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
       </form>
 
       {croppingImage && (
-        <ImageCropper
+        <ImagePickerModal
           aspectRatio={croppingImage === 'author' ? 1 : 16 / 9}
-          onCropComplete={(url) => {
+          title={croppingImage === 'author' ? 'Select Author Photo' : 'Select Cover Image'}
+          onSelect={(url) => {
             if (croppingImage === 'cover') {
               setFormData({ ...formData, cover_image: url });
             } else {
