@@ -11,6 +11,7 @@ import {
   Download,
   Search,
 } from 'lucide-react';
+import { API_URL } from '@/lib/api';
 
 interface MediaFile {
   filename: string;
@@ -32,11 +33,10 @@ export default function MediaLibraryPage() {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
   const fetchMedia = async () => {
     try {
-      const res = await fetch(`${apiBase}/admin/media`, {
+      const res = await fetch(`${API_URL}/admin/media`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -64,7 +64,7 @@ export default function MediaLibraryPage() {
   const uploadFile = async (file: File) => {
     const formData = new FormData();
     formData.append('image', file);
-    const res = await fetch(`${apiBase}/admin/upload`, {
+    const res = await fetch(`${API_URL}/admin/upload`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -109,13 +109,13 @@ export default function MediaLibraryPage() {
       setUploading(false);
       setUploadProgress(0);
     },
-    [token, apiBase]
+    [token, API_URL]
   );
 
   const handleDelete = async (file: MediaFile) => {
     if (!confirm(`Delete "${file.filename}"? This cannot be undone.`)) return;
     try {
-      await fetch(`${apiBase}/admin/media`, {
+      await fetch(`${API_URL}/admin/media`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ path: file.path }),
