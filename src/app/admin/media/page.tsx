@@ -10,6 +10,9 @@ import {
   ZoomIn,
   Download,
   Search,
+  CheckSquare,
+  Square,
+  CheckCheck,
 } from 'lucide-react';
 import { API_URL } from '@/lib/api';
 
@@ -31,6 +34,12 @@ export default function MediaLibraryPage() {
   const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDraggingOver, setIsDraggingOver] = useState(false);
+
+  // ── Multi-select state ────────────────────────────────────────────────────
+  const [selectedPaths, setSelectedPaths] = useState<Set<string>>(new Set());
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  const isSelecting = selectedPaths.size > 0;
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
 
@@ -59,6 +68,8 @@ export default function MediaLibraryPage() {
     } else {
       setFiltered(media.filter((f) => f.filename.toLowerCase().includes(searchTerm.toLowerCase())));
     }
+    // Clear selection when filter changes to avoid orphan selections
+    setSelectedPaths(new Set());
   }, [searchTerm, media]);
 
   const uploadFile = async (file: File) => {
@@ -112,6 +123,7 @@ export default function MediaLibraryPage() {
     [token, API_URL]
   );
 
+  // ── Single delete ─────────────────────────────────────────────────────────
   const handleDelete = async (file: MediaFile) => {
     if (!confirm(`Delete "${file.filename}"? This cannot be undone.`)) return;
     try {
@@ -124,6 +136,78 @@ export default function MediaLibraryPage() {
       if (selectedFile?.path === file.path) setSelectedFile(null);
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  // ── Multi-select helpers ──────────────────────────────────────────────────
+  const toggleSelect = (path: string) => {
+    // When in multi-select mode, clicking opens detail panel is disabled
+    setSelectedPaths((prev) => {
+      const next = new Set(prev);
+      if (next.has(path)) {
+        next.delete(path);
+      } else {
+        next.add(path);
+      }
+      return next;
+    });
+    // Close single-select detail panel when multi-selecting
+    setSelectedFile(null);
+  };
+
+  const handleThumbnailClick = (file: MediaFile) => {
+    if (isSelecting) {
+      // Already in selection mode — toggle this item
+      toggleSelect(file.path);
+    } else {
+      // Normal mode — open detail panel
+      setSelectedFile(selectedFile?.path === file.path ? null : file);
+    }
+  };
+
+  const allFilteredSelected =
+    filtered.length > 0 && filtered.every((f) => selectedPaths.has(f.path));
+
+  const toggleSelectAll = () => {
+    if (allFilteredSelected) {
+      // Deselect all visible
+      setSelectedPaths((prev) => {
+        const next = new Set(prev);
+        filtered.forEach((f) => next.delete(f.path));
+        return next;
+      });
+    } else {
+      // Select all visible
+      setSelectedPaths((prev) => {
+        const next = new Set(prev);
+        filtered.forEach((f) => next.add(f.path));
+        return next;
+      });
+    }
+  };
+
+  const clearSelection = () => setSelectedPaths(new Set());
+
+  // ── Bulk delete ───────────────────────────────────────────────────────────
+  const handleBulkDelete = async () => {
+    const count = selectedPaths.size;
+    if (!confirm(`Delete ${count} selected file${count > 1 ? 's' : ''}? This cannot be undone.`))
+      return;
+
+    setBulkDeleting(true);
+    try {
+      await fetch(`${API_URL}/admin/media/bulk-delete`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paths: Array.from(selectedPaths) }),
+      });
+      setMedia((prev) => prev.filter((m) => !selectedPaths.has(m.path)));
+      if (selectedFile && selectedPaths.has(selectedFile.path)) setSelectedFile(null);
+      setSelectedPaths(new Set());
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setBulkDeleting(false);
     }
   };
 
@@ -175,16 +259,62 @@ export default function MediaLibraryPage() {
         </div>
       </div>
 
-      {/* Search */}
-      <div className="relative max-w-sm">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search files..."
-          className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white"
-        />
+      {/* Search + selection toolbar */}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-[200px] max-w-sm">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search files..."
+            className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white"
+          />
+        </div>
+
+        {/* Select All / Clear */}
+        {!loading && filtered.length > 0 && (
+          <button
+            onClick={toggleSelectAll}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+          >
+            {allFilteredSelected ? (
+              <>
+                <CheckCheck size={16} className="text-primary" />
+                Deselect All
+              </>
+            ) : (
+              <>
+                <CheckSquare size={16} />
+                Select All
+              </>
+            )}
+          </button>
+        )}
+
+        {/* Bulk action bar — visible when items are selected */}
+        {isSelecting && (
+          <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-2 animate-in fade-in duration-150">
+            <span className="text-sm font-semibold text-red-700">
+              {selectedPaths.size} selected
+            </span>
+            <button
+              onClick={handleBulkDelete}
+              disabled={bulkDeleting}
+              className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 disabled:opacity-60 text-white text-sm font-bold px-3 py-1.5 rounded-md transition-colors"
+            >
+              <Trash2 size={14} />
+              {bulkDeleting ? 'Deleting…' : 'Delete Selected'}
+            </button>
+            <button
+              onClick={clearSelection}
+              className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-100 rounded-md transition-colors"
+              title="Cancel selection"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Upload progress */}
@@ -228,7 +358,7 @@ export default function MediaLibraryPage() {
               {searchTerm ? (
                 <>
                   <p className="text-lg font-semibold text-slate-600">
-                    No results for "{searchTerm}"
+                    No results for &quot;{searchTerm}&quot;
                   </p>
                   <button
                     onClick={() => setSearchTerm('')}
@@ -246,34 +376,68 @@ export default function MediaLibraryPage() {
             </div>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 p-4">
-              {filtered.map((file) => (
-                <button
-                  key={file.path}
-                  onClick={() => setSelectedFile(selectedFile?.path === file.path ? null : file)}
-                  className={`group relative rounded-xl overflow-hidden border-2 transition-all ${
-                    selectedFile?.path === file.path
-                      ? 'border-primary shadow-md shadow-primary/20'
-                      : 'border-transparent hover:border-slate-300'
-                  }`}
-                >
-                  <div className="aspect-square relative bg-slate-100">
-                    <img
-                      src={file.url}
-                      alt={file.filename}
-                      className="w-full h-full object-cover"
-                    />
-                    <div
-                      className={`absolute inset-0 transition-opacity flex items-end justify-center pb-2 ${
-                        selectedFile?.path === file.path
-                          ? 'opacity-100 bg-black/20'
-                          : 'opacity-0 group-hover:opacity-100 bg-black/30'
-                      }`}
-                    >
-                      <ZoomIn size={20} className="text-white drop-shadow" />
+              {filtered.map((file) => {
+                const isChecked = selectedPaths.has(file.path);
+                const isActive = !isSelecting && selectedFile?.path === file.path;
+
+                return (
+                  <button
+                    key={file.path}
+                    onClick={() => handleThumbnailClick(file)}
+                    className={`group relative rounded-xl overflow-hidden border-2 transition-all ${
+                      isChecked
+                        ? 'border-primary shadow-md shadow-primary/20'
+                        : isActive
+                          ? 'border-primary shadow-md shadow-primary/20'
+                          : 'border-transparent hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="aspect-square relative bg-slate-100">
+                      <img
+                        src={file.url}
+                        alt={file.filename}
+                        className="w-full h-full object-cover"
+                      />
+
+                      {/* Overlay */}
+                      <div
+                        className={`absolute inset-0 transition-opacity flex items-end justify-center pb-2 ${
+                          isChecked
+                            ? 'opacity-100 bg-primary/25'
+                            : isActive
+                              ? 'opacity-100 bg-black/20'
+                              : 'opacity-0 group-hover:opacity-100 bg-black/30'
+                        }`}
+                      >
+                        {!isChecked && <ZoomIn size={20} className="text-white drop-shadow" />}
+                      </div>
+
+                      {/* Checkbox badge — top-left corner */}
+                      <div
+                        className={`absolute top-1.5 left-1.5 transition-all duration-150 ${
+                          isChecked || isSelecting
+                            ? 'opacity-100 scale-100'
+                            : 'opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100'
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleSelect(file.path);
+                        }}
+                      >
+                        <div
+                          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shadow transition-colors ${
+                            isChecked
+                              ? 'bg-primary border-primary'
+                              : 'bg-white/80 border-white backdrop-blur-sm'
+                          }`}
+                        >
+                          {isChecked && <Check size={11} className="text-white" strokeWidth={3} />}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           )}
 
@@ -284,8 +448,8 @@ export default function MediaLibraryPage() {
           )}
         </div>
 
-        {/* File Detail Panel */}
-        {selectedFile && (
+        {/* File Detail Panel — hidden while multi-selecting */}
+        {selectedFile && !isSelecting && (
           <div className="w-72 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex-shrink-0 h-fit sticky top-6">
             <div className="relative w-full aspect-video bg-slate-100">
               <img
